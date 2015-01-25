@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gp;
+package chatApp;
 
 /**
  *
@@ -18,44 +18,47 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 
 public class JHyperlinkLabel extends JLabel {
-  private Color underlineColor = null;
 
-  public JHyperlinkLabel(String label) {
-    super(label);
+    private Color underlineColor = null;
 
-    setForeground(Color.BLUE.darker());
-    setCursor(new Cursor(Cursor.HAND_CURSOR));
-    addMouseListener(new HyperlinkLabelMouseAdapter());
-  }
+    public JHyperlinkLabel(String label) {
+        super(label);
 
-  @Override
-  protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
-
-    g.setColor(underlineColor == null ? getForeground() : underlineColor);
-
-    Insets insets = getInsets();
-
-    int left = insets.left;
-    if (getIcon() != null)
-      left += getIcon().getIconWidth() + getIconTextGap();
-
-    g.drawLine(left, getHeight() - 1 - insets.bottom, (int) getPreferredSize().getWidth()
-        - insets.right, getHeight() - 1 - insets.bottom);
-  }
-
-  public class HyperlinkLabelMouseAdapter extends MouseAdapter {
-    @Override
-    public void mouseClicked(MouseEvent e) {
-      System.out.println(getText());
+        setForeground(Color.BLUE.darker());
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+        addMouseListener(new HyperlinkLabelMouseAdapter());
     }
-  }
 
-  public Color getUnderlineColor() {
-    return underlineColor;
-  }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-  public void setUnderlineColor(Color underlineColor) {
-    this.underlineColor = underlineColor;
-  }
+        g.setColor(underlineColor == null ? getForeground() : underlineColor);
+
+        Insets insets = getInsets();
+
+        int left = insets.left;
+        if (getIcon() != null) {
+            left += getIcon().getIconWidth() + getIconTextGap();
+        }
+
+        g.drawLine(left, getHeight() - 1 - insets.bottom, (int) getPreferredSize().getWidth()
+                - insets.right, getHeight() - 1 - insets.bottom);
+    }
+
+    public class HyperlinkLabelMouseAdapter extends MouseAdapter {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            System.out.println(getText());
+        }
+    }
+
+    public Color getUnderlineColor() {
+        return underlineColor;
+    }
+
+    public void setUnderlineColor(Color underlineColor) {
+        this.underlineColor = underlineColor;
+    }
 }

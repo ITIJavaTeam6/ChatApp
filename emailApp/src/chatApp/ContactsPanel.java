@@ -1,6 +1,5 @@
 package chatApp;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -20,81 +19,80 @@ import javax.swing.ListCellRenderer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
 @SuppressWarnings("serial")
 public class ContactsPanel extends JScrollPane {
-	JList<String> list;
-	int highlightIndex = -1;
 
-	public ContactsPanel() {
+    JList<String> list;
+    int highlightIndex = -1;
 
-		DefaultListModel<String> listModel = new DefaultListModel<>();
-		listModel.addElement("Ahmed");
-		listModel.addElement("Ahmed");
-		listModel.addElement("Ahmed");
-		listModel.addElement("Ahmed");
-		listModel.addElement("Ahmed kjbfsjabfjasbfjbasfkjbakfbkabkfebjkabfgkjbaekfgjbkb");
-		listModel.addElement("Mohamed");
-		list = new JList<>(listModel);
+    public ContactsPanel() {
 
-		// setting highlight index when mouse hovers on a menu item
-		list.addMouseMotionListener(new MouseAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent me) {
-				Point p = new Point(me.getX(),me.getY());
-				highlightIndex = list.locationToIndex(p);
-				list.repaint();
-			}
-		});
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        listModel.addElement("Ahmed");
+        listModel.addElement("Ahmed");
+        listModel.addElement("Ahmed");
+        listModel.addElement("Ahmed");
+        listModel.addElement("Ahmed kjbfsjabfjasbfjbasfkjbakfbkabkfebjkabfgkjbaekfgjbkb");
+        listModel.addElement("Mohamed");
+        list = new JList<>(listModel);
 
+        // setting highlight index when mouse hovers on a menu item
+        list.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent me) {
+                Point p = new Point(me.getX(), me.getY());
+                highlightIndex = list.locationToIndex(p);
+                list.repaint();
+            }
+        });
 
-		list.addMouseListener(new MouseAdapter() {
-			// double click event
-			@Override
-			public void mouseClicked(MouseEvent me) {
-				if (me.getClickCount() == 2) {
-					int index = list.locationToIndex(me.getPoint());
-                                        ChatWindow cw=new ChatWindow();
-                                        cw.setVisible(true);
-					//JOptionPane.showMessageDialog(ContactsPanel.this, "selected " + index);
-				}
-			}
+        list.addMouseListener(new MouseAdapter() {
+            // double click event
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() == 2) {
+                    int index = list.locationToIndex(me.getPoint());
+                    ChatWindow cw = new ChatWindow();
+                    cw.setVisible(true);
+                    //JOptionPane.showMessageDialog(ContactsPanel.this, "selected " + index);
+                }
+            }
 
-			// mouse exiting menu removes highlight
-			@Override
-			public void mouseExited(MouseEvent me) {
-				highlightIndex = -1;
-				list.repaint();
-			}
-		});
+            // mouse exiting menu removes highlight
+            @Override
+            public void mouseExited(MouseEvent me) {
+                highlightIndex = -1;
+                list.repaint();
+            }
+        });
 
-		list.setCellRenderer(new MyRenderer());
+        list.setCellRenderer(new MyRenderer());
 
-		setViewportView(list);
+        setViewportView(list);
 
-	}
+    }
 
-	class MyRenderer implements ListCellRenderer<String> {
+    class MyRenderer implements ListCellRenderer<String> {
 
-		@Override
-		public Component getListCellRendererComponent(
-				JList<? extends String> list, String value, int index,
-				boolean isSelected, boolean cellHasFocus) {
-			
-			JPanel panel = new JPanel();
-			
-			JLabel name = new JLabel(value);
-			name.setForeground(Color.BLACK);
-			name.setFont(getFont().deriveFont(Font.BOLD, 14));
-			
-			JLabel status = new JLabel("hello world");
-			status.setForeground(new Color(100, 100, 100));
-			
-			JLabel img = new JLabel(new ImageIcon("res/male.png"));
-			
-			JLabel state = new JLabel(new ImageIcon("res/online.png"));
+        @Override
+        public Component getListCellRendererComponent(
+                JList<? extends String> list, String value, int index,
+                boolean isSelected, boolean cellHasFocus) {
 
-                        panel.setLayout(new BorderLayout());
+            JPanel panel = new JPanel();
+
+            JLabel name = new JLabel(value);
+            name.setForeground(Color.BLACK);
+            name.setFont(getFont().deriveFont(Font.BOLD, 14));
+
+            JLabel status = new JLabel("hello world");
+            status.setForeground(new Color(100, 100, 100));
+
+            JLabel img = new JLabel(new ImageIcon("res/male.png"));
+
+            JLabel state = new JLabel(new ImageIcon("res/online.png"));
+
+            panel.setLayout(new BorderLayout());
 //			GroupLayout layout = new GroupLayout(panel);
 //			panel.setLayout(layout);
 //			
@@ -122,25 +120,24 @@ public class ContactsPanel extends JScrollPane {
 //					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 //			);
 
+            panel.setPreferredSize(new Dimension(100, 50));
 
-			panel.setPreferredSize(new Dimension(100, 50));
+            panel.add(img, BorderLayout.WEST);
 
-                        panel.add(img, BorderLayout.WEST);
-
-                        panel.add(name, BorderLayout.CENTER);
+            panel.add(name, BorderLayout.CENTER);
 //						panel.add(new JLabel("hello there", JLabel.CENTER), BorderLayout.SOUTH);
-						
-                        panel.add(state, BorderLayout.EAST);
 
-			if (highlightIndex == index) {
-				panel.setBackground(new Color(200, 200, 200));
-			}
-			if (isSelected) {
-				panel.setBackground(new Color(150, 150, 255));
-			}
+            panel.add(state, BorderLayout.EAST);
 
-			return panel;
-		}
+            if (highlightIndex == index) {
+                panel.setBackground(new Color(200, 200, 200));
+            }
+            if (isSelected) {
+                panel.setBackground(new Color(150, 150, 255));
+            }
 
-	}
+            return panel;
+        }
+
+    }
 }
