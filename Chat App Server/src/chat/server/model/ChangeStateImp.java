@@ -35,7 +35,12 @@ public class ChangeStateImp extends UnicastRemoteObject implements changeStateIn
             DbService db=new DbService();
             UserService user=new UserService();
             User x=user.selectOne(userID);
+            if(x!=null){
             x.setStatus(value);
+            }
+            else{
+            System.out.println("error");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ChangeStateImp.class.getName()).log(Level.SEVERE, null, ex);
         }
