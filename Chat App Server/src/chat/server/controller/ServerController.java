@@ -25,6 +25,7 @@ public class ServerController {
             RMIServerInterface server = new RMIServerImpl();
             Registry registry = LocateRegistry.createRegistry(5000);
             registry.rebind("chat", server);
+            System.out.println("Waiting for connections");
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
