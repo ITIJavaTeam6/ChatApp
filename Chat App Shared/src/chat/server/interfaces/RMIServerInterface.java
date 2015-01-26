@@ -5,7 +5,7 @@
  */
 package chat.server.interfaces;
 
-import chat.client.interfaces.RMIClient;
+import chat.client.interfaces.RMIClientInterface;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
  *
  * @author sharno
  */
-public interface RMIServer extends Remote{
-    public void register (RMIClient client) throws RemoteException;
-    public void unregister (RMIClient client) throws RemoteException;
+public interface RMIServerInterface extends Remote{
+    public void register (RMIClientInterface client) throws RemoteException;
+    public void unregister (RMIClientInterface client) throws RemoteException;
 }

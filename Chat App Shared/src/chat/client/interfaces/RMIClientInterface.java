@@ -6,11 +6,12 @@
 package chat.client.interfaces;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
  * @author sharno
  */
-public interface RMIClient extends Remote {
+public interface RMIClientInterface extends Remote {
     
 }
