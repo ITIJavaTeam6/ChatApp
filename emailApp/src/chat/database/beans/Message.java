@@ -1,4 +1,4 @@
-package beanspkg;
+package chat.database.beans;
 
 import java.sql.*;
 

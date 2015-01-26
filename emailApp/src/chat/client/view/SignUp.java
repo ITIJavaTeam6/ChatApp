@@ -1,4 +1,4 @@
-package chatApp;
+package chat.client.view;
 
 
 import java.awt.Component;

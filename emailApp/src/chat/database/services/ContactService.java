@@ -1,8 +1,8 @@
-package servicespkg;
+package chat.database.services;
 
+import chat.database.beans.Contact;
 import java.sql.*;
 import exceptions.*;
-import beanspkg.*;
 import java.util.ArrayList;
 
 public class ContactService {

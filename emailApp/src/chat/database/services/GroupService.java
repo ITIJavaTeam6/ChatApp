@@ -1,36 +1,29 @@
-package servicespkg;
+package chat.database.services;
 
+import chat.database.beans.Group;
 import java.sql.*;
 import exceptions.*;
-import beanspkg.*;
 import java.util.ArrayList;
 
-public class UserService {
+public class GroupService {
 
-    public User[] selectAll() throws SQLException {
+    public Group[] selectAll() throws SQLException {
         Connection connection = null;
-        User[] arr = null;
+        Group[] arr = null;
         try {
             connection = new DbService().getConnection();
-            ArrayList<User> list = new ArrayList<User>();
-            User item;
+            ArrayList<Group> list = new ArrayList<Group>();
+            Group item;
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("SELECT * FROM user");
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM group");
             while (rs.next()) {
-                item = new User();
-                item.setIduser(rs.getLong(1));
-                item.setFname(rs.getString(2));
-                item.setLname(rs.getString(3));
-                item.setPassword(rs.getString(4));
-                item.setBdate(rs.getTimestamp(5));
-                item.setStatus(rs.getLong(6));
-                item.setGender(rs.getLong(7));
-                item.setCdate(rs.getTimestamp(8));
-                item.setEmail(rs.getString(9));
+                item = new Group();
+                item.setIdgroup(rs.getLong(1));
+                item.setUserId(rs.getLong(2));
                 list.add(item);
             }
 
-            arr = new User[list.size()];
+            arr = new Group[list.size()];
             list.toArray(arr);
         } finally {
             if (connection != null) {
@@ -41,27 +34,20 @@ public class UserService {
 
     }
 
-    public User selectOne(long iduser) throws SQLException {
+    public Group selectOne(long idgroup, long userId) throws SQLException {
         Connection connection = null;
-        User item = null;
+        Group item = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("SELECT * FROM user WHERE iduser = " + iduser);
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM group WHERE idgroup = " + idgroup + " and userId = " + userId);
             int count = 0;
             while (rs.next()) {
                 count++;
                 if (count == 1) {
-                    item = new User();
-                    item.setIduser(rs.getLong(1));
-                    item.setFname(rs.getString(2));
-                    item.setLname(rs.getString(3));
-                    item.setPassword(rs.getString(4));
-                    item.setBdate(rs.getTimestamp(5));
-                    item.setStatus(rs.getLong(6));
-                    item.setGender(rs.getLong(7));
-                    item.setCdate(rs.getTimestamp(8));
-                    item.setEmail(rs.getString(9));
+                    item = new Group();
+                    item.setIdgroup(rs.getLong(1));
+                    item.setUserId(rs.getLong(2));
                 } else {
                     throw new MoreThanOneItemException();
                 }
@@ -79,20 +65,13 @@ public class UserService {
 
     }
 
-    public int insert(User item) throws SQLException {
+    public int insert(Group item) throws SQLException {
         Connection connection = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String insertQuery = "INSERT INTO user VALUES(" + item.getIduser()
-                    + ", '" + item.getFname()
-                    + "', '" + item.getLname()
-                    + "', '" + item.getPassword()
-                    + "', '" + item.getBdate()
-                    + "', " + item.getStatus()
-                    + ", " + item.getGender()
-                    + ", '" + item.getCdate()
-                    + "', '" + item.getEmail() + ")";
+            String insertQuery = "INSERT INTO group VALUES(" + item.getIdgroup()
+                    + ", " + item.getUserId() + ")";
             insertQuery = insertQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(insertQuery);
             stmnt.close();
@@ -110,19 +89,12 @@ public class UserService {
 
     }
 
-    public int update(User item) throws SQLException {
+    public int update(Group item) throws SQLException {
         Connection connection = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String updateQuery = "UPDATE user SET fname = '" + item.getFname()
-                    + "', lname = '" + item.getLname()
-                    + "', password = '" + item.getPassword()
-                    + "', bdate = '" + item.getBdate()
-                    + "', status = " + item.getStatus()
-                    + ", gender = " + item.getGender()
-                    + ", cdate = '" + item.getCdate()
-                    + "', email = '" + item.getEmail() + " WHERE " + "iduser = " + item.getIduser();
+            String updateQuery = "UPDATE group SET userId = " + item.getUserId() + " WHERE " + "idgroup = " + item.getIdgroup();
             updateQuery = updateQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(updateQuery);
             stmnt.close();
@@ -140,12 +112,12 @@ public class UserService {
 
     }
 
-    public int delete(long iduser) throws SQLException {
+    public int delete(long idgroup, long userId) throws SQLException {
         Connection connection = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            int rowsAffected = stmnt.executeUpdate("DELETE FROM user WHERE iduser = " + iduser);
+            int rowsAffected = stmnt.executeUpdate("DELETE FROM group WHERE idgroup = " + idgroup + " and userId = " + userId);
             stmnt.close();
             if (rowsAffected != 0) {
                 return rowsAffected;

@@ -1,4 +1,4 @@
-package servicespkg;
+package chat.database.services;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

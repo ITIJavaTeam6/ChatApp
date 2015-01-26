@@ -1,4 +1,4 @@
-package chatApp;
+package chat.client.view;
 
 import com.sun.xml.internal.txw2.Document;
 import java.awt.FlowLayout;

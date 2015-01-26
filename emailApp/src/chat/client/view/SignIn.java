@@ -4,11 +4,11 @@
  */
 
 /*
- * signin.java
+ * SignIn.java
  *
  * Created on Jan 17, 2015, 8:21:48 PM
  */
-package chatApp;
+package chat.client.view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -18,7 +18,7 @@ import javax.swing.ImageIcon;
  *
  * @author AmoOOOnA
  */
-public class signin extends javax.swing.JFrame {
+public class SignIn extends javax.swing.JFrame {
      private static final String EMAIL_PATTERN
             = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -28,7 +28,7 @@ public class signin extends javax.swing.JFrame {
    
 
     /** Creates new form signin */
-    public signin() {
+    public SignIn() {
         initComponents();
         this.setResizable(false);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -286,7 +286,7 @@ public class signin extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new signin().setVisible(true);
+                new SignIn().setVisible(true);
             }
         });
     }
