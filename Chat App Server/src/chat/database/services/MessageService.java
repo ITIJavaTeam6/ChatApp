@@ -1,8 +1,8 @@
 package chat.database.services;
 
+import chat.database.exceptions.MoreThanOneItemException;
 import chat.database.beans.Message;
 import java.sql.*;
-import exceptions.*;
 import java.util.ArrayList;
 
 public class MessageService {

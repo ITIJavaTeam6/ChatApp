@@ -1,4 +1,4 @@
-package exceptions;
+package chat.database.exceptions;
 
 public class MoreThanOneItemException extends RuntimeException {
 
