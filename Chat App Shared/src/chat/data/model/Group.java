@@ -5,13 +5,14 @@
  */
 package chat.data.model;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 /**
  *
  * @author sharno
  */
-public class Group {
+public class Group implements Serializable {
     Vector<Contact> contacts;
     int id;
 }

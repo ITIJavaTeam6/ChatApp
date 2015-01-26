@@ -4,6 +4,7 @@
  */
 package chat.data.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -20,7 +21,7 @@ enum genderenum {
     female, male
 };
 
-public class Contact {
+public class Contact implements Serializable{
 
     String email;
     int id;
