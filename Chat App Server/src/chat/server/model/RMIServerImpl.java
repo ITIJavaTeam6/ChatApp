@@ -9,13 +9,15 @@ import chat.client.interfaces.RMIClientInterface;
 import chat.server.interfaces.RMIServerInterface;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Vector;
 
 /**
  *
  * @author sharno
  */
 public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInterface{
-    
+    Vector<RMIClientInterface> clients = new Vector<>();
+
     public RMIServerImpl() throws RemoteException {
         
     }

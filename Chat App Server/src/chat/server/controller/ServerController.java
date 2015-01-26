@@ -5,6 +5,12 @@
  */
 package chat.server.controller;
 
+import chat.server.interfaces.RMIServerInterface;
+import chat.server.model.RMIServerImpl;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
 /**
  *
  * @author sharno
@@ -15,7 +21,14 @@ public class ServerController {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+            RMIServerInterface server = new RMIServerImpl();
+            Registry registry = LocateRegistry.createRegistry(5000);
+            registry.rebind("chat", server);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
 }
