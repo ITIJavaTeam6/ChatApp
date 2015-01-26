@@ -78,7 +78,43 @@ public class UserService {
         }
 
     }
+     public User selectOne(String email) throws SQLException {
+        Connection connection = null;
+        User item = null;
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM user WHERE iduser = '"+email+"'" );
+            int count = 0;
+            while (rs.next()) {
+                count++;
+                if (count == 1) {
+                    item = new User();
+                    item.setIduser(rs.getLong(1));
+                    item.setFname(rs.getString(2));
+                    item.setLname(rs.getString(3));
+                    item.setPassword(rs.getString(4));
+                    item.setBdate(rs.getTimestamp(5));
+                    item.setStatus(rs.getLong(6));
+                    item.setGender(rs.getLong(7));
+                    item.setCdate(rs.getTimestamp(8));
+                    item.setEmail(rs.getString(9));
+                } else {
+                    throw new MoreThanOneItemException();
+                }
 
+            }
+
+            rs.close();
+            stmnt.close();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            return item;
+        }
+
+    }
     public int insert(User item) throws SQLException {
         Connection connection = null;
         try {
