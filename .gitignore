@@ -14,3 +14,6 @@ hs_err_pid*
 /PooH/build/
 /emailApp/nbproject/private/
 /Chat App/nbproject/private/
+/Chat App Client/nbproject/private/
+/Chat App Server/nbproject/private/
+/Chat App Shared/nbproject/private/
