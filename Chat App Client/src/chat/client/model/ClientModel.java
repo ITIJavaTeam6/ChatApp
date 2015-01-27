@@ -6,6 +6,8 @@
 package chat.client.model;
 
 import chat.client.interfaces.RMIClientInterface;
+import chat.data.model.Group;
+import chat.data.model.Message;
 import chat.server.interfaces.RMIServerInterface;
 import chat.server.interfaces.SignInInt;
 import chat.server.interfaces.changeStateInt;
@@ -60,5 +62,10 @@ public class ClientModel {
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    
+    public void sendMessage(Message message, Group group) {
+        server.sendMessage(message, group);
     }
 }

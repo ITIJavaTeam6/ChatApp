@@ -10,6 +10,8 @@ import chat.data.model.Contact;
 import chat.database.beans.User;
 import chat.database.services.DbService;
 import chat.database.services.UserService;
+import chat.data.model.Group;
+import chat.data.model.Message;
 import chat.server.interfaces.RMIServerInterface;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -69,5 +71,14 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     @Override
     public void loadContact() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void sendMessage(Message message, Group group) {
+        Vector<Contact> groupContacts = group.getContacts();
+        for (Contact contact : groupContacts) {
+            for (RMIClientInterface client : clients) {
+                if (contact.getId() == client.getId()) {
+                    client.receiveMessage(message, group);
+                }
+            }
+        }
     }
 }

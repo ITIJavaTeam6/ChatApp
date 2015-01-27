@@ -50,10 +50,8 @@ public class ContactsPanel extends JScrollPane {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (me.getClickCount() == 2) {
-//                    int index = list.locationToIndex(me.getPoint());
                     ChatWindow cw = new ChatWindow(list.getSelectedValue());
                     cw.setVisible(true);
-                    //JOptionPane.showMessageDialog(ContactsPanel.this, "selected " + index);
                 }
             }
 

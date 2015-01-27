@@ -6,6 +6,8 @@
 package chat.client.model;
 
 import chat.client.interfaces.RMIClientInterface;
+import chat.data.model.Group;
+import chat.data.model.Message;
 import chat.server.interfaces.RMIServerInterface;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -23,6 +25,16 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
     
     public RMIClientImpl () throws RemoteException {
         
+    }
+
+    @Override
+    public int getId() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void receiveMessage(Message message, Group group) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
