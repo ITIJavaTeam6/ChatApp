@@ -1,8 +1,6 @@
 package chat.client.view;
 
-import com.sun.xml.internal.txw2.Document;
 import java.awt.FlowLayout;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;

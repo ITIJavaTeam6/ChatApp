@@ -6,7 +6,9 @@
 package chat.server.controller;
 
 import chat.server.interfaces.RMIServerInterface;
+import chat.server.model.ChangeStateImp;
 import chat.server.model.RMIServerImpl;
+import chat.server.model.SignInImp;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -22,9 +24,13 @@ public class ServerController {
      */
     public static void main(String[] args) {
         try {
+            SignInImp signIn=new SignInImp();
+            ChangeStateImp state=new ChangeStateImp();
             RMIServerInterface server = new RMIServerImpl();
             Registry registry = LocateRegistry.createRegistry(5000);
             registry.rebind("chat", server);
+            registry.rebind("signIn", signIn);
+            registry.rebind("changState", state);
             System.out.println("Waiting for connections");
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
