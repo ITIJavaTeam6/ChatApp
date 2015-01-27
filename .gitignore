@@ -17,3 +17,6 @@ hs_err_pid*
 /Chat App Client/nbproject/private/
 /Chat App Server/nbproject/private/
 /Chat App Shared/nbproject/private/
+/Chat App Server/build/
+/Chat App Shared/build/
+/Chat App Shared/dist/
