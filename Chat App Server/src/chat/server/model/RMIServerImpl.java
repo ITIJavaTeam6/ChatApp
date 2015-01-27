@@ -66,7 +66,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
 
             UserService service = new UserService();
 
-            service.insert();
+//            service.insert();
         } catch (SQLException ex) {
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

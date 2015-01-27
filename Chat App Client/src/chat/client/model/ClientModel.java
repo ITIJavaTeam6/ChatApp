@@ -36,7 +36,7 @@ public class ClientModel {
             Registry registry = LocateRegistry.getRegistry(5000);
             server = (RMIServerInterface) registry.lookup("chat");
             
-            server.register(client);
+//            server.register(client);
            
             signInObj=(SignInInt) registry.lookup("signIn");
             chstateOb=(changeStateInt) registry.lookup("changState");
