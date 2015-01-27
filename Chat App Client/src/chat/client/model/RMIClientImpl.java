@@ -22,14 +22,7 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
     RMIServerInterface server;
     
     public RMIClientImpl () throws RemoteException {
-        try {
-            Registry registry = LocateRegistry.getRegistry(5000);
-            server = (RMIServerInterface) registry.lookup("chat");
-            server.register(this);
-            // TODO: unregister on unexpected quitting
-        } catch (NotBoundException e) {
-            e.printStackTrace();
-        }
+        
     }
     
 }

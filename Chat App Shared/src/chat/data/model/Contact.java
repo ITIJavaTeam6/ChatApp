@@ -29,6 +29,7 @@ public class Contact implements Serializable{
     String lname;
     String pass;//TODO
     Date birthdate;
+   
     statusenum status;
     genderenum gender;
     

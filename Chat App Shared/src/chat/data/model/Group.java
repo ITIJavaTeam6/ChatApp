@@ -13,6 +13,30 @@ import java.util.Vector;
  * @author sharno
  */
 public class Group implements Serializable {
-    Vector<Contact> contacts;
-    int id;
+    private Vector<Contact> contacts;
+    private int id;
+
+    public Vector<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(Vector<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void addContact (Contact contact) {
+        contacts.add(contact);
+    }
+    
+    public void removeContact (Contact contact) {
+        contacts.remove(contact);
+    }
 }

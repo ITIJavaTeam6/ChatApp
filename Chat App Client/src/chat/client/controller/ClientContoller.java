@@ -5,17 +5,28 @@
  */
 package chat.client.controller;
 
+import chat.client.model.ClientModel;
+import chat.client.view.test;
+
 /**
  *
  * @author sharno
  */
 public class ClientContoller {
-
-    /**
-     * @param args the command line arguments
-     */
+    test obj;
+    ClientModel modelObj;
+    public ClientContoller(test t){
+        obj=t;
+        modelObj=new ClientModel();
+    }
+    public void signIn(String email,String pass){
+         System.out.println(modelObj.signIn(email, pass));
+    }
+    public void changeState(int state){
+        modelObj.changeState(state, 3);
+    }
     public static void main(String[] args) {
-        // TODO code application logic here
+       
     }
     
 }

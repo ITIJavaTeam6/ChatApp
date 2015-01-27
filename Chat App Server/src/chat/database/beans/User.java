@@ -4,6 +4,37 @@ import java.sql.*;
 
 public class User {
 
+    public User() {
+    }
+
+    public User(long iduser, String fname, String lname, String password, Timestamp bdate, long status, long gender, Timestamp cdate, String email) {
+        this.iduser = iduser;
+        this.fname = fname;
+        this.lname = lname;
+        this.password = password;
+        this.bdate = bdate;
+        this.status = status;
+        this.gender = gender;
+        this.cdate = cdate;
+        this.email = email;
+    }
+    
+    public User(String fname, String lname, String password, Timestamp bdate, long status, long gender, Timestamp cdate, String email) {
+        this.fname = fname;
+        this.lname = lname;
+        this.password = password;
+        this.bdate = bdate;
+        this.status = status;
+        this.gender = gender;
+        this.cdate = cdate;
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "iduser=" + iduser + ", fname=" + fname + ", lname=" + lname + ", password=" + password + ", bdate=" + bdate + ", status=" + status + ", gender=" + gender + ", cdate=" + cdate + ", email=" + email + '}';
+    }
+
     private long iduser;
 
     public long getIduser() {

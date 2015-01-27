@@ -6,18 +6,22 @@
 
 package chat.client.view;
 
+import chat.data.model.Group;
+import chat.data.model.Message;
+
 /**
  *
  * @author ZamZam
  */
 public class ChatWindow extends javax.swing.JFrame {
-
+    Group group;
     /**
      * Creates new form ChatWindow
      */
-    public ChatWindow() {
+    public ChatWindow(Group group) {
         initComponents();
         this.setLocation(300, 300);
+        this.group = group;
     }
 
     /**
@@ -48,6 +52,11 @@ public class ChatWindow extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jEditorPane1);
 
         jButton1.setText("Send");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -104,6 +113,13 @@ public class ChatWindow extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         this.setVisible(false);
     }//GEN-LAST:event_formWindowClosing
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Message message = new Message(null, group, jTextArea1.getText());
+//        sendMessage(message, group);
+        // TODO
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

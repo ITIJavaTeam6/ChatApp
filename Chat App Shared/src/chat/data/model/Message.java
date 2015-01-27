@@ -13,9 +13,47 @@ import java.util.Vector;
  */
 public class Message implements Sendable {
 
-    Contact sender;
-    Vector<Contact> group = new Vector<Contact>();
-    Date sendDate;
-    int groupid;
-    String text;
+    private Contact sender;
+    private Group group;
+    private Date sendDate;
+    private String text;
+    
+    public Message() {
+        // TODO: make constructor with default values
+    }
+    
+    public Message(Contact sender, Group group, String text) {
+        this.sender = sender;
+        this.group = group;
+        // TODO: get date from database
+        this.text = text;
+    }
+    
+    public Contact getSender() {
+        return sender;
+    }
+
+    public void setSender(Contact sender) {
+        this.sender = sender;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Date getSendDate() {
+        return sendDate;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }
