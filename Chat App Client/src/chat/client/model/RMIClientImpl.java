@@ -9,11 +9,7 @@ package chat.client.model;
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.Group;
 import chat.data.model.Message;
-import chat.server.interfaces.RMIServerInterface;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
@@ -21,16 +17,15 @@ import java.rmi.server.UnicastRemoteObject;
  * @author sharno
  */
 public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInterface {
+    ClientModel model;
     
-    RMIServerInterface server;
-    
-    public RMIClientImpl () throws RemoteException {
-        
+    public RMIClientImpl (ClientModel model) throws RemoteException {
+        this.model = model;
     }
 
     @Override
     public void receiveMessage(Message message, Group group) throws RemoteException {
-        
+        model.displayMessage(message, group);
     }
     
 }

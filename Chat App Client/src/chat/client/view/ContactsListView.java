@@ -1,5 +1,6 @@
 package chat.client.view;
 
+import chat.client.controller.ChatController;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -14,29 +15,15 @@ import javax.swing.border.EmptyBorder;
 public class ContactsListView extends JFrame {
 
 	private JPanel contentPane;
+        ChatController chatController;
 
-	/**
-	 * Launch the application.
-     * @param args
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-                        @Override
-			public void run() {
-				try {
-					ContactsListView frame = new ContactsListView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public ContactsListView() {
+	public ContactsListView(ChatController chatController) {
+            this.chatController = chatController;
+            
 		int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 //		int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -54,7 +41,7 @@ public class ContactsListView extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		ContactsPanel contactsView = new ContactsPanel();
+		ContactsPanel contactsView = new ContactsPanel(chatController);
 		contentPane.add(contactsView, BorderLayout.CENTER);
 		
 		

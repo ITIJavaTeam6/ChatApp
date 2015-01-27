@@ -6,7 +6,7 @@
 
 package chat.client.view;
 
-import chat.client.controller.ClientContoller;
+import chat.client.controller.ClientController;
 import chat.data.model.Group;
 import chat.data.model.Message;
 
@@ -16,7 +16,7 @@ import chat.data.model.Message;
  */
 public class ChatWindow extends javax.swing.JFrame {
     Group group;
-    ClientContoller controller;
+    ClientController controller;
     /**
      * Creates new form ChatWindow
      */
@@ -133,4 +133,8 @@ public class ChatWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+
+    public void displayMessage(Message message) {
+        jEditorPane1.setText(jEditorPane1.getText() + "\n" + message.getText());
+    }
 }

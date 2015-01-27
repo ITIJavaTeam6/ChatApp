@@ -269,8 +269,6 @@ public class SignIn extends javax.swing.JFrame {
        lblpassvalidate.setVisible(false);
        System.out.println("else pass");
        }
-       ContactsListView cv=new ContactsListView();
-       cv.setVisible(true);
        this.setVisible(false);
        //lblvalidate.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed

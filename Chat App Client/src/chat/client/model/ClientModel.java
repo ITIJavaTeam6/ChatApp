@@ -5,13 +5,13 @@
  */
 package chat.client.model;
 
+import chat.client.controller.ClientController;
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.server.interfaces.RMIServerInterface;
 import chat.server.interfaces.SignInInt;
 import chat.server.interfaces.changeStateInt;
-import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -29,9 +29,11 @@ public class ClientModel {
     RMIServerInterface server;
     SignInInt signInObj;
     changeStateInt chstateOb;
-    public ClientModel() {
+    ClientController controller;
+    
+    public ClientModel(ClientController controller) {
         try {
-            client = new RMIClientImpl();
+            client = new RMIClientImpl(this);
             
             Registry registry = LocateRegistry.getRegistry(5000);
             server = (RMIServerInterface) registry.lookup("chat");
@@ -40,6 +42,7 @@ public class ClientModel {
            
             signInObj=(SignInInt) registry.lookup("signIn");
             chstateOb=(changeStateInt) registry.lookup("changState");
+            this.controller = controller;
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {
@@ -67,5 +70,9 @@ public class ClientModel {
     
     public void sendMessage(Message message, Group group) {
         server.sendMessage(message, group);
+    }
+
+    void displayMessage(Message message, Group group) {
+        controller.displayMessage(message, group);
     }
 }
