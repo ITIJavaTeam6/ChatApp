@@ -15,7 +15,6 @@ import java.rmi.RemoteException;
  * @author sharno
  */
 public interface RMIClientInterface extends Remote {
-    public int getId ();
 
     public void receiveMessage(Message message, Group group) throws RemoteException;
 }

@@ -28,13 +28,8 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
     }
 
     @Override
-    public int getId() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void receiveMessage(Message message, Group group) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
 }

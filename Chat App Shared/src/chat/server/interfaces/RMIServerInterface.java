@@ -16,8 +16,8 @@ import java.rmi.RemoteException;
  * @author sharno
  */
 public interface RMIServerInterface extends Remote{
-    public void register (RMIClientInterface client) throws RemoteException;
-    public void unregister (RMIClientInterface client) throws RemoteException;
+    public void register(RMIClientInterface client, Integer userid) throws RemoteException;
+    public void unregister(RMIClientInterface client, Integer userid) throws RemoteException;
 
     public void sendMessage(Message message, Group group);
 }
