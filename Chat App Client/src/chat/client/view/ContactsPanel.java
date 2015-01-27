@@ -1,5 +1,6 @@
 package chat.client.view;
 
+import chat.data.model.Group;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -22,18 +23,16 @@ import java.awt.event.MouseEvent;
 @SuppressWarnings("serial")
 public class ContactsPanel extends JScrollPane {
 
-    JList<String> list;
+    JList<Group> list;
     int highlightIndex = -1;
 
     public ContactsPanel() {
 
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        listModel.addElement("Ahmed");
-        listModel.addElement("Ahmed");
-        listModel.addElement("Ahmed");
-        listModel.addElement("Ahmed");
-        listModel.addElement("Ahmed kjbfsjabfjasbfjbasfkjbakfbkabkfebjkabfgkjbaekfgjbkb");
-        listModel.addElement("Mohamed");
+        DefaultListModel<Group> listModel = new DefaultListModel<>();
+        Group g1 = new Group();
+        
+        g1.setId(11);
+        listModel.addElement(g1);
         list = new JList<>(listModel);
 
         // setting highlight index when mouse hovers on a menu item
@@ -51,8 +50,8 @@ public class ContactsPanel extends JScrollPane {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (me.getClickCount() == 2) {
-                    int index = list.locationToIndex(me.getPoint());
-                    ChatWindow cw = new ChatWindow();
+//                    int index = list.locationToIndex(me.getPoint());
+                    ChatWindow cw = new ChatWindow(list.getSelectedValue());
                     cw.setVisible(true);
                     //JOptionPane.showMessageDialog(ContactsPanel.this, "selected " + index);
                 }
@@ -72,16 +71,16 @@ public class ContactsPanel extends JScrollPane {
 
     }
 
-    class MyRenderer implements ListCellRenderer<String> {
+    class MyRenderer implements ListCellRenderer<Group> {
 
         @Override
         public Component getListCellRendererComponent(
-                JList<? extends String> list, String value, int index,
+                JList<? extends Group> list, Group value, int index,
                 boolean isSelected, boolean cellHasFocus) {
 
             JPanel panel = new JPanel();
 
-            JLabel name = new JLabel(value);
+            JLabel name = new JLabel(value.getId() + "");
             name.setForeground(Color.BLACK);
             name.setFont(getFont().deriveFont(Font.BOLD, 14));
 
