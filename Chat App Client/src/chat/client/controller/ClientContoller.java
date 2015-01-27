@@ -6,17 +6,19 @@
 package chat.client.controller;
 
 import chat.client.model.ClientModel;
-import chat.client.view.test;
+import chat.client.view.SignInTempView;
+import chat.data.model.Group;
+import chat.data.model.Message;
 
 /**
  *
  * @author sharno
  */
 public class ClientContoller {
-    test obj;
+    SignInTempView signInView;
     ClientModel modelObj;
-    public ClientContoller(test t){
-        obj=t;
+    public ClientContoller(SignInTempView t){
+        signInView = t;
         modelObj=new ClientModel();
     }
     public void signIn(String email,String pass){
@@ -25,8 +27,12 @@ public class ClientContoller {
     public void changeState(int state){
         modelObj.changeState(state, 3);
     }
-    public static void main(String[] args) {
-       
+//    public static void main(String[] args) {
+//       
+//    }
+
+    public void sendMessage(Message message, Group group) {
+        modelObj.sendMessage(message, group);
     }
     
 }

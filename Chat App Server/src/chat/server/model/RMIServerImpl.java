@@ -6,6 +6,9 @@
 package chat.server.model;
 
 import chat.client.interfaces.RMIClientInterface;
+import chat.data.model.Contact;
+import chat.data.model.Group;
+import chat.data.model.Message;
 import chat.server.interfaces.RMIServerInterface;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -32,5 +35,17 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     public void unregister(RMIClientInterface client) throws RemoteException {
         clients.remove(client);
         System.out.println("registered client");
+    }
+
+    @Override
+    public void sendMessage(Message message, Group group) {
+        Vector<Contact> groupContacts = group.getContacts();
+        for (Contact contact : groupContacts) {
+            for (RMIClientInterface client : clients) {
+                if (contact.getId() == client.getId()) {
+                    client.receiveMessage(message, group);
+                }
+            }
+        }
     }
 }

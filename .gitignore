@@ -20,3 +20,4 @@ hs_err_pid*
 /Chat App Server/build/
 /Chat App Shared/build/
 /Chat App Client/build/
+/Chat App Shared/dist/
