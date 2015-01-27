@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -20,7 +21,7 @@ import javax.swing.SpinnerDateModel;
  * @author ZamZam
  */
 public class SignUp extends javax.swing.JFrame {
-
+        User u=new User();
     private static final String EMAIL_PATTERN
             = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -263,6 +264,8 @@ public class SignUp extends javax.swing.JFrame {
             jLabel5.setVisible(true);
         } else {
             jLabel5.setVisible(false);
+            
+            
         }
         if (!Lname.matches(Name_pattern)) {
             jLabel9.setVisible(true);
@@ -284,6 +287,7 @@ public class SignUp extends javax.swing.JFrame {
         } else {
             jLabel7.setVisible(false);
         }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed

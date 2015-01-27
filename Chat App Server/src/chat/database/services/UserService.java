@@ -128,7 +128,7 @@ public class UserService {
                     + "', " + item.getStatus()
                     + ", " + item.getGender()
                     + ", '" + item.getCdate()
-                    + "', '" + item.getEmail() + ")";
+                    + "', '" + item.getEmail() + "')";
             insertQuery = insertQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(insertQuery);
             stmnt.close();
