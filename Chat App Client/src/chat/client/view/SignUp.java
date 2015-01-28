@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  * @author ZamZam
  */
 public class SignUp extends javax.swing.JFrame {
-        User u=new User();
+//        User u=new User();
     private static final String EMAIL_PATTERN
             = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";

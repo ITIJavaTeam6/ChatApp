@@ -6,7 +6,7 @@
 
 package chat.client.view;
 
-import chat.client.controller.ClientContoller;
+import chat.client.controller.ClientController;
 
 /**
  *
@@ -14,10 +14,10 @@ import chat.client.controller.ClientContoller;
  */
 public class SignInTempView extends javax.swing.JFrame {
 
-    ClientContoller con;
+    ClientController con;
     public SignInTempView() {
         initComponents();
-        con=new ClientContoller(this);
+//        con=new ClientController(this);
     }
 
     /**

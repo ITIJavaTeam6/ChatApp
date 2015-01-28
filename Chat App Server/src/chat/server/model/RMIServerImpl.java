@@ -48,10 +48,13 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     public void sendMessage(Message message, Group group) {
         Vector<Contact> groupContacts = group.getContacts();
         for (Contact contact : groupContacts) {
-            try {
-                clients.get(contact.getId()).receiveMessage(message, group);
-            } catch (RemoteException ex) {
-                Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Integer userId = Integer.valueOf(contact.getId());
+            if (clients.containsKey(userId)) {
+                try {
+                    clients.get(userId).receiveMessage(message, group);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

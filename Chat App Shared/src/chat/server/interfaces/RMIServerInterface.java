@@ -25,5 +25,5 @@ public interface RMIServerInterface extends Remote{
     public void removeContact(int contactId)throws RemoteException;
     public void loadContact()throws RemoteException;
 
-    public void sendMessage(Message message, Group group);
+    public void sendMessage(Message message, Group group) throws RemoteException;
 }

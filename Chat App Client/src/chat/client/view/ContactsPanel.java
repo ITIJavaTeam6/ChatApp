@@ -1,5 +1,6 @@
 package chat.client.view;
 
+import chat.client.controller.ChatController;
 import chat.data.model.Group;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,14 +26,16 @@ public class ContactsPanel extends JScrollPane {
 
     JList<Group> list;
     int highlightIndex = -1;
+    ChatController chatController;
 
-    public ContactsPanel() {
-
+    public ContactsPanel(ChatController chatController) {
+        this.chatController = chatController;
         DefaultListModel<Group> listModel = new DefaultListModel<>();
-        Group g1 = new Group();
         
+        Group g1 = new Group();
         g1.setId(11);
         listModel.addElement(g1);
+        
         list = new JList<>(listModel);
 
         // setting highlight index when mouse hovers on a menu item
@@ -50,8 +53,7 @@ public class ContactsPanel extends JScrollPane {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (me.getClickCount() == 2) {
-                    ChatWindow cw = new ChatWindow(list.getSelectedValue());
-                    cw.setVisible(true);
+                    chatController.openChatWindow(list.getSelectedValue());
                 }
             }
 
