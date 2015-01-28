@@ -17,9 +17,10 @@ import chat.data.model.Message;
 public class ClientContoller {
     SignInTempView signInView;
     ClientModel modelObj;
+    
     public ClientContoller(SignInTempView t){
         signInView = t;
-        modelObj=new ClientModel();
+       // modelObj=new ClientModel();
     }
     public void signIn(String email,String pass){
          System.out.println(modelObj.signIn(email, pass));
