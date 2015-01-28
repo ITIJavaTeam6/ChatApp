@@ -17,7 +17,6 @@ public class ContactsListView extends JFrame {
 	private JPanel contentPane;
         ChatController chatController;
 
-
 	/**
 	 * Create the frame.
 	 */

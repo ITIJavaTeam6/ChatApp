@@ -24,6 +24,7 @@ public class ChatController {
         this.clientController = clientController;
         ContactsListView contactsListView = new ContactsListView(this);
     }
+
     
     public void displayMessage(Message message, Group group) {
         Integer groupid = Integer.valueOf(group.getId());

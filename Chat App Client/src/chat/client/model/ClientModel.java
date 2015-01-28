@@ -22,44 +22,53 @@ import java.util.logging.Logger;
 /**
  *
  * @author sharno
- */
+ */ 
+
 public class ClientModel {
-    
+
     RMIClientInterface client;
     RMIServerInterface server;
     SignInInt signInObj;
     changeStateInt chstateOb;
     ClientController controller;
-    
+
     public ClientModel(ClientController controller) {
         try {
             client = new RMIClientImpl(this);
-            
+
             Registry registry = LocateRegistry.getRegistry(5000);
             server = (RMIServerInterface) registry.lookup("chat");
+            signInObj = (SignInInt) registry.lookup("signIn");
+            chstateOb = (changeStateInt) registry.lookup("changState");
             
-//            server.register(client);
-           
-            signInObj=(SignInInt) registry.lookup("signIn");
-            chstateOb=(changeStateInt) registry.lookup("changState");
             this.controller = controller;
+
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    public int signIn(String email,String password){
-        int id=-1;
+
+    public int signIn(String email, String password) {
+        int id = -1;
         try {
-            id=signInObj.signIn(email, password);
+            id = signInObj.signIn(email, password);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if (id != -1) {
+            try {
+                server.register(client, id);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return id;
     }
-    public void changeState(int state,int userID){
+
+    public void changeState(int state, int userID) {
         try {
             chstateOb.changeState(state, userID);
         } catch (RemoteException ex) {
@@ -69,7 +78,11 @@ public class ClientModel {
     
     
     public void sendMessage(Message message, Group group) {
-        server.sendMessage(message, group);
+        try {
+            server.sendMessage(message, group);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     void displayMessage(Message message, Group group) {
