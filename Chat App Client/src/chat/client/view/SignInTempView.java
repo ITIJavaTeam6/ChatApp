@@ -17,7 +17,7 @@ public class SignInTempView extends javax.swing.JFrame {
     ClientController con;
     public SignInTempView() {
         initComponents();
-        con=new ClientController(this);
+//        con=new ClientController(this);
     }
 
     /**

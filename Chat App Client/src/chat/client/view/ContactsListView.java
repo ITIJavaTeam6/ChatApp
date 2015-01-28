@@ -24,16 +24,12 @@ public class ContactsListView extends JFrame {
             this.chatController = chatController;
             
 		int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-//		int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                 
-//		setResizable(false);
+		setResizable(false);
 		setBounds(screenWidth-400, 90, 300, 600);
 		setMinimumSize(new Dimension(300, 600));
 		setMaximumSize(new Dimension(400, 700));
-//		setUndecorated(true);
-//		setBounds(screenWidth-300, screenHeight-400, 300, 400);
-//		setShape(new RoundRectangle2D.Double(0, 0, 300, 400, 20, 20));
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -50,8 +46,5 @@ public class ContactsListView extends JFrame {
 		ButtonsPanel buttonsPanel = new ButtonsPanel();
 		contentPane.add(buttonsPanel, BorderLayout.SOUTH);
 		
-//		contentPane.setLayout(new FlowLayout());
-//		contentPane.add(new WindowButton());
-//		contentPane.add(new WindowButton());
 	}
 }

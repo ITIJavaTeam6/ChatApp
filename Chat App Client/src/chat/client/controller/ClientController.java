@@ -6,6 +6,7 @@
 package chat.client.controller;
 
 import chat.client.model.ClientModel;
+import chat.client.view.SignIn;
 import chat.client.view.SignInTempView;
 import chat.data.model.Group;
 import chat.data.model.Message;
@@ -15,25 +16,34 @@ import chat.data.model.Message;
  * @author sharno
  */
 public class ClientController {
-    SignInTempView signInView;
+    
+    public static void main(String[] args) {
+        new ClientController();
+    }
+    
+//    SignInTempView signInView;
+    SignIn signInView;
     ClientModel modelObj;
     ChatController chatController;
     
-    public ClientController(SignInTempView t){
-        signInView = t;
-        modelObj = new ClientModel(this);
-        chatController = new ChatController(this);
+    public ClientController(){
+        signInView = new SignIn(this);
+        signInView.setVisible(true);
     }
     public void signIn(String email,String pass){
-         System.out.println(modelObj.signIn(email, pass));
-         // TODO: successful sign in should start a ChatController instance to launch views
+        int id = modelObj.signIn(email, pass);
+        if (id != -1) {
+            modelObj = new ClientModel(this);
+            chatController = new ChatController(this);
+            signInView.dispose();
+        } else {
+            signInView.failedSignIn();
+        }
     }
+    
     public void changeState(int state){
         modelObj.changeState(state, 3);
     }
-//    public static void main(String[] args) {
-//       
-//    }
 
     public void displayMessage(Message message, Group group) {
         chatController.displayMessage(message, group);

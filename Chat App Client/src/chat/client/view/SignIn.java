@@ -10,9 +10,11 @@
  */
 package chat.client.view;
 
+import chat.client.controller.ClientController;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,11 +26,14 @@ public class SignIn extends javax.swing.JFrame {
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     private static final String Name_pattern = "^[a-z_-]{3,15}$";
+    private boolean isReadyToSignIn = true;
+    ClientController controller;
    
    
 
     /** Creates new form signin */
-    public SignIn() {
+    public SignIn(ClientController controller) {
+        this.controller = controller;
         initComponents();
         this.setResizable(false);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -37,14 +42,8 @@ public class SignIn extends javax.swing.JFrame {
         lblvalidate.setVisible(false);
         lblpassvalidate.setVisible(false);
         ImageIcon myicon = new ImageIcon("pic2.jpg");
-                Logo.setIcon(myicon);
-                lblvalidate.setVisible(false);
-                //JHyperlinkLabel accessacount_availablity=new JHyperlinkLabel("Can't Access My Account");
-                //JHyperlinkLabel help=new JHyperlinkLabel("Help");
-               // accountlblpanel.add(accessacount_availablity);
-                //helplblpanel.add(help);
-                
-                
+        Logo.setIcon(myicon);
+        lblvalidate.setVisible(false);
     }
 
     /** This method is called from within the constructor to
@@ -247,46 +246,38 @@ public class SignIn extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       SignUp signup=new SignUp();
-       signup.setVisible(true);
-       //signin.this.setVisible(false);
-       
+        SignUp signup=new SignUp();
+        signup.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       if(!mailtxt.getText().matches(Name_pattern)){
-           lblvalidate.setVisible(true);
-           mailtxt.setText("");
+        if(!mailtxt.getText().matches(Name_pattern)){
+            lblvalidate.setVisible(true);
+            isReadyToSignIn = false;
+        }else {
+            lblvalidate.setVisible(false);
+        }
         
-       }else {
-       lblvalidate.setVisible(false);
-       }
-       
-       if(txtpass.getText().isEmpty()){
-       lblpassvalidate.setVisible(true);
-       System.out.println("if pass");
-       }else{
-       lblpassvalidate.setVisible(false);
-       System.out.println("else pass");
-       }
-       this.setVisible(false);
-       //lblvalidate.setVisible(false);
+        if(txtpass.getText().isEmpty()){
+            lblpassvalidate.setVisible(true);
+            isReadyToSignIn = false;
+        }else{
+            lblpassvalidate.setVisible(false);
+        }
+        
+        if (isReadyToSignIn) {
+            controller.signIn(mailtxt.getText(), txtpass.getText());
+        }
+        //lblvalidate.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void mailtxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailtxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mailtxtActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new SignIn().setVisible(true);
-            }
-        });
+    
+    public void failedSignIn () {
+        JOptionPane.showMessageDialog(this, "wrong email or password");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo;
