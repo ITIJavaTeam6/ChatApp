@@ -7,8 +7,13 @@ package chat.client.controller;
 
 import chat.client.model.ClientModel;
 import chat.client.view.SignInTempView;
+import chat.client.view.SignUp;
 import chat.data.model.Group;
 import chat.data.model.Message;
+import chat.database.beans.User;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,9 +23,16 @@ public class ClientContoller {
     SignInTempView signInView;
     ClientModel modelObj;
     
+    public ClientContoller(SignUp sign){
+        
+    }
     public ClientContoller(SignInTempView t){
         signInView = t;
-       // modelObj=new ClientModel();
+        try {
+            modelObj=new ClientModel();
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientContoller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     public void signIn(String email,String pass){
          System.out.println(modelObj.signIn(email, pass));
@@ -35,5 +47,7 @@ public class ClientContoller {
     public void sendMessage(Message message, Group group) {
         modelObj.sendMessage(message, group);
     }
-    
+    public void signUp(User u){
+        modelObj.signUp(u);
+    }
 }

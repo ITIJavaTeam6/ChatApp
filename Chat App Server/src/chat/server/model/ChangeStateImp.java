@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author ZamZam
  */
-public class ChangeStateImp extends UnicastRemoteObject implements changeStateInt {
+public class ChangeStateImp implements changeStateInt{
 
     public ChangeStateImp() throws RemoteException {
         super();

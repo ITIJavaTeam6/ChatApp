@@ -8,6 +8,7 @@ package chat.client.model;
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.Group;
 import chat.data.model.Message;
+import chat.database.beans.User;
 import chat.server.interfaces.RMIServerInterface;
 import chat.server.interfaces.SignInInt;
 import chat.server.interfaces.changeStateInt;
@@ -79,5 +80,12 @@ public class ClientModel extends UnicastRemoteObject implements RMIClientInterfa
     @Override
     public void receiveMessage(Message message, Group group) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    public void signUp(User u){
+        try {
+            server.signUp(u);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

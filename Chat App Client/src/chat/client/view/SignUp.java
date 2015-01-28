@@ -1,13 +1,11 @@
 package chat.client.view;
 
 
-import java.awt.Component;
+import chat.client.controller.ClientContoller;
+import chat.database.beans.User;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.Date;
-import javax.swing.JFrame;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
+import javax.swing.JOptionPane;
 
 
 /*
@@ -32,9 +30,12 @@ public class SignUp extends javax.swing.JFrame {
     String Email;
     String password;
     String gender;
-
+    
+    boolean flag=true;
+    ClientContoller con;
     public SignUp() {
         initComponents();
+        con=new ClientContoller(this);
         this.setResizable(false);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -262,6 +263,7 @@ public class SignUp extends javax.swing.JFrame {
 
         if (!Fname.matches(Name_pattern)) {
             jLabel5.setVisible(true);
+            flag=false;
         } else {
             jLabel5.setVisible(false);
             
@@ -269,25 +271,34 @@ public class SignUp extends javax.swing.JFrame {
         }
         if (!Lname.matches(Name_pattern)) {
             jLabel9.setVisible(true);
+             flag=false;
         } else {
             jLabel9.setVisible(false);
         }
         if (!Email.matches(EMAIL_PATTERN)) {
             jLabel6.setVisible(true);
+             flag=false;
         } else {
             jLabel6.setVisible(false);
         }
         if (!jRadioButton1.isSelected() || !jRadioButton2.isSelected()) {
             jLabel8.setVisible(true);
+             flag=false;
         } else {
             jLabel8.setVisible(false);
         }
         if (jComboBox1.getSelectedIndex() == -1 || jComboBox2.getSelectedIndex() == -1 || jComboBox3.getSelectedIndex() == -1) {
             jLabel7.setVisible(true);
+             flag=false;
         } else {
             jLabel7.setVisible(false);
         }
-        
+        if(flag){
+            con.signUp(u);
+        }
+        else{
+            JOptionPane.showMessageDialog(this,"error");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed

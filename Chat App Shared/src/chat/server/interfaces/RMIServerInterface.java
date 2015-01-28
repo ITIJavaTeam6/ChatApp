@@ -8,7 +8,7 @@ package chat.server.interfaces;
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.Group;
 import chat.data.model.Message;
-import chat.data.model.Contact;
+import chat.database.beans.User;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -20,7 +20,7 @@ public interface RMIServerInterface extends Remote{
     public void register(RMIClientInterface client, Integer userid) throws RemoteException;
     public void unregister(RMIClientInterface client, Integer userid) throws RemoteException;
 
-    public void signUp(Contact c) throws RemoteException;
+    public void signUp(User u) throws RemoteException;
     public void addContact(String Email)throws RemoteException;
     public void removeContact(int contactId)throws RemoteException;
     public void loadContact()throws RemoteException;
