@@ -26,6 +26,8 @@ import java.util.logging.Logger;
 
 public class ClientModel {
 
+    int userid = -1;
+    
     RMIClientInterface client;
     RMIServerInterface server;
     SignInInt signInObj;
@@ -35,13 +37,13 @@ public class ClientModel {
     public ClientModel(ClientController controller) {
         try {
             client = new RMIClientImpl(this);
-
             Registry registry = LocateRegistry.getRegistry(5000);
             server = (RMIServerInterface) registry.lookup("chat");
             signInObj = (SignInInt) registry.lookup("signIn");
             chstateOb = (changeStateInt) registry.lookup("changState");
-            
             this.controller = controller;
+            
+            System.out.println("connected to server");
 
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,9 +60,11 @@ public class ClientModel {
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         if (id != -1) {
             try {
                 server.register(client, id);
+                userid = id;
             } catch (RemoteException ex) {
                 Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -87,5 +91,13 @@ public class ClientModel {
 
     void displayMessage(Message message, Group group) {
         controller.displayMessage(message, group);
+    }
+    
+    public void unregister () {
+        try {
+            server.unregister(client, userid);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -13,7 +13,7 @@ import java.util.Vector;
  * @author sharno
  */
 public class Group implements Serializable {
-    private Vector<Contact> contacts;
+    private Vector<Contact> contacts = new Vector<>();
     private int id;
 
     public Vector<Contact> getContacts() {
@@ -38,5 +38,14 @@ public class Group implements Serializable {
     
     public void removeContact (Contact contact) {
         contacts.remove(contact);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Group) {
+            return this.id == ((Group)obj).id;
+        } else {
+            return false;
+        }
     }
 }

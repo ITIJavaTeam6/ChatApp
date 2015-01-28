@@ -38,15 +38,15 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     @Override
     public void register(RMIClientInterface client, Integer userid) throws RemoteException {
         clients.put(userid, client);
-        System.out.println("unregistered client");
+        System.out.println("registered client");
     }
 
     @Override
     public void unregister(RMIClientInterface client, Integer userid) throws RemoteException {
         clients.remove(userid, client);
-        System.out.println("registered client");
+        System.out.println("unregistered client");
     }
-
+//
     @Override
     public void sendMessage(Message message, Group group) {
         Vector<Contact> groupContacts = group.getContacts();

@@ -7,7 +7,6 @@ package chat.client.controller;
 
 import chat.client.model.ClientModel;
 import chat.client.view.SignIn;
-import chat.client.view.SignInTempView;
 import chat.data.model.Group;
 import chat.data.model.Message;
 
@@ -18,7 +17,7 @@ import chat.data.model.Message;
 public class ClientController {
     
     public static void main(String[] args) {
-        new ClientController();
+        ClientController clientController = new ClientController();
     }
     
 //    SignInTempView signInView;
@@ -29,11 +28,12 @@ public class ClientController {
     public ClientController(){
         signInView = new SignIn(this);
         signInView.setVisible(true);
+        modelObj = new ClientModel(this);
     }
+    
     public void signIn(String email,String pass){
         int id = modelObj.signIn(email, pass);
         if (id != -1) {
-            modelObj = new ClientModel(this);
             chatController = new ChatController(this);
             signInView.dispose();
         } else {
@@ -51,6 +51,10 @@ public class ClientController {
 
     public void sendMessage(Message message, Group group) {
         modelObj.sendMessage(message, group);
+    }
+    
+    public void unregister() {
+        modelObj.unregister();
     }
     
 }

@@ -1,6 +1,7 @@
 package chat.client.view;
 
 import chat.client.controller.ChatController;
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -32,8 +33,16 @@ public class ContactsPanel extends JScrollPane {
         this.chatController = chatController;
         DefaultListModel<Group> listModel = new DefaultListModel<>();
         
+        Contact c1 = new Contact();
+        Contact c2 = new Contact();
+        c1.setId(1);
+        c2.setId(2);
         Group g1 = new Group();
-        g1.setId(11);
+        g1.addContact(c1);
+        g1.addContact(c2);
+        
+        g1.setId(1);
+        
         listModel.addElement(g1);
         
         list = new JList<>(listModel);
@@ -54,6 +63,7 @@ public class ContactsPanel extends JScrollPane {
             public void mouseClicked(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     chatController.openChatWindow(list.getSelectedValue());
+                    list.setSelectedIndex(-1);
                 }
             }
 

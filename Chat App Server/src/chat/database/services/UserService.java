@@ -84,7 +84,7 @@ public class UserService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("SELECT * FROM user WHERE iduser = '"+email+"'" );
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM user WHERE email = '"+email+"'" );
             int count = 0;
             while (rs.next()) {
                 count++;

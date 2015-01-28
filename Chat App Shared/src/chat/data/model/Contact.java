@@ -96,4 +96,12 @@ public class Contact implements Serializable{
         this.gender = gender;
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Contact) {
+            return this.id == ((Contact)obj).id;
+        } else {
+            return false;
+        }
+    }
 }

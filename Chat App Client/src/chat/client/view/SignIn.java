@@ -25,7 +25,7 @@ public class SignIn extends javax.swing.JFrame {
             = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-    private static final String Name_pattern = "^[a-z_-]{3,15}$";
+//    private static final String Name_pattern = "^[a-z_-]{3,15}$";
     private boolean isReadyToSignIn = true;
     ClientController controller;
    
@@ -251,7 +251,7 @@ public class SignIn extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(!mailtxt.getText().matches(Name_pattern)){
+        if(!mailtxt.getText().matches(EMAIL_PATTERN)){
             lblvalidate.setVisible(true);
             isReadyToSignIn = false;
         }else {
@@ -266,6 +266,7 @@ public class SignIn extends javax.swing.JFrame {
         }
         
         if (isReadyToSignIn) {
+            System.out.println("ready");
             controller.signIn(mailtxt.getText(), txtpass.getText());
         }
         //lblvalidate.setVisible(false);

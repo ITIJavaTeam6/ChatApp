@@ -25,7 +25,7 @@ public class ServerController {
     public static void main(String[] args) {
         try {
             SignInImp signIn=new SignInImp();
-            ChangeStateImp state=new ChangeStateImp();
+            ChangeStateImp state = new ChangeStateImp();
             RMIServerInterface server = new RMIServerImpl();
             Registry registry = LocateRegistry.createRegistry(5000);
             registry.rebind("chat", server);

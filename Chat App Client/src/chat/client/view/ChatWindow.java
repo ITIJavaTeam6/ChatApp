@@ -6,7 +6,7 @@
 
 package chat.client.view;
 
-import chat.client.controller.ClientController;
+import chat.client.controller.ChatController;
 import chat.data.model.Group;
 import chat.data.model.Message;
 
@@ -16,14 +16,16 @@ import chat.data.model.Message;
  */
 public class ChatWindow extends javax.swing.JFrame {
     Group group;
-    ClientController controller;
+    ChatController chatController;
     /**
      * Creates new form ChatWindow
      */
-    public ChatWindow(Group group) {
+    public ChatWindow(Group group, ChatController controller) {
         initComponents();
         this.setLocation(300, 300);
         this.group = group;
+        
+        this.chatController = controller;
     }
 
     /**
@@ -43,7 +45,6 @@ public class ChatWindow extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Contact_Name");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -113,15 +114,14 @@ public class ChatWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        this.setVisible(false);
+        chatController.closeChatWindow(group);
+        System.out.println("closing chat window");
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         Message message = new Message(null, group, jTextArea1.getText());
-//        sendMessage(message, group);
-        // TODO
-        controller.sendMessage(message, group);
+        jTextArea1.setText("");
+        chatController.sendMessage(message, group);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
