@@ -22,28 +22,29 @@ public class ClientController {
         new ClientController();
     }
     
-//    SignInTempView signInView;
-    SignIn signInView;
+    SignInTempView signInView;
+  //  SignIn signInView;
     ClientModel modelObj;
     ChatController chatController;
     
     public ClientController(){
-        signInView = new SignIn(this);
+        signInView = new SignInTempView(this);
         signInView.setVisible(true);
+        modelObj = new ClientModel(this);
     }
     public void signIn(String email,String pass){
         int id = modelObj.signIn(email, pass);
         if (id != -1) {
-            modelObj = new ClientModel(this);
             chatController = new ChatController(this);
             signInView.dispose();
         } else {
-            signInView.failedSignIn();
+           // signInView.failedSignIn();
+            System.out.println("error");
         }
     }
     
     public void changeState(int state){
-        modelObj.changeState(state, 3);
+        modelObj.changeState(state,5);
     }
 
     public void displayMessage(Message message, Group group) {

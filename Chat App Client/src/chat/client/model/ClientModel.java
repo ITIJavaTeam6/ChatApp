@@ -12,7 +12,7 @@ import chat.data.model.Message;
 import chat.database.beans.User;
 import chat.server.interfaces.RMIServerInterface;
 import chat.server.interfaces.SignInInt;
-import chat.server.interfaces.changeStateInt;
+import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -25,12 +25,11 @@ import java.util.logging.Logger;
  * @author sharno
  */ 
 
-public class ClientModel {
+public class ClientModel implements Serializable{
 
     RMIClientInterface client;
     RMIServerInterface server;
     SignInInt signInObj;
-    changeStateInt chstateOb;
     ClientController controller;
 
     public ClientModel(ClientController controller) {
@@ -40,7 +39,7 @@ public class ClientModel {
             Registry registry = LocateRegistry.getRegistry(5000);
             server = (RMIServerInterface) registry.lookup("chat");
             signInObj = (SignInInt) registry.lookup("signIn");
-            chstateOb = (changeStateInt) registry.lookup("changState");
+           // chstateOb = (changeStateInt) registry.lookup("changState");
             
             this.controller = controller;
 
@@ -71,7 +70,7 @@ public class ClientModel {
 
     public void changeState(int state, int userID) {
         try {
-            chstateOb.changeState(state, userID);
+            server.changeState(state, userID);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }

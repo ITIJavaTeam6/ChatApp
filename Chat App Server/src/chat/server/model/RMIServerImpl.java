@@ -85,4 +85,24 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
         }
     }
 
+    @Override
+    public void changeState(int value, int userID) throws RemoteException {
+       try {
+           System.out.println("here in server");
+            DbService db=new DbService();
+            UserService user=new UserService();
+            User x=user.selectOne(userID);
+            if(x!=null){
+            x.setStatus(value);
+                System.out.println("state changed :)");
+            }
+            else{
+            System.out.println("error");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            //Logger.getLogger(ChangeStateImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

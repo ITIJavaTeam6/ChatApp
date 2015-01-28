@@ -1,12 +1,14 @@
 package chat.client.view;
 
 
-import chat.client.controller.ClientContoller;
 import chat.database.beans.User;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
-
+import chat.client.controller.ClientController;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import javax.swing.ButtonGroup;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,8 +20,8 @@ import javax.swing.JOptionPane;
  *
  * @author ZamZam
  */
-public class SignUp extends javax.swing.JFrame {
-//        User u=new User();
+public class SignUp extends javax.swing.JFrame implements Serializable{
+        User u=new User();
     private static final String EMAIL_PATTERN
             = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -29,14 +31,18 @@ public class SignUp extends javax.swing.JFrame {
     String Lname;
     String Email;
     String password;
-    String gender;
+    Long gender;
     
     boolean flag=true;
-    ClientContoller con;
+    ClientController con;
+    ButtonGroup bg;
     public SignUp() {
         initComponents();
-        con=new ClientContoller(this);
+        con=new ClientController();
         this.setResizable(false);
+        bg=new ButtonGroup();
+        bg.add(jRadioButton1);
+        bg.add(jRadioButton2);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         
@@ -123,6 +129,11 @@ public class SignUp extends javax.swing.JFrame {
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Year", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
         jRadioButton1.setText("Male");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -169,7 +180,7 @@ public class SignUp extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,11 +258,11 @@ public class SignUp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        gender = "male";
+        gender = 0l;
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        gender = "female";
+        gender = 1l;
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -264,37 +275,55 @@ public class SignUp extends javax.swing.JFrame {
         if (!Fname.matches(Name_pattern)) {
             jLabel5.setVisible(true);
             flag=false;
+            System.out.println("Fname if");
         } else {
             jLabel5.setVisible(false);
-            
-            
+            u.setFname(Fname);
+            System.out.println(Fname);
         }
         if (!Lname.matches(Name_pattern)) {
             jLabel9.setVisible(true);
              flag=false;
+             System.out.println("Lname if");
         } else {
             jLabel9.setVisible(false);
+            u.setLname(Lname);
+            System.out.println(Lname);
         }
         if (!Email.matches(EMAIL_PATTERN)) {
             jLabel6.setVisible(true);
              flag=false;
+             System.out.println("Email if");
         } else {
             jLabel6.setVisible(false);
+            u.setEmail(Email);
+            System.out.println(Email);
         }
-        if (!jRadioButton1.isSelected() || !jRadioButton2.isSelected()) {
+        if (!jRadioButton1.isSelected() && !jRadioButton2.isSelected()) {
             jLabel8.setVisible(true);
              flag=false;
+             System.out.println("gender if");
         } else {
             jLabel8.setVisible(false);
+            u.setGender(gender);
+            System.out.println(gender);
         }
-        if (jComboBox1.getSelectedIndex() == -1 || jComboBox2.getSelectedIndex() == -1 || jComboBox3.getSelectedIndex() == -1) {
-            jLabel7.setVisible(true);
-             flag=false;
-        } else {
-            jLabel7.setVisible(false);
-        }
+//        if (jComboBox1.getSelectedIndex() == -1 || jComboBox2.getSelectedIndex() == -1 || jComboBox3.getSelectedIndex() == -1) {
+//            jLabel7.setVisible(true);
+//             flag=false;
+//        } else {
+//            jLabel7.setVisible(false);
+//            Timestamp ts;
+//            int year=Integer.parseInt(jComboBox3.getSelectedItem().toString());
+//            int month=Integer.parseInt(jComboBox1.getSelectedItem().toString());
+//            int day=Integer.parseInt(jComboBox2.getSelectedItem().toString());
+//            ts = new Timestamp(year,month,day,0, 0, 0, 0);
+//            u.setBdate(ts);
+//           // System.out.println(ts.toString());
+//        }
         if(flag){
             con.signUp(u);
+            System.out.println("user added");
         }
         else{
             JOptionPane.showMessageDialog(this,"error");
@@ -304,6 +333,10 @@ public class SignUp extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox3ActionPerformed
 
     /**
      * @param args the command line arguments
