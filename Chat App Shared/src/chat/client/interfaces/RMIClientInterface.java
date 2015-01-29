@@ -17,4 +17,7 @@ import java.rmi.RemoteException;
 public interface RMIClientInterface extends Remote {
 
     public void receiveMessage(Message message, Group group) throws RemoteException;
+
+    public void serverStopping() throws RemoteException;
+    public void serverAnnounce(String message) throws RemoteException;
 }

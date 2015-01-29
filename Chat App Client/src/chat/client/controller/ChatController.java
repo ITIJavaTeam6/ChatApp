@@ -11,6 +11,8 @@ import chat.data.model.Group;
 import chat.data.model.Message;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,11 +20,12 @@ import java.util.Map;
  */
 public class ChatController {
     ClientController clientController;
+    ContactsListView contactsListView;
     Map<Integer, ChatWindow> chatWindows = new HashMap<>();
     
     public ChatController (ClientController clientController) {
         this.clientController = clientController;
-        ContactsListView contactsListView = new ContactsListView(this);
+        contactsListView = new ContactsListView(this);
         contactsListView.setVisible(true);
     }
 
@@ -61,5 +64,17 @@ public class ChatController {
     
     public void unregister () {
         clientController.unregister();
+    }
+
+    void serverStopping() {
+        for (Map.Entry<Integer, ChatWindow> entry : chatWindows.entrySet()) {
+            entry.getValue().dispose();
+        }
+        chatWindows.clear();
+        contactsListView.dispose();
+    }
+
+    void serverAnnounce(String message) {
+        JOptionPane.showMessageDialog(contactsListView, message);
     }
 }

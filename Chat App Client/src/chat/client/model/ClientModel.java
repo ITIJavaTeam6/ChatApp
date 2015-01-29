@@ -16,8 +16,10 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +27,8 @@ import java.util.logging.Logger;
  */ 
 
 public class ClientModel {
+    public static final int USER_NOT_FOUND = -1;
+    public static final int SERVER_DOWN = -2;
 
     int userid = -1;
     
@@ -33,43 +37,54 @@ public class ClientModel {
     SignInInt signInObj;
     changeStateInt chstateOb;
     ClientController controller;
+    Registry registry;
 
     public ClientModel(ClientController controller) {
+        this.controller = controller;
         try {
             client = new RMIClientImpl(this);
-            Registry registry = LocateRegistry.getRegistry(5000);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private boolean connectToServer() {
+        try {
+            registry = LocateRegistry.getRegistry(5000);
             server = (RMIServerInterface) registry.lookup("chat");
             signInObj = (SignInInt) registry.lookup("signIn");
             chstateOb = (changeStateInt) registry.lookup("changState");
-            this.controller = controller;
-            
             System.out.println("connected to server");
-
+            return true;
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return false;
     }
 
     public int signIn(String email, String password) {
-        int id = -1;
-        try {
-            id = signInObj.signIn(email, password);
-        } catch (RemoteException ex) {
-            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        if (id != -1) {
+        if (connectToServer()) {
+            int id = -1;
             try {
-                server.register(client, id);
-                userid = id;
+                id = signInObj.signIn(email, password);
             } catch (RemoteException ex) {
                 Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            if (id != -1) {
+                try {
+                    server.register(client, id);
+                    userid = id;
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            return id;
+        } else {
+            return SERVER_DOWN;
         }
-        return id;
     }
 
     public void changeState(int state, int userID) {
@@ -99,5 +114,16 @@ public class ClientModel {
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    void serverStopping() {
+        server = null;
+        signInObj = null;
+        chstateOb = null;
+        controller.serverStopping();
+    }
+
+    void serverAnnounce(String message) {
+        controller.serverAnnounce(message);
     }
 }

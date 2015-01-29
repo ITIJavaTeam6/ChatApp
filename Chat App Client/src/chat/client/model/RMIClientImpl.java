@@ -27,5 +27,15 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
     public void receiveMessage(Message message, Group group) throws RemoteException {
         model.displayMessage(message, group);
     }
+
+    @Override
+    public void serverStopping() throws RemoteException {
+        model.serverStopping();
+    }
+
+    @Override
+    public void serverAnnounce(String message) throws RemoteException {
+        model.serverAnnounce(message);
+    }
     
 }

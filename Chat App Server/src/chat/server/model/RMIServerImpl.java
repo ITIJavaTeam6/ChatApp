@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  */
 public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInterface {
 
-    Map<Integer, RMIClientInterface> clients = new HashMap<>();
+    public static Map<Integer, RMIClientInterface> clients = new HashMap<>();
 
     public RMIServerImpl() throws RemoteException {
         

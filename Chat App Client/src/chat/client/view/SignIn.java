@@ -278,7 +278,7 @@ public class SignIn extends javax.swing.JFrame {
 
     
     public void failedSignIn () {
-        JOptionPane.showMessageDialog(this, "wrong email or password");
+        JOptionPane.showMessageDialog(this, "Wrong email or password");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo;
@@ -295,4 +295,8 @@ public class SignIn extends javax.swing.JFrame {
     private javax.swing.JTextField mailtxt;
     private javax.swing.JPasswordField txtpass;
     // End of variables declaration//GEN-END:variables
+
+    public void serverDown() {
+        JOptionPane.showMessageDialog(this, "Server is down");
+    }
 }

@@ -33,11 +33,13 @@ public class ClientController {
     
     public void signIn(String email,String pass){
         int id = modelObj.signIn(email, pass);
-        if (id != -1) {
+        if (id == ClientModel.SERVER_DOWN) {
+            signInView.serverDown();
+        } else if (id == ClientModel.USER_NOT_FOUND) {
+            signInView.failedSignIn();
+        } else {
             chatController = new ChatController(this);
             signInView.dispose();
-        } else {
-            signInView.failedSignIn();
         }
     }
     
@@ -56,5 +58,15 @@ public class ClientController {
     public void unregister() {
         modelObj.unregister();
     }
-    
+
+    public void serverAnnounce(String message) {
+        chatController.serverAnnounce(message);
+    }
+
+    public void serverStopping() {
+        chatController.serverStopping(); 
+        signInView = new SignIn(this);
+        signInView.setVisible(true);
+        modelObj = new ClientModel(this);
+    }
 }
