@@ -3,12 +3,12 @@ package chat.database.beans;
 import java.io.Serializable;
 import java.sql.*;
 
-public class User implements Serializable{
+public class User implements Serializable {
 
     public User() {
     }
 
-    public User(long iduser, String fname, String lname, String password, Timestamp bdate, long status, long gender, Timestamp cdate, String email) {
+    public User(long iduser, String fname, String lname, String password, Date bdate, long status, long gender, Timestamp cdate, String email) {
         this.iduser = iduser;
         this.fname = fname;
         this.lname = lname;
@@ -19,8 +19,8 @@ public class User implements Serializable{
         this.cdate = cdate;
         this.email = email;
     }
-    
-    public User(String fname, String lname, String password, Timestamp bdate, long status, long gender, Timestamp cdate, String email) {
+
+    public User(String fname, String lname, String password, Date bdate, long status, long gender, Timestamp cdate, String email) {
         this.fname = fname;
         this.lname = lname;
         this.password = password;
@@ -76,14 +76,15 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    private Timestamp bdate;
+    private Date bdate;
 
-    public Timestamp getBdate() {
+    public Date getBdate() {
         return bdate;
     }
 
     public void setBdate(Timestamp bdate) {
-        this.bdate = bdate;
+        this.bdate = new Date(bdate.getTime());
+        System.out.println("Date is: " + bdate);
     }
 
     private long status;

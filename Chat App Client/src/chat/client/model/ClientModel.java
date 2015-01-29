@@ -124,6 +124,7 @@ public class ClientModel {
     
     public void signUp(User u){
         try {
+            if(connectToServer())
             server.signUp(u);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
