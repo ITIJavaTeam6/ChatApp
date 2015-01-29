@@ -313,19 +313,19 @@ public class SignUp extends javax.swing.JFrame implements Serializable{
 //             flag=false;
 //        } else {
 //            jLabel7.setVisible(false);
-//            Timestamp ts;
-//            int year=Integer.parseInt(jComboBox3.getSelectedItem().toString());
-//            int month=Integer.parseInt(jComboBox1.getSelectedItem().toString());
-//            int day=Integer.parseInt(jComboBox2.getSelectedItem().toString());
-//            ts = new Timestamp(year,month,day,0, 0, 0, 0);
-//            u.setBdate(ts);
+            Timestamp ts;
+            int year=3;
+            int month=2;
+            int day=1;
+            ts = new Timestamp(year,month,day,0, 0, 0, 0);
+            u.setBdate(ts);
 //           // System.out.println(ts.toString());
 //        }
         if(flag){
             con.signUp(u);
             System.out.println("user added");
         }
-        else{
+        if(!flag){
             JOptionPane.showMessageDialog(this,"error");
         }
     }//GEN-LAST:event_jButton1ActionPerformed

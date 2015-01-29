@@ -118,6 +118,7 @@ public class UserService {
     public int insert(User item) throws SQLException {
         Connection connection = null;
         try {
+            System.out.println("here in insert method");
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
             String insertQuery = "INSERT INTO user VALUES(" + item.getIduser()

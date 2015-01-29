@@ -77,6 +77,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     @Override
     public void signUp(User u) throws RemoteException {
         try {
+            System.out.println("here in server imp");
             DbService dbService = new DbService();
             UserService service = new UserService();
             service.insert(u);

@@ -36,7 +36,7 @@ public class ClientModel implements Serializable{
         try {
             client = new RMIClientImpl(this);
 
-            Registry registry = LocateRegistry.getRegistry(5000);
+            Registry registry = LocateRegistry.getRegistry(5002);
             server = (RMIServerInterface) registry.lookup("chat");
             signInObj = (SignInInt) registry.lookup("signIn");
            // chstateOb = (changeStateInt) registry.lookup("changState");
