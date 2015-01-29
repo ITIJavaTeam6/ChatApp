@@ -6,17 +6,14 @@
 package chat.server.model;
 
 import chat.client.interfaces.RMIClientInterface;
-import chat.data.model.Contact;
+import chat.data.model.*;
 import chat.database.beans.User;
 import chat.database.services.DbService;
 import chat.database.services.UserService;
-import chat.data.model.Group;
-import chat.data.model.Message;
 import chat.server.interfaces.RMIServerInterface;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -32,7 +29,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     public static Map<Integer, RMIClientInterface> clients = new HashMap<>();
 
     public RMIServerImpl() throws RemoteException {
-        
+
     }
 
     @Override
@@ -63,19 +60,6 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     }
 
     @Override
-    public void signUp(Contact c) throws RemoteException {
-        try {
-            DbService dbService = new DbService();
-
-            UserService service = new UserService();
-
-//            service.insert();
-        } catch (SQLException ex) {
-            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @Override
     public void addContact(String Email) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -88,6 +72,38 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     @Override
     public void loadContact() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void signUp(User u) throws RemoteException {
+        try {
+            System.out.println("here in server imp");
+            DbService dbService = new DbService();
+            UserService service = new UserService();
+            service.insert(u);
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void changeState(int value, int userID) throws RemoteException {
+       try {
+           System.out.println("here in server");
+            DbService db=new DbService();
+            UserService user=new UserService();
+            User x=user.selectOne(userID);
+            if(x!=null){
+            x.setStatus(value);
+                System.out.println("state changed :)");
+            }
+            else{
+            System.out.println("error");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            //Logger.getLogger(ChangeStateImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

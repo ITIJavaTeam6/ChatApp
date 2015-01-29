@@ -1,9 +1,8 @@
-package chat.database.beans;
+package chat.data.model;
 
-import java.io.Serializable;
 import java.sql.*;
 
-public class User implements Serializable{
+public class User {
 
     public User() {
     }

@@ -9,6 +9,7 @@ import chat.client.model.ClientModel;
 import chat.client.view.SignIn;
 import chat.data.model.Group;
 import chat.data.model.Message;
+import chat.database.beans.User;
 
 /**
  *
@@ -20,13 +21,13 @@ public class ClientController {
         ClientController clientController = new ClientController();
     }
     
-//    SignInTempView signInView;
-    SignIn signInView;
+    SignInTempView signInView;
+  //  SignIn signInView;
     ClientModel modelObj;
     ChatController chatController;
     
     public ClientController(){
-        signInView = new SignIn(this);
+        signInView = new SignInTempView(this);
         signInView.setVisible(true);
         modelObj = new ClientModel(this);
     }
@@ -44,7 +45,7 @@ public class ClientController {
     }
     
     public void changeState(int state){
-        modelObj.changeState(state, 3);
+        modelObj.changeState(state,5);
     }
 
     public void displayMessage(Message message, Group group) {
@@ -68,5 +69,7 @@ public class ClientController {
         signInView = new SignIn(this);
         signInView.setVisible(true);
         modelObj = new ClientModel(this);
+    public void signUp(User u){
+        modelObj.signUp(u);
     }
 }

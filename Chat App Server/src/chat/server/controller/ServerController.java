@@ -7,7 +7,7 @@ package chat.server.controller;
 
 import chat.client.interfaces.RMIClientInterface;
 import chat.server.interfaces.RMIServerInterface;
-import chat.server.model.ChangeStateImp;
+//import chat.server.model.ChangeStateImp;
 import chat.server.model.RMIServerImpl;
 import chat.server.model.SignInImp;
 import chat.server.view.ServerFXMLController;
@@ -54,7 +54,7 @@ public class ServerController {
             registry = LocateRegistry.createRegistry(5000);
             registry.rebind("chat", server);
             registry.rebind("signIn", signIn);
-            registry.rebind("changState", state);
+           // registry.rebind("changState", state);
             System.out.println("Waiting for connections");
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
