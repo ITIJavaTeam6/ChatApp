@@ -9,6 +9,7 @@ import chat.server.controller.ServerController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -58,12 +59,22 @@ public class ServerFXMLController extends Application implements Initializable {
             serverController.stopService();
             isRunning = false;
             
-            switchButton.setText("Start");
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    switchButton.setText("Start");
+                }
+            });
         } else {
             serverController.startService();
             isRunning = true;
             
-            switchButton.setText("Stop");
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    switchButton.setText("Stop");
+                }
+            });
         }
     }
 }
