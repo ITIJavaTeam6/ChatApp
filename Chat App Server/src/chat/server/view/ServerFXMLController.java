@@ -44,6 +44,7 @@ public class ServerFXMLController extends Application implements Initializable {
         primaryStage.setScene(new Scene(root, 600, 500));
         primaryStage.show();
         
+        
 //        pieChart.setData(null);
         
     }
