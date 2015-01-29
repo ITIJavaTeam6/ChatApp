@@ -28,5 +28,6 @@ public interface RMIServerInterface extends Remote{
     public void sendMessage(Message message, Group group) throws RemoteException;
    
     public void changeState(int value,int userID) throws RemoteException;
-
+    
+    //public int checkUserExist(String email) throws RemoteException;   //return userID
 }
