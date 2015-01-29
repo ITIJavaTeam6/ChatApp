@@ -17,7 +17,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -35,7 +34,6 @@ public class ServerController {
     Registry registry;
     
     SignInImp signIn;
-    ChangeStateImp state;
     RMIServerInterface server;
     
     ServerFXMLController fxmlController;
@@ -49,7 +47,6 @@ public class ServerController {
         this.fxmlController = fxmlController;
         try {
             signIn=new SignInImp();
-            state = new ChangeStateImp();
             server = new RMIServerImpl();
             registry = LocateRegistry.createRegistry(5000);
             registry.rebind("chat", server);
@@ -82,7 +79,6 @@ public class ServerController {
             UnicastRemoteObject.unexportObject(server, true);
             
             signIn = null;
-            state = null;
             server = null;
             System.out.println("Stopped services");
         } catch (RemoteException ex) {
@@ -95,11 +91,9 @@ public class ServerController {
     public void startService() {
         try {
             signIn=new SignInImp();
-            state = new ChangeStateImp();
             server = new RMIServerImpl();
             registry.rebind("chat", server);
             registry.rebind("signIn", signIn);
-            registry.rebind("changState", state);
             System.out.println("Waiting for connections");
         } catch (RemoteException ex) {
             Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);

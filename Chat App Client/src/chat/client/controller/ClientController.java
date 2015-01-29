@@ -21,13 +21,13 @@ public class ClientController {
         ClientController clientController = new ClientController();
     }
     
-    SignInTempView signInView;
+    SignIn signInView;
   //  SignIn signInView;
     ClientModel modelObj;
     ChatController chatController;
     
     public ClientController(){
-        signInView = new SignInTempView(this);
+        signInView = new SignIn(this);
         signInView.setVisible(true);
         modelObj = new ClientModel(this);
     }
@@ -69,6 +69,8 @@ public class ClientController {
         signInView = new SignIn(this);
         signInView.setVisible(true);
         modelObj = new ClientModel(this);
+    }
+    
     public void signUp(User u){
         modelObj.signUp(u);
     }

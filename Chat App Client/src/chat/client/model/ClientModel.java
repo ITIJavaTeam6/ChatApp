@@ -12,15 +12,12 @@ import chat.data.model.Message;
 import chat.database.beans.User;
 import chat.server.interfaces.RMIServerInterface;
 import chat.server.interfaces.SignInInt;
-import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -53,7 +50,6 @@ public class ClientModel {
             registry = LocateRegistry.getRegistry(5000);
             server = (RMIServerInterface) registry.lookup("chat");
             signInObj = (SignInInt) registry.lookup("signIn");
-            chstateOb = (changeStateInt) registry.lookup("changState");
             System.out.println("connected to server");
             return true;
         } catch (RemoteException ex) {
@@ -119,12 +115,13 @@ public class ClientModel {
     void serverStopping() {
         server = null;
         signInObj = null;
-        chstateOb = null;
         controller.serverStopping();
     }
 
     void serverAnnounce(String message) {
         controller.serverAnnounce(message);
+    }
+    
     public void signUp(User u){
         try {
             server.signUp(u);
