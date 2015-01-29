@@ -129,4 +129,12 @@ public class ClientModel {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    boolean displayReceiveFilePermission(String fileNameString, Group group) {
+        return controller.displayReceiveFilePermission(fileNameString, group);
+    }
+
+    public void sendingFileNotAccepted(Group group) {
+        controller.sendingFileNotAccepted(group);
+    }
 }

@@ -58,6 +58,12 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             }
         }
     }
+    
+    
+    @Override
+    public void callForSendFilePermission(String fileName, Group group, int receiverid) throws RemoteException {
+        clients.get(receiverid).receiveFilePermission(fileName, group);
+    }
 
     @Override
     public void addContact(String Email) throws RemoteException {
@@ -105,5 +111,4 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             //Logger.getLogger(ChangeStateImp.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }

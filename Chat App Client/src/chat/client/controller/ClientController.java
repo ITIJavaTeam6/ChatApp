@@ -7,6 +7,7 @@ package chat.client.controller;
 
 import chat.client.model.ClientModel;
 import chat.client.view.SignIn;
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
@@ -73,5 +74,13 @@ public class ClientController {
     
     public void signUp(User u){
         modelObj.signUp(u);
+    }
+
+    public boolean displayReceiveFilePermission(String fileNameString, Group group) {
+        return chatController.displayReceiveFilePermission(fileNameString, group);
+    }
+
+    public void sendingFileNotAccepted(Group group) {
+        chatController.displayMessage("Sending file was refused", group);
     }
 }

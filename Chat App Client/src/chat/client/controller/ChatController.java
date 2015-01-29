@@ -7,6 +7,7 @@ package chat.client.controller;
 
 import chat.client.view.ChatWindow;
 import chat.client.view.ContactsListView;
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import java.util.HashMap;
@@ -29,7 +30,6 @@ public class ChatController {
         contactsListView.setVisible(true);
     }
 
-    
     public void displayMessage(Message message, Group group) {
         Integer groupid = Integer.valueOf(group.getId());
         if (chatWindows.containsKey(groupid)) {
@@ -38,6 +38,17 @@ public class ChatController {
             System.out.println("opening new chat window");
             openChatWindow (group);
             displayMessage(message, group);
+        }
+    }
+    
+    public void displayMessage(String msg, Group group) {
+        Integer groupid = Integer.valueOf(group.getId());
+        if (chatWindows.containsKey(groupid)) {
+            chatWindows.get(groupid).displayMessage(msg);
+        } else {
+            System.out.println("opening new chat window");
+            openChatWindow (group);
+            displayMessage(msg, group);
         }
     }
     
@@ -76,5 +87,15 @@ public class ChatController {
 
     void serverAnnounce(String message) {
         JOptionPane.showMessageDialog(contactsListView, message);
+    }
+
+    boolean displayReceiveFilePermission(String fileNameString, Group group) {
+        openChatWindow(group);
+        int choice = JOptionPane.showConfirmDialog(chatWindows.get(group.getId()), "Would you like to receive " + fileNameString + " ?");
+        if (choice == JOptionPane.YES_OPTION) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

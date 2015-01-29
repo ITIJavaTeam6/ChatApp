@@ -26,6 +26,8 @@ public interface RMIServerInterface extends Remote{
     public void loadContact()throws RemoteException;
 
     public void sendMessage(Message message, Group group) throws RemoteException;
+    
+    public void callForSendFilePermission (String fileName, Group group, int receiverid) throws RemoteException;
    
     public void changeState(int value,int userID) throws RemoteException;
 
