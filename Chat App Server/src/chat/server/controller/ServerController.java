@@ -75,7 +75,6 @@ public class ServerController {
             registry.unbind("changState");
             
             UnicastRemoteObject.unexportObject(signIn, true);
-            UnicastRemoteObject.unexportObject(state, true);
             UnicastRemoteObject.unexportObject(server, true);
             
             signIn = null;
