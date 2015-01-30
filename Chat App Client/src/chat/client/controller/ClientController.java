@@ -6,17 +6,21 @@
 package chat.client.controller;
 
 import chat.client.model.ClientModel;
+import chat.client.view.ContactsListView;
 import chat.client.view.SignIn;
 import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
+import java.io.Serializable;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author sharno
  */
-public class ClientController {
+public class ClientController implements Serializable{
     
     public static void main(String[] args) {
         ClientController clientController = new ClientController();
@@ -83,4 +87,31 @@ public class ClientController {
     public void sendingFileNotAccepted(Group group) {
         chatController.displayMessage("Sending file was refused", group);
     }
+    public void receiveAdd(String email){
+        
+        String s="this user wants to add you "+email;
+       SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+            int choise=-1;
+           choise=JOptionPane.showConfirmDialog(null,s); 
+           
+        }
+    });
+    }
+    public int checkUserExist(String mail){
+        return modelObj.checkUserExist(mail);
+    }
+    public void sendAdd(String mail){
+        int state= modelObj.checkUserExist(mail);
+        if(state==3){
+        modelObj.sendAdd(mail);
+            System.out.println("online");
+        }
+        else{
+            modelObj.insertAddRequest(mail);
+            System.out.println("offline");
+        }
+    }
+    
 }

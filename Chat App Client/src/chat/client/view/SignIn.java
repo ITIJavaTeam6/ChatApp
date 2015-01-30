@@ -13,6 +13,7 @@ package chat.client.view;
 import chat.client.controller.ClientController;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.Serializable;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -267,6 +268,8 @@ public class SignIn extends javax.swing.JFrame {
         
         if (isReadyToSignIn) {
             System.out.println("ready");
+            
+            isReadyToSignIn=false;
             controller.signIn(mailtxt.getText(), txtpass.getText());
         }
         //lblvalidate.setVisible(false);
@@ -275,7 +278,9 @@ public class SignIn extends javax.swing.JFrame {
     private void mailtxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailtxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mailtxtActionPerformed
-
+    public void showNotification(String message){
+        JOptionPane.showConfirmDialog(this, message);
+    }
     
     public void failedSignIn () {
         JOptionPane.showMessageDialog(this, "Wrong email or password");
@@ -299,4 +304,5 @@ public class SignIn extends javax.swing.JFrame {
     public void serverDown() {
         JOptionPane.showMessageDialog(this, "Server is down");
     }
+   
 }

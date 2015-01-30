@@ -26,7 +26,7 @@ public class ChatController {
     
     public ChatController (ClientController clientController) {
         this.clientController = clientController;
-        contactsListView = new ContactsListView(this);
+        contactsListView = new ContactsListView(this,clientController);
         contactsListView.setVisible(true);
     }
 

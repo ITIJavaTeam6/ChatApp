@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
  *
  * @author sharno
  */
-public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInterface {
+public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInterface,Serializable {
     ClientModel model;
     
     public RMIClientImpl (ClientModel model) throws RemoteException {
@@ -87,5 +88,11 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
     @Override
     public void serverAnnounce(String message) throws RemoteException {
         model.serverAnnounce(message);
+    }
+
+    @Override
+    public void receiveAdd(String email) throws RemoteException {
+        System.out.println(email);
+        model.receiveAdd(email);
     }
 }
