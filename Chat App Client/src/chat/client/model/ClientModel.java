@@ -155,20 +155,50 @@ public class ClientModel implements Serializable {
         }
         return contactid;
     }
-    public void sendAdd(String mail){
+
+    public void sendAdd(String mail) {
         try {
             server.sendAdd(mail, client);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void insertAddRequest(String mail){
+
+    public void insertAddRequest(String mail) {
         try {
-            Contact contact=new Contact();
+            Contact contact = new Contact();
             contact.setUserId(userid);
             contact.setContactId(server.checkUserExist(mail));
             server.insertAdd(contact);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void acceptRequest() {
+        try {
+            Contact contact = new Contact();
+            contact.setUserId(userid);
+            contact.setContactId(contactid);
+            server.insertAdd(contact);
+            Contact user = new Contact();
+            user.setUserId(contactid);
+            user.setContactId(userid);
+            server.insertAdd(user);
+            System.out.println("added");
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void refuseRequest() {
+        try {
+            Contact contact = new Contact();
+            contact.setUserId(userid);
+            contact.setContactId(contactid);
+            server.removeAdd(contact);
+            System.out.println("deleted");
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }

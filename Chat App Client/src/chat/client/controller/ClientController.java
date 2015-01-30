@@ -45,6 +45,7 @@ public class ClientController implements Serializable{
             signInView.failedSignIn();
         } else {
             chatController = new ChatController(this);
+            modelObj.changeState(3,id);
             signInView.dispose();
         }
     }
@@ -95,7 +96,12 @@ public class ClientController implements Serializable{
         public void run() {
             int choise=-1;
            choise=JOptionPane.showConfirmDialog(null,s); 
-           
+           if(choise==0){
+               modelObj.acceptRequest();
+           }
+           if(choise==1){
+               modelObj.refuseRequest();
+           }
         }
     });
     }

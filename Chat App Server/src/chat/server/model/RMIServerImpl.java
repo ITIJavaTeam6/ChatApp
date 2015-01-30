@@ -96,13 +96,15 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
 
     @Override
     public void changeState(int value, int userID) throws RemoteException {
+        UserService user ;
         try {
             System.out.println("here in server");
             DbService db = new DbService();
-            UserService user = new UserService();
+            user = new UserService();
             User x = user.selectOne(userID);
             if (x != null) {
                 x.setStatus(value);
+                user.update(x);
                 System.out.println("state changed :)");
             } else {
                 System.out.println("error");
@@ -163,5 +165,15 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    @Override
+    public void removeAdd(chat.database.beans.Contact cont) throws RemoteException {
+        try {
+            System.out.println("here in server");
+            DbService db = new DbService();
+            ContactService contact = new ContactService();
+            contact.delete(cont.getContactId(),cont.getUserId());
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

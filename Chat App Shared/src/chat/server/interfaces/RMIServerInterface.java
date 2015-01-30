@@ -44,4 +44,6 @@ public interface RMIServerInterface extends Remote {
     public int getStatus(int id) throws RemoteException;
     
     public void insertAdd(Contact con)throws RemoteException;
+    
+    public void removeAdd(chat.database.beans.Contact cont) throws RemoteException;
 }
