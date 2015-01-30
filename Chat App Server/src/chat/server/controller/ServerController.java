@@ -7,10 +7,9 @@ package chat.server.controller;
 
 import chat.client.interfaces.RMIClientInterface;
 import chat.server.interfaces.RMIServerInterface;
-//import chat.server.model.ChangeStateImp;
 import chat.server.model.RMIServerImpl;
 import chat.server.model.SignInImp;
-import chat.server.view.ServerFXMLController;
+import chat.server.view.ViewController;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -30,28 +29,27 @@ public class ServerController {
     /**
      * @param args the command line arguments
      */
-    
     Registry registry;
-    
+
     SignInImp signIn;
     RMIServerInterface server;
-    
-    ServerFXMLController fxmlController;
-    
+
+    ViewController viewController;
+
     public static void main(String[] args) {
 //        new ServerController();
-        Application.launch(ServerFXMLController.class, args);
+        Application.launch(ViewController.class, args);
     }
 
-    public ServerController(ServerFXMLController fxmlController) {
-        this.fxmlController = fxmlController;
+    public ServerController(ViewController viewController) {
+        this.viewController = viewController;
         try {
-            signIn=new SignInImp();
+            signIn = new SignInImp();
             server = new RMIServerImpl();
             registry = LocateRegistry.createRegistry(5000);
             registry.rebind("chat", server);
             registry.rebind("signIn", signIn);
-           // registry.rebind("changState", state);
+            // registry.rebind("changState", state);
             System.out.println("Waiting for connections");
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
@@ -68,15 +66,15 @@ public class ServerController {
             }
         }
         RMIServerImpl.clients.clear();
-        
+
         try {
             registry.unbind("chat");
             registry.unbind("signIn");
             registry.unbind("changState");
-            
+
             UnicastRemoteObject.unexportObject(signIn, true);
             UnicastRemoteObject.unexportObject(server, true);
-            
+
             signIn = null;
             server = null;
             System.out.println("Stopped services");
@@ -89,7 +87,7 @@ public class ServerController {
 
     public void startService() {
         try {
-            signIn=new SignInImp();
+            signIn = new SignInImp();
             server = new RMIServerImpl();
             registry.rebind("chat", server);
             registry.rebind("signIn", signIn);
