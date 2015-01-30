@@ -9,7 +9,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JWindow;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
