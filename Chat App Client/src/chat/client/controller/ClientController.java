@@ -38,7 +38,7 @@ public class ClientController implements Serializable {
     public void signIn(String email, String pass) {
         int id = modelObj.signIn(email, pass);
         if (id == ClientModel.SERVER_DOWN) {
-            signInView.showErrorMessage("Server is down, please relogin again after several minutes ..!", "Server Maintaince");
+            signInView.showErrorMessage("Server is down, please come back again after several minutes ..!", "Server Maintaince");
         } else if (id == ClientModel.USER_NOT_FOUND) {
             signInView.showErrorMessage("Invalid ID or password", "User Not Found");
         } else {

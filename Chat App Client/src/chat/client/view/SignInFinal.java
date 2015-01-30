@@ -6,8 +6,27 @@
 package chat.client.view;
 
 import chat.client.controller.ClientController;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -69,8 +88,20 @@ public class SignInFinal extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Chatto ID:");
 
+        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField1FocusGained(evt);
+            }
+        });
+
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Password:");
+
+        jPasswordField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jPasswordField1FocusGained(evt);
+            }
+        });
 
         jCheckBox1.setText("Remember my ID ..");
 
@@ -176,9 +207,19 @@ public class SignInFinal extends javax.swing.JFrame {
 
         if (isReadyToSignIn) {
             System.out.println("User data is valid .. ready to sign in");
+            setFrameMemory();
             controller.signIn(jTextField1.getText(), jPasswordField1.getText());
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
+        jTextField1.selectAll();
+    }//GEN-LAST:event_jTextField1FocusGained
+
+    private void jPasswordField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField1FocusGained
+        jPasswordField1.selectAll();
+    }//GEN-LAST:event_jPasswordField1FocusGained
 
     /**
      * @param args the command line arguments
@@ -231,5 +272,136 @@ public class SignInFinal extends javax.swing.JFrame {
 
     public void showErrorMessage(String msg, String title) {
         JOptionPane.showMessageDialog(this, msg, title, JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void setFrameMemory() {
+        try {
+            DocumentBuilder docbulid = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = docbulid.parse(new File("ClientConfig.xml"));
+            Element root = doc.getDocumentElement();
+            if (jCheckBox1.isSelected()) {
+                NodeList userid = root.getElementsByTagName("userID");
+                Element e = (Element) userid.item(0);
+                e.setTextContent(jTextField1.getText());
+
+                NodeList remember = root.getElementsByTagName("rememberMe");
+                Element e1 = (Element) remember.item(0);
+                e1.setTextContent(jCheckBox1.isSelected() + "");
+
+            } else {
+                NodeList userid = root.getElementsByTagName("userID");
+                Element e = (Element) userid.item(0);
+                e.setTextContent("");
+
+                NodeList remember = root.getElementsByTagName("rememberMe");
+                Element e1 = (Element) remember.item(0);
+                e1.setTextContent(jCheckBox1.isSelected() + "");
+            }
+
+            if (jCheckBox2.isSelected()) {
+                NodeList pass = root.getElementsByTagName("password");
+                Element e = (Element) pass.item(0);
+                e.setTextContent(new String(jPasswordField1.getPassword()));
+
+                NodeList rememberpass = root.getElementsByTagName("rememberPassword");
+                Element e1 = (Element) rememberpass.item(0);
+                e1.setTextContent(jCheckBox2.isSelected() + "");
+            } else {
+                NodeList pass = root.getElementsByTagName("password");
+                Element e = (Element) pass.item(0);
+                e.setTextContent("");
+
+                NodeList rememberpass = root.getElementsByTagName("rememberPassword");
+                Element e1 = (Element) rememberpass.item(0);
+                e1.setTextContent(jCheckBox2.isSelected() + "");
+
+            }
+
+            StreamResult sr = new StreamResult(new File("ClientConfig.xml"));
+            Source src = new DOMSource(doc);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer t = tf.newTransformer();
+            t.transform(src, sr);
+        } catch (ParserConfigurationException ex) {
+            System.out.println("7a7aaaaaaaaaaaaaaaaaaaa");
+            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrr");
+            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            try {
+                String data = " <?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><!--\n"
+                        + "    Document   : ClientConfig.xml\n"
+                        + "    Created on : 08 ????, 2010, 09:38 ?\n"
+                        + "    Author     : Lupate\n"
+                        + "    Description:\n"
+                        + "        Purpose of the document follows.\n"
+                        + "--><root>\n"
+                        + "    <theme>9</theme>\n"
+                        + "    <userID></userID>\n"
+                        + "    <password></password>\n"
+                        + "    <rememberMe></rememberMe>\n"
+                        + "    <rememberPassword></rememberPassword>\n"
+                        + "</root>";
+
+                File file = new File("ClientConfig.xml");
+
+                //if file doesnt exists, then create it
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+
+                //true = append file
+                FileWriter fileWritter = new FileWriter(file.getName(), true);
+                BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+                bufferWritter.write(data);
+                bufferWritter.close();
+
+                System.out.println("Done appending xml ..");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (TransformerException ex) {
+            System.out.println("7)00000000000000000000");
+            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void getFrameMemory() {
+        try {
+            DocumentBuilder docbulid = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = docbulid.parse(new File("ClientConfig.xml"));
+            Element root = doc.getDocumentElement();
+
+            NodeList remember = root.getElementsByTagName("rememberMe");
+            Element e1 = (Element) remember.item(0);
+
+            if (Boolean.parseBoolean(e1.getTextContent())) {
+                NodeList userid = root.getElementsByTagName("userID");
+                Element e = (Element) userid.item(0);
+                jTextField1.setText(e.getTextContent());
+                jCheckBox1.setSelected(true);
+            }
+
+            NodeList rememberpass = root.getElementsByTagName("rememberPassword");
+            Element e2 = (Element) rememberpass.item(0);
+
+            if (Boolean.parseBoolean(e2.getTextContent())) {
+                NodeList pass = root.getElementsByTagName("password");
+                Element e = (Element) pass.item(0);
+                jPasswordField1.setText(e.getTextContent());
+                jCheckBox2.setSelected(true);
+            }
+
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
