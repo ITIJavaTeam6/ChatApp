@@ -137,4 +137,7 @@ public class ChatWindow extends javax.swing.JFrame {
     public void displayMessage(Message message) {
         jEditorPane1.setText(jEditorPane1.getText() + "\n" + message.getText());
     }
+    public void displayMessage(String message) {
+        jEditorPane1.setText(jEditorPane1.getText() + "\n" + message);
+    }
 }

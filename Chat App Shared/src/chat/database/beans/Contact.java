@@ -1,8 +1,9 @@
 package chat.database.beans;
 
+import java.io.Serializable;
 import java.sql.*;
 
-public class Contact {
+public class Contact implements Serializable{
 
     private long contactId;
 

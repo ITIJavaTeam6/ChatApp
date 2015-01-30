@@ -336,7 +336,7 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
         }
         System.out.println(password);
         if (flag) {
-            u = new User(Fname, Lname, password, birthDate, 3, 2, new Timestamp(System.currentTimeMillis()), Email);
+            u = new User(Fname, Lname, password, birthDate,0, 2, new Timestamp(System.currentTimeMillis()), Email);
             con.signUp(u);
             System.out.println("user added");
             flag=false;

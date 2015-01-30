@@ -152,6 +152,7 @@ public class UserService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
+            System.out.println(item.getStatus());
             String updateQuery = "UPDATE user SET fname = '" + item.getFname()
                     + "', lname = '" + item.getLname()
                     + "', password = '" + item.getPassword()
@@ -159,7 +160,7 @@ public class UserService {
                     + "', status = " + item.getStatus()
                     + ", gender = " + item.getGender()
                     + ", cdate = '" + item.getCdate()
-                    + "', email = '" + item.getEmail() + " WHERE " + "iduser = " + item.getIduser();
+                    + "', email = '" + item.getEmail() + "' WHERE " + "iduser = " + item.getIduser();
             updateQuery = updateQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(updateQuery);
             stmnt.close();
@@ -197,5 +198,5 @@ public class UserService {
         }
 
     }
-
+    
 }

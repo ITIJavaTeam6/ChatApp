@@ -13,10 +13,7 @@ package chat.client.view;
 import chat.client.controller.ClientController;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.Serializable;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
@@ -32,6 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import chat.client.gui.util.GUIUtils;
 
 /**
  *
@@ -62,6 +60,8 @@ public class SignIn extends javax.swing.JFrame {
         ImageIcon myicon = new ImageIcon("pic2.jpg");
         Logo.setIcon(myicon);
         lblvalidate.setVisible(false);
+        
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\login_icon.png")); // NOI18N
     }
 
     /**
@@ -92,8 +92,6 @@ public class SignIn extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(300, 600));
         setName("Login"); // NOI18N
 
-        jPanel1.setBackground(new java.awt.Color(255, 153, 153));
-
         Logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -112,7 +110,6 @@ public class SignIn extends javax.swing.JFrame {
         });
 
         jCheckBox1.setBackground(new java.awt.Color(255, 153, 153));
-        jCheckBox1.setForeground(new java.awt.Color(255, 255, 153));
         jCheckBox1.setText("Keep Me Signed In");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,8 +135,6 @@ public class SignIn extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("MV Boli", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 153));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Sign IN Your Account");
         jLabel1.setAutoscrolls(true);
@@ -150,13 +145,9 @@ public class SignIn extends javax.swing.JFrame {
         lblpassvalidate.setForeground(new java.awt.Color(204, 0, 0));
         lblpassvalidate.setText("*");
 
-        jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("User Name");
 
-        jLabel3.setFont(new java.awt.Font("Traditional Arabic", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 153));
         jLabel3.setText("Password");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -217,12 +208,11 @@ public class SignIn extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(5, 5, 5)
-                        .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(mailtxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -286,6 +276,8 @@ public class SignIn extends javax.swing.JFrame {
 
         if (isReadyToSignIn) {
             System.out.println("ready");
+            
+            isReadyToSignIn=false;
             controller.signIn(mailtxt.getText(), txtpass.getText());
         }
         //lblvalidate.setVisible(false);
@@ -294,8 +286,11 @@ public class SignIn extends javax.swing.JFrame {
     private void mailtxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailtxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mailtxtActionPerformed
-
-    public void failedSignIn() {
+    public void showNotification(String message){
+        JOptionPane.showConfirmDialog(this, message);
+    }
+    
+    public void failedSignIn () {
         JOptionPane.showMessageDialog(this, "Wrong email or password");
     }
 
@@ -418,4 +413,5 @@ public class SignIn extends javax.swing.JFrame {
     public void serverDown() {
         JOptionPane.showMessageDialog(this, "Server is down");
     }
+   
 }

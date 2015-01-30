@@ -9,9 +9,11 @@ import chat.client.controller.ClientController;
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.Group;
 import chat.data.model.Message;
+import chat.database.beans.Contact;
 import chat.database.beans.User;
 import chat.server.interfaces.RMIServerInterface;
 import chat.server.interfaces.SignInInt;
+import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -22,14 +24,14 @@ import java.util.logging.Logger;
 /**
  *
  * @author sharno
- */ 
+ */
+public class ClientModel implements Serializable {
 
-public class ClientModel {
     public static final int USER_NOT_FOUND = -1;
     public static final int SERVER_DOWN = -2;
 
     int userid = -1;
-    
+    int contactid = -1;
     RMIClientInterface client;
     RMIServerInterface server;
     SignInInt signInObj;
@@ -44,7 +46,7 @@ public class ClientModel {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private boolean connectToServer() {
         try {
             registry = LocateRegistry.getRegistry(5000);
@@ -90,8 +92,7 @@ public class ClientModel {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     public void sendMessage(Message message, Group group) {
         try {
             server.sendMessage(message, group);
@@ -103,8 +104,8 @@ public class ClientModel {
     void displayMessage(Message message, Group group) {
         controller.displayMessage(message, group);
     }
-    
-    public void unregister () {
+
+    public void unregister() {
         try {
             server.unregister(client, userid);
         } catch (RemoteException ex) {
@@ -121,11 +122,83 @@ public class ClientModel {
     void serverAnnounce(String message) {
         controller.serverAnnounce(message);
     }
-    
-    public void signUp(User u){
+
+    public void signUp(User u) {
         try {
-            if(connectToServer())
-            server.signUp(u);
+            if (connectToServer()) {
+                server.signUp(u);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    boolean displayReceiveFilePermission(String fileNameString, Group group) {
+        return controller.displayReceiveFilePermission(fileNameString, group);
+    }
+
+    public void sendingFileNotAccepted(Group group) {
+        controller.sendingFileNotAccepted(group);
+    }
+
+    public void receiveAdd(String s) {
+        controller.receiveAdd(s);
+    }
+
+    public int checkUserExist(String mail) {
+        if (connectToServer()) {
+            try {
+                contactid = server.getStatus(server.checkUserExist(mail));
+            } catch (RemoteException ex) {
+                Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return contactid;
+    }
+
+    public void sendAdd(String mail) {
+        try {
+            server.sendAdd(mail, client);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void insertAddRequest(String mail) {
+        try {
+            Contact contact = new Contact();
+            contact.setUserId(userid);
+            contact.setContactId(server.checkUserExist(mail));
+            server.insertAdd(contact);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void acceptRequest() {
+        try {
+            Contact contact = new Contact();
+            contact.setUserId(userid);
+            contact.setContactId(contactid);
+            server.insertAdd(contact);
+            Contact user = new Contact();
+            user.setUserId(contactid);
+            user.setContactId(userid);
+            server.insertAdd(user);
+            System.out.println("added");
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void refuseRequest() {
+        try {
+            Contact contact = new Contact();
+            contact.setUserId(userid);
+            contact.setContactId(contactid);
+            server.removeAdd(contact);
+            System.out.println("deleted");
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -8,6 +8,7 @@ package chat.server.model;
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.*;
 import chat.database.beans.User;
+import chat.database.services.ContactService;
 import chat.database.services.DbService;
 import chat.database.services.UserService;
 import chat.server.interfaces.RMIServerInterface;
@@ -27,6 +28,7 @@ import java.util.logging.Logger;
 public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInterface {
 
     public static Map<Integer, RMIClientInterface> clients = new HashMap<>();
+    RMIClientInterface client;
 
     public RMIServerImpl() throws RemoteException {
 
@@ -44,6 +46,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
         System.out.println("unregistered client");
     }
 //
+
     @Override
     public void sendMessage(Message message, Group group) {
         Vector<Contact> groupContacts = group.getContacts();
@@ -57,6 +60,11 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
                 }
             }
         }
+    }
+
+    @Override
+    public void callForSendFilePermission(String fileName, Group group, int receiverid) throws RemoteException {
+        clients.get(receiverid).receiveFilePermission(fileName, group);
     }
 
     @Override
@@ -88,17 +96,18 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
 
     @Override
     public void changeState(int value, int userID) throws RemoteException {
-       try {
-           System.out.println("here in server");
-            DbService db=new DbService();
-            UserService user=new UserService();
-            User x=user.selectOne(userID);
-            if(x!=null){
-            x.setStatus(value);
+        UserService user ;
+        try {
+            System.out.println("here in server");
+            DbService db = new DbService();
+            user = new UserService();
+            User x = user.selectOne(userID);
+            if (x != null) {
+                x.setStatus(value);
+                user.update(x);
                 System.out.println("state changed :)");
-            }
-            else{
-            System.out.println("error");
+            } else {
+                System.out.println("error");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -106,4 +115,65 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
         }
     }
 
+    @Override
+    public void sendAdd(String email, RMIClientInterface x) throws RemoteException {
+        client = x;
+        client.receiveAdd(email);
+    }
+
+    @Override
+    public int checkUserExist(String email) throws RemoteException {
+        int id = -1;
+        try {
+
+            DbService db = new DbService();
+            UserService user = new UserService();
+            User x = user.selectOne(email);
+            if (x != null) {
+                id = (int) x.getIduser();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
+
+    @Override
+    public int getStatus(int id) throws RemoteException {
+        int state = -1;
+        try {
+            DbService db = new DbService();
+            UserService user = new UserService();
+            User x = user.selectOne(id);
+            if (x != null) {
+                state = (int) x.getStatus();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return state;
+    }
+
+    @Override
+    public void insertAdd(chat.database.beans.Contact cont) throws RemoteException {
+        try {
+            System.out.println("here in server");
+            DbService db = new DbService();
+            ContactService contact = new ContactService();
+            contact.insert(cont);
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    @Override
+    public void removeAdd(chat.database.beans.Contact cont) throws RemoteException {
+        try {
+            System.out.println("here in server");
+            DbService db = new DbService();
+            ContactService contact = new ContactService();
+            contact.delete(cont.getContactId(),cont.getUserId());
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

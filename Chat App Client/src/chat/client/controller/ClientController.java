@@ -6,33 +6,21 @@
 package chat.client.controller;
 
 import chat.client.model.ClientModel;
+import chat.client.view.ContactsListView;
 import chat.client.view.SignIn;
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import java.io.Serializable;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author sharno
  */
-public class ClientController {
+public class ClientController implements Serializable{
     
     public static void main(String[] args) {
         ClientController clientController = new ClientController();
@@ -57,6 +45,7 @@ public class ClientController {
             signInView.failedSignIn();
         } else {
             chatController = new ChatController(this);
+            modelObj.changeState(3,id);
             signInView.dispose();
         }
     }
@@ -91,4 +80,44 @@ public class ClientController {
     public void signUp(User u){
         modelObj.signUp(u);
     }
+
+    public boolean displayReceiveFilePermission(String fileNameString, Group group) {
+        return chatController.displayReceiveFilePermission(fileNameString, group);
+    }
+
+    public void sendingFileNotAccepted(Group group) {
+        chatController.displayMessage("Sending file was refused", group);
+    }
+    public void receiveAdd(String email){
+        
+        String s="this user wants to add you "+email;
+       SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+            int choise=-1;
+           choise=JOptionPane.showConfirmDialog(null,s); 
+           if(choise==0){
+               modelObj.acceptRequest();
+           }
+           if(choise==1){
+               modelObj.refuseRequest();
+           }
+        }
+    });
+    }
+    public int checkUserExist(String mail){
+        return modelObj.checkUserExist(mail);
+    }
+    public void sendAdd(String mail){
+        int state= modelObj.checkUserExist(mail);
+        if(state==3){
+        modelObj.sendAdd(mail);
+            System.out.println("online");
+        }
+        else{
+            modelObj.insertAddRequest(mail);
+            System.out.println("offline");
+        }
+    }
+    
 }
