@@ -24,4 +24,14 @@ public class Contact {
         this.userId = userId;
     }
 
+    private boolean pending;
+
+    public boolean getPending() {
+        return pending;
+    }
+
+    public void setPending(boolean pending) {
+        this.pending = pending;
+    }
+
 }
