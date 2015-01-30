@@ -5,6 +5,7 @@
  */
 package chat.client.controller;
 
+import chat.client.interfaces.RMIClientInterface;
 import chat.client.model.ClientModel;
 import chat.client.view.ContactsListView;
 import chat.client.view.SignIn;
@@ -12,6 +13,7 @@ import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
+import java.io.File;
 import java.io.Serializable;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -27,9 +29,9 @@ public class ClientController implements Serializable{
     }
     
     SignIn signInView;
-  //  SignIn signInView;
     ClientModel modelObj;
     ChatController chatController;
+    public static int userid;
     
     public ClientController(){
         signInView = new SignIn(this);
@@ -38,14 +40,14 @@ public class ClientController implements Serializable{
     }
     
     public void signIn(String email,String pass){
-        int id = modelObj.signIn(email, pass);
-        if (id == ClientModel.SERVER_DOWN) {
+        userid = modelObj.signIn(email, pass);
+        if (userid == ClientModel.SERVER_DOWN) {
             signInView.serverDown();
-        } else if (id == ClientModel.USER_NOT_FOUND) {
+        } else if (userid == ClientModel.USER_NOT_FOUND) {
             signInView.failedSignIn();
         } else {
             chatController = new ChatController(this);
-            modelObj.changeState(3,id);
+            modelObj.changeState(3,userid);
             signInView.dispose();
         }
     }
@@ -85,9 +87,6 @@ public class ClientController implements Serializable{
         return chatController.displayReceiveFilePermission(fileNameString, group);
     }
 
-    public void sendingFileNotAccepted(Group group) {
-        chatController.displayMessage("Sending file was refused", group);
-    }
     public void receiveAdd(String email){
         
         String s="this user wants to add you "+email;
@@ -119,5 +118,16 @@ public class ClientController implements Serializable{
             System.out.println("offline");
         }
     }
-    
+
+    void sendFilePermission(File f, Group group, int receiverid, int senderid) {
+        modelObj.sendFilePermission(f, group, receiverid, senderid);
+    }
+
+    public void sendFile(File f, Group group, boolean accepted, RMIClientInterface receiver) {
+        chatController.sendFile(f, group, accepted, receiver);
+    }
+
+    public void receiveFile(byte[] fileContent, Group group) {
+        chatController.receiveFile(fileContent, group);
+    }
 }

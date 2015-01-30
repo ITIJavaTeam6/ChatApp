@@ -2,21 +2,14 @@ package chat.client.view;
 
 import chat.client.controller.ChatController;
 import chat.client.controller.ClientController;
-import com.sun.media.ui.MessageBox;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import javax.swing.JDialog;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")

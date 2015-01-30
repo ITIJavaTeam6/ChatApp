@@ -13,6 +13,7 @@ import chat.database.beans.Contact;
 import chat.database.beans.User;
 import chat.server.interfaces.RMIServerInterface;
 import chat.server.interfaces.SignInInt;
+import java.io.File;
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -49,9 +50,10 @@ public class ClientModel implements Serializable {
 
     private boolean connectToServer() {
         try {
-            registry = LocateRegistry.getRegistry(5000);
+            registry = LocateRegistry.getRegistry("127.0.0.1", 5000);
             server = (RMIServerInterface) registry.lookup("chat");
             signInObj = (SignInInt) registry.lookup("signIn");
+            
             System.out.println("connected to server");
             return true;
         } catch (RemoteException ex) {
@@ -59,6 +61,7 @@ public class ClientModel implements Serializable {
         } catch (NotBoundException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("cannot connect to server bool");
         return false;
     }
 
@@ -137,10 +140,6 @@ public class ClientModel implements Serializable {
         return controller.displayReceiveFilePermission(fileNameString, group);
     }
 
-    public void sendingFileNotAccepted(Group group) {
-        controller.sendingFileNotAccepted(group);
-    }
-
     public void receiveAdd(String s) {
         controller.receiveAdd(s);
     }
@@ -202,5 +201,21 @@ public class ClientModel implements Serializable {
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void sendFilePermission(File f, Group group, int receiverid, int senderid) {
+        try {
+            server.sendFilePermission(f, group, receiverid, senderid);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void receiveFile(byte[] fileContent, Group group) {
+        controller.receiveFile(fileContent, group);
+    }
+
+    void sendFile(File f, Group group, boolean accepted, RMIClientInterface receiver) {
+        controller.sendFile(f, group, accepted, receiver);
     }
 }

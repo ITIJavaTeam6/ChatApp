@@ -21,7 +21,7 @@ public interface RMIClientInterface extends Remote {
     public void receiveAdd(String email) throws RemoteException;
     public boolean receiveFilePermission (String fileNameString, Group group) throws RemoteException;
     public void sendFile (File f, Group group, boolean accepted, RMIClientInterface receiver) throws RemoteException;
-    public void receiveFile (File f, byte[] fileContent, Group group) throws RemoteException;
+    public void receiveFile (byte[] fileContent, Group group) throws RemoteException;
     
     public void serverStopping() throws RemoteException;
     public void serverAnnounce(String message) throws RemoteException;

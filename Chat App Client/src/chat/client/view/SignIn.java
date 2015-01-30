@@ -269,7 +269,7 @@ public class SignIn extends javax.swing.JFrame {
         if (isReadyToSignIn) {
             System.out.println("ready");
             
-            isReadyToSignIn=false;
+//            isReadyToSignIn=false;
             controller.signIn(mailtxt.getText(), txtpass.getText());
         }
         //lblvalidate.setVisible(false);

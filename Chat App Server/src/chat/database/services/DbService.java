@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class DbService {
 
     static String driver = "com.mysql.jdbc.Driver";
-    static String url = "jdbc:mysql://localhost:4406/chatting";
+    static String url = "jdbc:mysql://localhost:3306/chatting";
     static String username = "root";
     static String password = "root";
     private Connection connection;

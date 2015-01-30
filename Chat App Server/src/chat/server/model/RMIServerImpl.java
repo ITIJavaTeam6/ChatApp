@@ -12,6 +12,7 @@ import chat.database.services.ContactService;
 import chat.database.services.DbService;
 import chat.database.services.UserService;
 import chat.server.interfaces.RMIServerInterface;
+import java.io.File;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
@@ -174,6 +175,27 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             contact.delete(cont.getContactId(),cont.getUserId());
         } catch (SQLException ex) {
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void sendFilePermission(File f, Group group, int receiverid, int senderid) {
+        RMIClientInterface sender = clients.get(senderid);
+        if (clients.containsKey(receiverid)) {
+            RMIClientInterface receiver = clients.get(receiverid);
+            try {
+                String fileName = f.getName();
+                boolean isAccepted =  receiver.receiveFilePermission(fileName, group);
+                sender.sendFile(f, group, isAccepted, receiver);
+            } catch (RemoteException ex) {
+                Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                sender.sendFile(f, group, false, null);
+            } catch (RemoteException ex) {
+                Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
