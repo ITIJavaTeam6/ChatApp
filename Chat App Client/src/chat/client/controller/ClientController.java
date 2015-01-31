@@ -31,7 +31,7 @@ public class ClientController implements Serializable {
     //  SignIn signInView;
     ClientModel modelObj;
     ChatController chatController;
-    public static int userid;
+    public static int userId;
 
 
     public ClientController() {
@@ -49,6 +49,11 @@ public class ClientController implements Serializable {
         } else {
             chatController = new ChatController(this);
             modelObj.changeState(3, id);
+            userId=id;
+            String []x=modelObj.getFriendRequest(id);
+            for (int i = 0; i < x.length; i++) {
+               this.receiveAdd(x[i]);
+            }
             signInView.dispose();
         }
     }
@@ -101,10 +106,10 @@ public class ClientController implements Serializable {
                 int choise = -1;
                 choise = JOptionPane.showConfirmDialog(null, s);
                 if (choise == 0) {
-                    modelObj.acceptRequest();
+                    modelObj.acceptRequest(email);
                 }
                 if (choise == 1) {
-                    modelObj.refuseRequest();
+                    modelObj.refuseRequest(email,userId);
                 }
             }
         });
@@ -144,5 +149,8 @@ public class ClientController implements Serializable {
 
     public void refreshGroups(Vector<Group> groups) {
         chatController.refreshGroups(groups);
+    }
+    public String[] getFriendRequest(int userId){
+        return modelObj.getFriendRequest(userId);
     }
 }

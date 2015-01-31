@@ -9,6 +9,7 @@ import chat.client.interfaces.RMIClientInterface;
 import chat.client.model.RMIClientImpl;
 import chat.client.view.ChatWindow;
 import chat.client.view.ContactsListView;
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import java.io.File;
@@ -19,24 +20,42 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  *
  * @author sharno
  */
 public class ChatController {
+
     ClientController clientController;
     ContactsListView contactsListView;
     File receivedFile;
     Map<Integer, ChatWindow> chatWindows = new HashMap<>();
-    
-    public ChatController (ClientController clientController) {
+
+    public ChatController(ClientController clientController) {
         this.clientController = clientController;
-        contactsListView = new ContactsListView(this,clientController);
+        contactsListView = new ContactsListView(this, clientController);
         contactsListView.setVisible(true);
     }
 
@@ -46,25 +65,25 @@ public class ChatController {
             chatWindows.get(groupid).displayMessage(message);
         } else {
             System.out.println("opening new chat window");
-            openChatWindow (group);
+            openChatWindow(group);
             displayMessage(message, group);
         }
     }
-    
+
     public void displayMessage(String msg, Group group) {
         Integer groupid = Integer.valueOf(group.getId());
         if (chatWindows.containsKey(groupid)) {
             chatWindows.get(groupid).displayMessage(msg);
         } else {
             System.out.println("opening new chat window");
-            openChatWindow (group);
+            openChatWindow(group);
             displayMessage(msg, group);
         }
     }
-    
-    public void openChatWindow (Group group) {
+
+    public void openChatWindow(Group group) {
         Integer groupid = Integer.valueOf(group.getId());
-        if (! chatWindows.containsKey(groupid)) {
+        if (!chatWindows.containsKey(groupid)) {
             ChatWindow chatWindow = new ChatWindow(group, this);
             chatWindows.put(groupid, chatWindow);
             chatWindow.setVisible(true);
@@ -72,8 +91,8 @@ public class ChatController {
             chatWindows.get(groupid).requestFocus();
         }
     }
-    
-    public void closeChatWindow (Group group) {
+
+    public void closeChatWindow(Group group) {
         Integer groupid = Integer.valueOf(group.getId());
         chatWindows.get(groupid).dispose();
         chatWindows.remove(groupid);
@@ -82,8 +101,8 @@ public class ChatController {
     public void sendMessage(Message message, Group group) {
         clientController.sendMessage(message, group);
     }
-    
-    public void unregister () {
+
+    public void unregister() {
         clientController.unregister();
     }
 
@@ -101,28 +120,117 @@ public class ChatController {
 
     boolean displayReceiveFilePermission(String fileNameString, Group group) {
         openChatWindow(group);
-        ChatWindow chatWindow = chatWindows.get(group.getId());
-        int choice = JOptionPane.showConfirmDialog(chatWindow, "Would you like to receive " + fileNameString + " ?");
+        int choice = JOptionPane.showConfirmDialog(chatWindows.get(group.getId()), "Would you like to receive " + fileNameString + " ?");
         if (choice == JOptionPane.YES_OPTION) {
-            JFileChooser fileChooser = new JFileChooser(fileNameString);
-            System.out.println("showing file chooser");
-            int fileChoice = fileChooser.showSaveDialog(chatWindow);
-            System.out.println("got choice");
-            if (fileChoice == JFileChooser.APPROVE_OPTION) {
-                System.out.println("got file place");
-                receivedFile = fileChooser.getSelectedFile();
-                return true;
-            }
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
-    public void sendFilePermission(File f, Group group, int receiverid, int senderid) {
-        clientController.sendFilePermission(f, group, receiverid, senderid);
+    public void setLookAndFeel(int i) {
+        String s = null;
+        switch (i) {
+            case 1:
+                s = "com.jtattoo.plaf.luna.LunaLookAndFeel";
+                break;
+            case 2:
+                s = "com.jtattoo.plaf.smart.SmartLookAndFeel";
+                break;
+            case 3:
+                s = "com.jtattoo.plaf.noire.NoireLookAndFeel";
+                break;
+            case 4:
+                s = "com.jtattoo.plaf.mint.MintLookAndFeel";
+                break;
+            case 5:
+                s = "com.jtattoo.plaf.mcwin.McWinLookAndFeel";
+                break;
+            case 6:
+                s = "com.jtattoo.plaf.hifi.HiFiLookAndFeel";
+                break;
+            case 7:
+                s = "com.jtattoo.plaf.graphite.GraphiteLookAndFeel";
+                break;
+            case 8:
+                s = "com.jtattoo.plaf.fast.FastLookAndFeel";
+                break;
+            case 9:
+                s = "com.jtattoo.plaf.bernstein.BernsteinLookAndFeel";
+                break;
+            case 10:
+                s = "com.jtattoo.plaf.aluminium.AluminiumLookAndFeel";
+                break;
+            case 11:
+                s = "com.jtattoo.plaf.aero.AeroLookAndFeel";
+                break;
+            case 12:
+                s = "com.jtattoo.plaf.acryl.AcrylLookAndFeel";
+                break;
+        }
+        try {
+            UIManager.setLookAndFeel(s);
+            if (contactsListView != null) {
+                SwingUtilities.updateComponentTreeUI(contactsListView);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            DocumentBuilder docbulid = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = docbulid.parse(new File("ClientConfig.xml"));
+            Element root = doc.getDocumentElement();
+            NodeList themes = root.getElementsByTagName("theme");
+            Element e = (Element) themes.item(0);
+            e.setTextContent(i + "");
+
+            StreamResult sr = new StreamResult(new File("ClientConfig.xml"));
+            Source src = new DOMSource(doc);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer t = tf.newTransformer();
+            t.transform(src, sr);
+
+        } catch (TransformerException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (SAXException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
-    
-    public void sendFile (File f, Group group, boolean accepted, RMIClientInterface receiver) {
-        if (! accepted) {
+
+    public int getLookAndFeel() {
+        String index = "1";
+        try {
+            DocumentBuilder docbulid = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = docbulid.parse(new File("ClientConfig.xml"));
+            Element root = doc.getDocumentElement();
+            NodeList themes = root.getElementsByTagName("theme");
+            Element e = (Element) themes.item(0);
+            index = e.getTextContent();
+        } catch (SAXException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Integer.parseInt(index);
+    }
+
+    public void sendFile(File f, Group group, boolean accepted, RMIClientInterface receiver) {
+        if (!accepted) {
             displayMessage("Sending file was refused", group);
         } else {
             new Thread() {
@@ -137,24 +245,23 @@ public class ChatController {
                         fileInputStream.read(b);
                         receiver.receiveFile(b, group);
                     } catch (FileNotFoundException ex) {
-                        Logger.getLogger(RMIClientImpl.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
-                        Logger.getLogger(RMIClientImpl.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
                     } finally {
                         try {
                             fileInputStream.close();
                         } catch (IOException ex) {
-                            Logger.getLogger(RMIClientImpl.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
             }.start();
-
         }
     }
-    
-    public void receiveFile (byte [] fileContent, Group g) {
-        new Thread(){
+
+    public void receiveFile(byte[] fileContent, Group g) {
+        new Thread() {
 
             @Override
             public void run() {
@@ -162,14 +269,15 @@ public class ChatController {
                     FileOutputStream fileOutputStream = new FileOutputStream(receivedFile);
                     fileOutputStream.write(fileContent);
                     fileOutputStream.close();
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(RMIClientImpl.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
-                    Logger.getLogger(RMIClientImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
         }.start();
+    }
+
+    public void sendFilePermission(File f, Group group, int receiverid, int senderid) {
+        clientController.sendFilePermission(f, group, receiverid, senderid);
     }
 
     void refreshGroups(Vector<Group> groups) {

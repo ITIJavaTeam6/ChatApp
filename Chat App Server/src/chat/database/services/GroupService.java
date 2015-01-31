@@ -1,13 +1,16 @@
 package chat.database.services;
 
 import chat.data.model.Contact;
+import chat.data.model.Group;
 import chat.data.model.conversion.Converter;
-import chat.database.exceptions.MoreThanOneItemException;
-import chat.database.beans.Group;
+import chat.database.beans.ChatGroup;
 import chat.database.beans.User;
+import chat.database.exceptions.MoreThanOneItemException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GroupService {
     
@@ -85,23 +88,23 @@ public class GroupService {
         }
     }
 
-    public Group[] selectAll() throws SQLException {
+    public ChatGroup[] selectAll() throws SQLException {
         Connection connection = null;
-        Group[] arr = null;
+        ChatGroup[] arr = null;
         try {
             connection = new DbService().getConnection();
-            ArrayList<Group> list = new ArrayList<Group>();
-            Group item;
+            ArrayList<ChatGroup> list = new ArrayList<ChatGroup>();
+            ChatGroup item;
             Statement stmnt = connection.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT * FROM chatgroup");
             while (rs.next()) {
-                item = new Group();
+                item = new ChatGroup();
                 item.setIdgroup(rs.getLong(1));
                 item.setUserId(rs.getLong(2));
                 list.add(item);
             }
 
-            arr = new Group[list.size()];
+            arr = new ChatGroup[list.size()];
             list.toArray(arr);
         } finally {
             if (connection != null) {
@@ -112,9 +115,9 @@ public class GroupService {
 
     }
 
-    public Group selectOne(long idgroup, long userId) throws SQLException {
+    public ChatGroup selectOne(long idgroup, long userId) throws SQLException {
         Connection connection = null;
-        Group item = null;
+        ChatGroup item = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
@@ -123,7 +126,7 @@ public class GroupService {
             while (rs.next()) {
                 count++;
                 if (count == 1) {
-                    item = new Group();
+                    item = new ChatGroup();
                     item.setIdgroup(rs.getLong(1));
                     item.setUserId(rs.getLong(2));
                 } else {
@@ -143,12 +146,13 @@ public class GroupService {
 
     }
 
-    public int insert(Group item) throws SQLException {
+    public int insert(ChatGroup item,int groupId) throws SQLException {
         Connection connection = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String insertQuery = "INSERT INTO chatgroup VALUES(" + item.getIdgroup()
+            Statement stm = connection.createStatement();
+            String insertQuery = "INSERT INTO ChatGroup VALUES(" + groupId
                     + ", " + item.getUserId() + ")";
             insertQuery = insertQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(insertQuery);
@@ -166,13 +170,37 @@ public class GroupService {
         }
 
     }
-
-    public int update(Group item) throws SQLException {
+     public int insert(Contact contact,int groupId) throws SQLException {
         Connection connection = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String updateQuery = "UPDATE chatgroup SET userId = " + item.getUserId() + " WHERE " + "idgroup = " + item.getIdgroup();
+            Statement stm = connection.createStatement();
+            String insertQuery = "INSERT INTO ChatGroup VALUES(" + groupId
+                    + ", " + contact.getId() + ")";
+            insertQuery = insertQuery.replace("'null'", "null");
+            int rowsAffected = stmnt.executeUpdate(insertQuery);
+            stmnt.close();
+            if (rowsAffected != 0) {
+                return rowsAffected;
+            } else {
+                return -1;
+            }
+
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+    }
+
+    public int update(ChatGroup item) throws SQLException {
+        Connection connection = null;
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            String updateQuery = "UPDATE ChatGroup SET userId = " + item.getUserId() + " WHERE " + "idgroup = " + item.getIdgroup();
             updateQuery = updateQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(updateQuery);
             stmnt.close();
@@ -195,7 +223,7 @@ public class GroupService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            int rowsAffected = stmnt.executeUpdate("DELETE FROM chatgroup WHERE idgroup = " + idgroup + " and userId = " + userId);
+            int rowsAffected = stmnt.executeUpdate("DELETE FROM ChatGroup WHERE idgroup = " + idgroup + " and userId = " + userId);
             stmnt.close();
             if (rowsAffected != 0) {
                 return rowsAffected;
@@ -210,5 +238,36 @@ public class GroupService {
         }
 
     }
-
+    public int getGroupId(){
+        int id=0;
+        try {
+            Connection connection;
+            connection = new DbService().getConnection();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT max(idgroup) FROM chatgroup");
+            rs.next();
+            id=rs.getInt(1);
+            id++;
+        } catch (SQLException ex) {
+            Logger.getLogger(GroupService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
+    
+    
+    public chat.data.model.Group  createeGroup(Vector<Contact> vector){
+        Group group=new Group();
+        int groupId=getGroupId();
+            for (int i = 0; i < vector.size(); i++) {
+            try {
+                insert(vector.get(i),groupId);
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(GroupService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+            group.setContacts(vector);
+            group.setId(groupId);
+        return group;
+    }
 }

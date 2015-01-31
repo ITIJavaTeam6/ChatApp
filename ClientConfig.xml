@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+    Document   : ServerConfig.xml
+    Created on : 08 ????, 2010, 09:38 ?
+    Author     : Lupate
+    Description:
+        Purpose of the document follows.
+--><root>
+    <theme>9</theme>
+	<userID>gret@we.org</userID>
+	<password>987</password>
+	<rememberMe>true</rememberMe>
+	<rememberPassword>true</rememberPassword>
+</root>

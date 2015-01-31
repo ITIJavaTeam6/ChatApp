@@ -2,7 +2,7 @@ package chat.database.beans;
 
 import java.sql.*;
 
-public class Group {
+public class ChatGroup {
 
     private long idgroup;
 

@@ -1,13 +1,7 @@
- <?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
-    Document   : ClientConfig.xml
-    Created on : 08 ????, 2010, 09:38 ?
-    Author     : Lupate
-    Description:
-        Purpose of the document follows.
---><root>
-    <theme>9</theme>
-    <userID></userID>
-    <password></password>
-    <rememberMe></rememberMe>
-    <rememberPassword></rememberPassword>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><root>
+<theme>9</theme>
+<userID>lol@ymail.com</userID>
+<password>123</password>
+<rememberMe>true</rememberMe>
+<rememberPassword>true</rememberPassword>
 </root>
