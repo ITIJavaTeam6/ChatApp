@@ -31,7 +31,7 @@ public class ClientController implements Serializable {
     //  SignIn signInView;
     ClientModel modelObj;
     ChatController chatController;
-    public static int userid;
+    public static int userId;
 
 
     public ClientController() {
@@ -149,6 +149,7 @@ public class ClientController implements Serializable {
 
     public void refreshGroups(Vector<Group> groups) {
         chatController.refreshGroups(groups);
+    }
     public String[] getFriendRequest(int userId){
         return modelObj.getFriendRequest(userId);
     }

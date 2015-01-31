@@ -150,11 +150,11 @@ public class ChatWindow extends javax.swing.JFrame {
 
                 int receiverid = -1;
                 for (Contact contact : group.getContacts()) {
-                    if (ClientController.userid != contact.getId()) {
+                    if (ClientController.userId != contact.getId()) {
                         receiverid = contact.getId();
                     }
                 }
-                chatController.sendFilePermission(f, group, receiverid, ClientController.userid);
+                chatController.sendFilePermission(f, group, receiverid, ClientController.userId);
             }
         }
     }//GEN-LAST:event_sendFileButtonActionPerformed

@@ -109,7 +109,7 @@ public class ContactsPanel extends JScrollPane {
             
             String conversationName = new String();
             for (Contact contact : value.getContacts()) {
-                if (contact.getId() != ClientController.userid) {
+                if (contact.getId() != ClientController.userId) {
                     conversationName += contact.getFname() + " " + contact .getLname();
                     // add a coma if it's a group chat and not the last name
                     if (value.getContacts().size() > 2 && value.getContacts().indexOf(contact) != value.getContacts().size()-1) {
@@ -126,7 +126,7 @@ public class ContactsPanel extends JScrollPane {
             JLabel state = null;
             if (value.getContacts().size() < 3) {
                 for (Contact contact : value.getContacts()) {
-                    if (contact.getId() != ClientController.userid) {
+                    if (contact.getId() != ClientController.userId) {
                         switch (contact.getStatus()) {
                             case Contact.ONLINE:
                                 state = new JLabel(new ImageIcon("src/res/online.png"));

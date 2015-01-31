@@ -23,6 +23,14 @@ public class ButtonsPanel extends JPanel {
             }
         });
         this.add(addButton);
+         JButton startGroup = new JButton(new ImageIcon("res/add.png"));
+        addButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                
+            }
+        });
+        this.add(startGroup);
 
     }
 }

@@ -1,13 +1,16 @@
 package chat.database.services;
 
 import chat.data.model.Contact;
+import chat.data.model.Group;
 import chat.data.model.conversion.Converter;
-import chat.database.exceptions.MoreThanOneItemException;
-import chat.database.beans.Group;
+import chat.database.beans.ChatGroup;
 import chat.database.beans.User;
+import chat.database.exceptions.MoreThanOneItemException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GroupService {
     
@@ -167,6 +170,30 @@ public class GroupService {
         }
 
     }
+     public int insert(Contact contact,int groupId) throws SQLException {
+        Connection connection = null;
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            Statement stm = connection.createStatement();
+            String insertQuery = "INSERT INTO ChatGroup VALUES(" + groupId
+                    + ", " + contact.getId() + ")";
+            insertQuery = insertQuery.replace("'null'", "null");
+            int rowsAffected = stmnt.executeUpdate(insertQuery);
+            stmnt.close();
+            if (rowsAffected != 0) {
+                return rowsAffected;
+            } else {
+                return -1;
+            }
+
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+    }
 
     public int update(ChatGroup item) throws SQLException {
         Connection connection = null;
@@ -217,7 +244,7 @@ public class GroupService {
             Connection connection;
             connection = new DbService().getConnection();
             Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT count(idgroup)/2 FROM chatgroup");
+            ResultSet rs = stm.executeQuery("SELECT max(idgroup) FROM chatgroup");
             rs.next();
             id=rs.getInt(1);
             id++;
@@ -225,5 +252,22 @@ public class GroupService {
             Logger.getLogger(GroupService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return id;
+    }
+    
+    
+    public chat.data.model.Group  createeGroup(Vector<Contact> vector){
+        Group group=new Group();
+        int groupId=getGroupId();
+            for (int i = 0; i < vector.size(); i++) {
+            try {
+                insert(vector.get(i),groupId);
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(GroupService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+            group.setContacts(vector);
+            group.setId(groupId);
+        return group;
     }
 }
