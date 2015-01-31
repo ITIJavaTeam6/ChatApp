@@ -280,4 +280,3 @@ public class ContactsListView extends JFrame {
         contactsView.refreshGroups(groups);
     }
 }
->>>>>>> origin/master
