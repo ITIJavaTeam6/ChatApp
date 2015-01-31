@@ -110,6 +110,8 @@ public class UserService {
 
             }
 
+            item = new User();
+            item.setPassword("NoSuchEmail");
             rs.close();
             stmnt.close();
         } finally {
@@ -156,7 +158,6 @@ public class UserService {
             }
             return item;
         }
-
     }
 
     public int insert(User item) throws SQLException {

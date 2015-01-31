@@ -60,7 +60,7 @@ public class TextPrompt extends JLabel
 
 	/**
 	 *  Convenience method to change the alpha value of the current foreground
-	 *  Color to the specifice value.
+	 *  Color to the specific value.
 	 *
 	 *  @param alpha value in the range of 0 - 1.0.
 	 */
@@ -71,7 +71,7 @@ public class TextPrompt extends JLabel
 
 	/**
 	 *  Convenience method to change the alpha value of the current foreground
-	 *  Color to the specifice value.
+	 *  Color to the specific value.
 	 *
 	 *  @param alpha value in the range of 0 - 255.
 	 */

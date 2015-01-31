@@ -16,7 +16,10 @@ import javax.swing.JFrame;
  */
 public class GUIUtils {
 
-    public static Image logo = new ImageIcon("/logo.png").getImage();
+    public static Image logo = new ImageIcon("logo.png").getImage();
+
+    public static Image logoString = Toolkit.getDefaultToolkit().getImage("E:\\ITI-SV\\Week17  jAdvanced JDBC RMI - XML\\JavaProject\\Final\\ChatApp\\Chat App Client\\login_icon.png");
+
     public static HashMap<Integer, ImageIcon> images = new HashMap<Integer, ImageIcon>();
 
     {

@@ -55,4 +55,7 @@ public interface RMIServerInterface extends Remote {
     public void removeGroup(int contactId,int userID) throws RemoteException;
     
     public String[] friendRequest(int userId)throws RemoteException;
+    
+    public String getPasswordFromServer(String email) throws RemoteException;
+
 }
