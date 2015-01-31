@@ -54,7 +54,7 @@ public class ClientModel implements Serializable {
             registry = LocateRegistry.getRegistry("127.0.0.1", 5000);
             server = (RMIServerInterface) registry.lookup("chat");
             signInObj = (SignInInt) registry.lookup("signIn");
-            
+
             System.out.println("connected to server");
             return true;
         } catch (RemoteException ex) {
@@ -215,6 +215,8 @@ public class ClientModel implements Serializable {
         }
 
         return returnValue;
+    }
+
     public void sendFilePermission(File f, Group group, int receiverid, int senderid) {
         try {
             server.sendFilePermission(f, group, receiverid, senderid);
@@ -233,9 +235,5 @@ public class ClientModel implements Serializable {
 
     void refreshGroups(Vector<Group> groups) {
         controller.refreshGroups(groups);
-    }
-
-    public String retrievePassword(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

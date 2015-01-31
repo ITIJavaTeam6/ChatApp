@@ -110,6 +110,8 @@ public class UserService {
 
             }
 
+            item = new User();
+            item.setPassword("NoSuchEmail");
             rs.close();
             stmnt.close();
         } finally {

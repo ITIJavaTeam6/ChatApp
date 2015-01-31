@@ -95,7 +95,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
     public void changeState(int status, int userID) throws RemoteException {
         UserService user = new UserService();
@@ -108,7 +108,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
                 user.update(x);
                 System.out.println("state changed :)");
                 int[] v = service.getContacts(userID);
-                
+
                 updateUserContactList(userID);
                 for (int i = 0; i < v.length; i++) {
 
@@ -123,26 +123,26 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             //Logger.getLogger(ChangeStateImp.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void updateUserContactList(int userId) {
         if (clients.containsKey(userId)) {
             try {
                 GroupService user = new GroupService();
     //        try {
-    //            System.out.println("here in server");
-    //            DbService db = new DbService();
-    //            UserService users = new UserService();
-    //            ContactService service = new ContactService();
-    //
-    //            int[] v = service.getContacts(userId);
-    //            for (int i = 0; i < v.length; i++) {
-    //                nested_contacts = service.getContacts(v[i]);
-    //              
-    //            }
-    //
-    //        } catch (SQLException ex) {
-    //            ex.printStackTrace();
-    //        }
+                //            System.out.println("here in server");
+                //            DbService db = new DbService();
+                //            UserService users = new UserService();
+                //            ContactService service = new ContactService();
+                //
+                //            int[] v = service.getContacts(userId);
+                //            for (int i = 0; i < v.length; i++) {
+                //                nested_contacts = service.getContacts(v[i]);
+                //              
+                //            }
+                //
+                //        } catch (SQLException ex) {
+                //            ex.printStackTrace();
+                //        }
                 Vector<Group> groups = user.getGroupsDataModelOfUser(userId);
                 System.out.println("updating user contact list");
                 for (Group group : groups) {
@@ -241,13 +241,15 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
 
     private boolean isNull(User user) {
         return user == null;
+    }
+
     public void sendFilePermission(File f, Group group, int receiverid, int senderid) {
         RMIClientInterface sender = clients.get(senderid);
         if (clients.containsKey(receiverid)) {
             RMIClientInterface receiver = clients.get(receiverid);
             try {
                 String fileName = f.getName();
-                boolean isAccepted =  receiver.receiveFilePermission(fileName, group);
+                boolean isAccepted = receiver.receiveFilePermission(fileName, group);
                 sender.sendFile(f, group, isAccepted, receiver);
             } catch (RemoteException ex) {
                 Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);

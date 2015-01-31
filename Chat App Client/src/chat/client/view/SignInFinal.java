@@ -8,9 +8,7 @@ package chat.client.view;
 import chat.client.controller.ClientController;
 import chat.client.gui.util.GUIUtils;
 import java.awt.Cursor;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +25,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -54,8 +51,8 @@ public class SignInFinal extends javax.swing.JFrame {
         this.setIconImage(GUIUtils.logo);
         getRootPane().setDefaultButton(jButton1);
         jPanel1.getRootPane().setDefaultButton(jButton1);
-        this.setIconImage(GUIUtils.logo);
         getFrameMemory();
+        jLabel1.setIcon(new ImageIcon(GUIUtils.logoString));
     }
 
     private SignInFinal() {
@@ -92,7 +89,6 @@ public class SignInFinal extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(125, 240));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new ImageIcon(getClass().getResource("/login_icon.png")));
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel1.setMinimumSize(new java.awt.Dimension(312, 150));
 
@@ -162,9 +158,6 @@ public class SignInFinal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(78, 78, 78)
@@ -183,7 +176,10 @@ public class SignInFinal extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(109, 109, 109)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 41, Short.MAX_VALUE)))
+                        .addGap(0, 41, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -281,30 +277,29 @@ public class SignInFinal extends javax.swing.JFrame {
      * @param args the command line arguments
      */
 
-        /* Set the Nimbus look and feel */
+    /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+     * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SignInFinal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SignInFinal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SignInFinal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SignInFinal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-    */
+     try {
+     for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+     if ("Nimbus".equals(info.getName())) {
+     javax.swing.UIManager.setLookAndFeel(info.getClassName());
+     break;
+     }
+     }
+     } catch (ClassNotFoundException ex) {
+     java.util.logging.Logger.getLogger(SignInFinal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+     } catch (InstantiationException ex) {
+     java.util.logging.Logger.getLogger(SignInFinal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+     } catch (IllegalAccessException ex) {
+     java.util.logging.Logger.getLogger(SignInFinal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+     } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+     java.util.logging.Logger.getLogger(SignInFinal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+     }
+     */
         //</editor-fold>
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -380,60 +375,7 @@ public class SignInFinal extends javax.swing.JFrame {
             System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrr");
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            try {
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = builderFactory.newDocumentBuilder();
-
-                //root 
-                Document document = builder.newDocument();
-                Element rootElement = document.createElement("root");
-                document.appendChild(rootElement);
-
-                //theme
-                Element staffElement = document.createElement("theme");
-                rootElement.appendChild(staffElement);
-
-                //userID
-                Element fNameElement = document.createElement("userID");
-                fNameElement.appendChild(document.createTextNode("Muhammad"));
-                staffElement.appendChild(fNameElement);
-
-                //pass
-                Element lNameElement = document.createElement("password");
-                lNameElement.appendChild(document.createTextNode("Edmerdash"));
-                staffElement.appendChild(lNameElement);
-
-                //rememberME
-                Element nickname = document.createElement("rememberMe");
-                nickname.appendChild(document.createTextNode("true"));
-                staffElement.appendChild(nickname);
-
-                //rememberPassword
-                Element salary = document.createElement("rememberPassword");
-                salary.appendChild(document.createTextNode("true"));
-                staffElement.appendChild(salary);
-
-                // write the content into xml file
-                TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                Transformer transformer = transformerFactory.newTransformer();
-                transformer.setOutputProperty(OutputKeys.INDENT, "YES");
-                DOMSource source = new DOMSource(document);
-                StreamResult result = new StreamResult(new File("ClientConfig.xml"));
-
-                // Output to console for testing
-                // StreamResult result = new StreamResult(System.out);
-                transformer.transform(source, result);
-
-                System.out.println("xml file saved..!");
-
-            } catch (ParserConfigurationException ex1) {
-                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (TransformerConfigurationException ex1) {
-                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (TransformerException ex1) {
-                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-
+            generateClientConfigXML();
         } catch (TransformerException ex) {
             System.out.println("7)00000000000000000000");
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
@@ -472,98 +414,102 @@ public class SignInFinal extends javax.swing.JFrame {
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
             System.out.println("xxxxxxxxxxxxxxxxxxxxxx");
-            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+            generateClientConfigXML();
         } catch (IOException ex) {
-            try {
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = builderFactory.newDocumentBuilder();
+            generateClientConfigXML();
+        }
 
-                //root 
-                Document document = builder.newDocument();
-                Element rootElement = document.createElement("root");
-                document.appendChild(rootElement);
+        /*
+         try {
+         String data = " <?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><!--\n"
+         + "    Document   : ClientConfig.xml\n"
+         + "    Created on : ?\n"
+         + "    Author     : Lupate\n"
+         + "    Description:\n"
+         + "        Purpose of the document follows.\n"
+         + "--><root>\n"
+         + "    <theme>9</theme>\n"
+         + "    <userID>example@server.com</userID>\n"
+         + "    <password>55555</password>\n"
+         + "    <rememberMe>true</rememberMe>\n"
+         + "    <rememberPassword>true</rememberPassword>\n"
+         + "</root>";
 
-                //theme
-                Element staffElement = document.createElement("theme");
-                rootElement.appendChild(staffElement);
+         File file = new File("ClientConfig.xml");
 
-                //userID
-                Element fNameElement = document.createElement("userID");
-                fNameElement.appendChild(document.createTextNode("Muhammad"));
-                staffElement.appendChild(fNameElement);
+         //if file doesnt exists, then create it
+         if (!file.exists()) {
+         file.createNewFile();
+         }
 
-                //pass
-                Element lNameElement = document.createElement("password");
-                lNameElement.appendChild(document.createTextNode("Edmerdash"));
-                staffElement.appendChild(lNameElement);
+         //true = append file
+         FileWriter fileWritter = new FileWriter(file.getName(), true);
+         BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+         bufferWritter.write(data);
+         bufferWritter.close();
 
-                //rememberME
-                Element nickname = document.createElement("rememberMe");
-                nickname.appendChild(document.createTextNode("true"));
-                staffElement.appendChild(nickname);
+         System.out.println("Done appending xml ..");
 
-                //rememberPassword
-                Element salary = document.createElement("rememberPassword");
-                salary.appendChild(document.createTextNode("true"));
-                staffElement.appendChild(salary);
+         } catch (IOException e) {
+         e.printStackTrace();
+         }
 
-                // write the content into xml file
-                TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                Transformer transformer = transformerFactory.newTransformer();
-                transformer.setOutputProperty(OutputKeys.INDENT, "YES");
-                DOMSource source = new DOMSource(document);
-                StreamResult result = new StreamResult(new File("ClientConfig.xml"));
+         */
+    }
 
-                // Output to console for testing
-                // StreamResult result = new StreamResult(System.out);
-                transformer.transform(source, result);
+    private void generateClientConfigXML() {
+        try {
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = builderFactory.newDocumentBuilder();
 
-                System.out.println("xml file saved..!");
+            //root 
+            Document document = builder.newDocument();
+            Element rootElement = document.createElement("root");
+            document.appendChild(rootElement);
 
-            } catch (ParserConfigurationException ex1) {
-                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (TransformerConfigurationException ex1) {
-                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (TransformerException ex1) {
-                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
-            }
+            //theme
+            Element staffElement = document.createElement("theme");
+            rootElement.appendChild(staffElement);
 
-            /*
-             try {
-             String data = " <?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><!--\n"
-             + "    Document   : ClientConfig.xml\n"
-             + "    Created on : ?\n"
-             + "    Author     : Lupate\n"
-             + "    Description:\n"
-             + "        Purpose of the document follows.\n"
-             + "--><root>\n"
-             + "    <theme>9</theme>\n"
-             + "    <userID>example@server.com</userID>\n"
-             + "    <password>55555</password>\n"
-             + "    <rememberMe>true</rememberMe>\n"
-             + "    <rememberPassword>true</rememberPassword>\n"
-             + "</root>";
+            //userID
+            Element fNameElement = document.createElement("userID");
+            fNameElement.appendChild(document.createTextNode("Muhammad"));
+            staffElement.appendChild(fNameElement);
 
-             File file = new File("ClientConfig.xml");
+            //pass
+            Element lNameElement = document.createElement("password");
+            lNameElement.appendChild(document.createTextNode("Edmerdash"));
+            staffElement.appendChild(lNameElement);
 
-             //if file doesnt exists, then create it
-             if (!file.exists()) {
-             file.createNewFile();
-             }
+            //rememberME
+            Element nickname = document.createElement("rememberMe");
+            nickname.appendChild(document.createTextNode("true"));
+            staffElement.appendChild(nickname);
 
-             //true = append file
-             FileWriter fileWritter = new FileWriter(file.getName(), true);
-             BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-             bufferWritter.write(data);
-             bufferWritter.close();
+            //rememberPassword
+            Element salary = document.createElement("rememberPassword");
+            salary.appendChild(document.createTextNode("true"));
+            staffElement.appendChild(salary);
 
-             System.out.println("Done appending xml ..");
+            // write the content into xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "YES");
+            DOMSource source = new DOMSource(document);
+            StreamResult result = new StreamResult(new File("ClientConfig.xml"));
 
-             } catch (IOException e) {
-             e.printStackTrace();
-             }
+            // Output to console for testing
+            // StreamResult result = new StreamResult(System.out);
+            transformer.transform(source, result);
 
-             */
+            System.out.println("xml file saved..!");
+
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

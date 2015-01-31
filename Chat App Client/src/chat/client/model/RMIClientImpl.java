@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -79,7 +80,8 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
             return null;
         }
     }
-}
+
+    @Override
     public void refreshGroups(Vector<Group> groups) throws RemoteException {
         model.refreshGroups(groups);
     }
