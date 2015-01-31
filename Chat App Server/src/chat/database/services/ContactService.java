@@ -199,7 +199,7 @@ public class ContactService {
             Connection connection = null;
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("SELECT contactid FROM contact where userid=" + userId + " and binding=1");
+            ResultSet rs = stmnt.executeQuery("SELECT contactid FROM contact where userid=" + userId + " and pending = 1");
             while (rs.next()) {
                 vector.add(getEmail((int)rs.getLong(1)));
             }

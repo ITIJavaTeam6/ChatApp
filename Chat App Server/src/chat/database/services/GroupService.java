@@ -63,7 +63,6 @@ public class GroupService {
         for (Integer id : contactsIds) {
             UserService userService = new UserService();
             User user = userService.selectOne(id);
-            System.out.println("first name:" + user.getFname());
             contacts.add(Converter.fromUserToContact(user));
         }
         return contacts;
@@ -152,7 +151,7 @@ public class GroupService {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
             Statement stm = connection.createStatement();
-            String insertQuery = "INSERT INTO ChatGroup VALUES(" + groupId
+            String insertQuery = "INSERT INTO chatgroup VALUES(" + groupId
                     + ", " + item.getUserId() + ")";
             insertQuery = insertQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(insertQuery);
@@ -176,7 +175,7 @@ public class GroupService {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
             Statement stm = connection.createStatement();
-            String insertQuery = "INSERT INTO ChatGroup VALUES(" + groupId
+            String insertQuery = "INSERT INTO chatgroup VALUES(" + groupId
                     + ", " + contact.getId() + ")";
             insertQuery = insertQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(insertQuery);
@@ -200,7 +199,7 @@ public class GroupService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String updateQuery = "UPDATE ChatGroup SET userId = " + item.getUserId() + " WHERE " + "idgroup = " + item.getIdgroup();
+            String updateQuery = "UPDATE chatgroup SET userId = " + item.getUserId() + " WHERE " + "idgroup = " + item.getIdgroup();
             updateQuery = updateQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(updateQuery);
             stmnt.close();
@@ -223,7 +222,7 @@ public class GroupService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            int rowsAffected = stmnt.executeUpdate("DELETE FROM ChatGroup WHERE idgroup = " + idgroup + " and userId = " + userId);
+            int rowsAffected = stmnt.executeUpdate("DELETE FROM chatgroup WHERE idgroup = " + idgroup + " and userId = " + userId);
             stmnt.close();
             if (rowsAffected != 0) {
                 return rowsAffected;

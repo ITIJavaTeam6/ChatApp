@@ -40,6 +40,8 @@ public class ViewController extends Application {
             stage.setTitle("Statistics");
             stage.setWidth(500);
             stage.setHeight(500);
+            
+            stage.setResizable(false);
 
             btn = new Button();
             btn.setLayoutX(210);
@@ -61,6 +63,14 @@ public class ViewController extends Application {
                             new PieChart.Data("Busy", userService.getBusyStatus()),
                             new PieChart.Data("Away", userService.getAwayStatus()));
 
+//            ObservableList<PieChart.Data> pieChartgender
+//                    = FXCollections.observableArrayList(
+//                            new PieChart.Data("Males", userService.getMales()),
+//                            new PieChart.Data("Females", userService.getFemales()));
+//            final PieChart chartgender = new PieChart(pieChartgender);
+//            ((Group) scene.getRoot()).getChildren().add(chartgender);
+
+            
             final PieChart chart = new PieChart(pieChartData);
             chart.setTitle("Server");
             ((Group) scene.getRoot()).getChildren().add(btn);

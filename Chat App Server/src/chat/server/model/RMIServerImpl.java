@@ -145,11 +145,6 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
                 //            ex.printStackTrace();
                 //        }
                 Vector<Group> groups = user.getGroupsDataModelOfUser(userId);
-                System.out.println("updating user contact list");
-                for (Group group : groups) {
-                    System.out.print("this is his groups ");
-                    System.out.println(group.getId());
-                }
                 try {
                     clients.get(userId).refreshGroups(groups);
                 } catch (RemoteException ex) {
