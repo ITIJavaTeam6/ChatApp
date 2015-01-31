@@ -131,8 +131,10 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             DbService db = new DbService();
             UserService user = new UserService();
             User x = user.selectOne(email);
+            
             if (x != null) {
                 id = (int) x.getIduser();
+                System.out.println("in check user exist "+id);
             }
         } catch (SQLException ex) {
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -160,6 +162,8 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     public void insertAdd(chat.database.beans.Contact cont) throws RemoteException {
         try {
             System.out.println("here in server");
+            System.out.println(cont.getContactId());
+            System.out.println(cont.getUserId());
             DbService db = new DbService();
             ContactService contact = new ContactService();
             contact.insert(cont);
@@ -187,15 +191,16 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
         try {
             DbService db = new DbService();
             GroupService groupservice = new GroupService();
+            int groupId = groupservice.getGroupId();
+
             sender = new chat.database.beans.ChatGroup();
             sender.setUserId(userId);
-            groupservice.insert(sender);
-            int groupid = (int) sender.getIdgroup();
-            System.out.println(groupid);
+            groupservice.insert(sender, groupId);
+
             receiver = new chat.database.beans.ChatGroup();
-            receiver.setIdgroup(groupid);
             receiver.setUserId(contactId);
-            groupservice.insert(receiver);
+            groupservice.insert(receiver, groupId);
+
         } catch (SQLException ex) {
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -214,5 +219,18 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
         } catch (SQLException ex) {
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public String[] friendRequest(int userId) {
+        ContactService service = null;
+        try {
+            DbService db = new DbService();
+            service = new ContactService();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return service.getFriendRequest(userId);
     }
 }

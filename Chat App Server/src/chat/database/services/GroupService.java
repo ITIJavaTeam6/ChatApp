@@ -4,6 +4,8 @@ import chat.database.exceptions.MoreThanOneItemException;
 import chat.database.beans.ChatGroup;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GroupService {
 
@@ -65,12 +67,13 @@ public class GroupService {
 
     }
 
-    public int insert(ChatGroup item) throws SQLException {
+    public int insert(ChatGroup item,int groupId) throws SQLException {
         Connection connection = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String insertQuery = "INSERT INTO ChatGroup VALUES(" + item.getIdgroup()
+            Statement stm = connection.createStatement();
+            String insertQuery = "INSERT INTO ChatGroup VALUES(" + groupId
                     + ", " + item.getUserId() + ")";
             insertQuery = insertQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(insertQuery);
@@ -132,5 +135,19 @@ public class GroupService {
         }
 
     }
-
+    public int getGroupId(){
+        int id=0;
+        try {
+            Connection connection;
+            connection = new DbService().getConnection();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT count(idgroup)/2 FROM chatgroup");
+            rs.next();
+            id=rs.getInt(1);
+            id++;
+        } catch (SQLException ex) {
+            Logger.getLogger(GroupService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
 }

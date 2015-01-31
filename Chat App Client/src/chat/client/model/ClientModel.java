@@ -169,7 +169,11 @@ public class ClientModel implements Serializable {
             Contact contact = new Contact();
             contact.setUserId(server.checkUserExist(mail));
             contact.setContactId(userid);
+            System.out.println("model insertAddRequest "+contact.getUserId());
+            System.out.println("model insertAddRequest "+contact.getContactId());
+            contact.setPending(true);
             server.insertAdd(contact);
+            
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -179,9 +183,19 @@ public class ClientModel implements Serializable {
         try {
             int id = server.checkUserExist(email);
             Contact contact = new Contact();
+            Contact sender=new Contact();
+            
             contact.setUserId(id);
             contact.setContactId(userid);
+            contact.setPending(false);
+            
+            sender.setContactId(id);
+            sender.setUserId(userid);
+            sender.setPending(false);
+            
             server.insertAdd(contact);
+            server.insertAdd(sender);
+            
             server.createGroup(userid, id);
             System.out.println("added");
         } catch (RemoteException ex) {
@@ -190,20 +204,28 @@ public class ClientModel implements Serializable {
 
     }
 
-    public void refuseRequest(String email) {
+    public void refuseRequest(String email,int userId) {
 
         try {
             Contact contact = new Contact();
             int contactId = server.checkUserExist(email);
             contact.setUserId(contactId);
-            contact.setContactId(userid);
+            contact.setContactId(userId);
             //server.removeGroup(contactId, userid);
             server.removeAdd(contact);
-            System.out.println("userId " + server.checkUserExist(email));
-            System.out.println("contactId " + userid);
+            System.out.println("userId " + contactId);
+            System.out.println("contactId " + userId);
             System.out.println("deleted");
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public String[] getFriendRequest(int userId){
+        try {
+            return server.friendRequest(userId);
+        } catch (RemoteException ex) {
+            return null;
         }
     }
 }

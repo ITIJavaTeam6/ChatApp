@@ -50,4 +50,6 @@ public interface RMIServerInterface extends Remote {
     public int createGroup(int userId,int contactId)  throws RemoteException;
     
     public void removeGroup(int contactId,int userID) throws RemoteException;
+    
+    public String[] friendRequest(int userId)throws RemoteException;
 }

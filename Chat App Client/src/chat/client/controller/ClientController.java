@@ -6,13 +6,12 @@
 package chat.client.controller;
 
 import chat.client.model.ClientModel;
-import chat.client.view.ContactsListView;
-import chat.client.view.SignIn;
-import chat.data.model.Contact;
+import chat.client.view.SignInFinal;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -26,13 +25,13 @@ public class ClientController implements Serializable {
         ClientController clientController = new ClientController();
     }
 
-    SignIn signInView;
+    SignInFinal signInView;
     //  SignIn signInView;
     ClientModel modelObj;
     ChatController chatController;
-
+    int userId;
     public ClientController() {
-        signInView = new SignIn(this);
+        signInView = new SignInFinal(this);
         signInView.setVisible(true);
         modelObj = new ClientModel(this);
     }
@@ -40,12 +39,17 @@ public class ClientController implements Serializable {
     public void signIn(String email, String pass) {
         int id = modelObj.signIn(email, pass);
         if (id == ClientModel.SERVER_DOWN) {
-            signInView.serverDown();
+            signInView.showErrorMessage("Server is down, please come back again after several minutes ..!", "Server Maintaince");
         } else if (id == ClientModel.USER_NOT_FOUND) {
-            signInView.failedSignIn();
+            signInView.showErrorMessage("Invalid ID or password", "User Not Found");
         } else {
             chatController = new ChatController(this);
             modelObj.changeState(3, id);
+            userId=id;
+            String []x=modelObj.getFriendRequest(id);
+            for (int i = 0; i < x.length; i++) {
+               this.receiveAdd(x[i]);
+            }
             signInView.dispose();
         }
     }
@@ -72,7 +76,7 @@ public class ClientController implements Serializable {
 
     public void serverStopping() {
         chatController.serverStopping();
-        signInView = new SignIn(this);
+        signInView = new SignInFinal(this);
         signInView.setVisible(true);
         modelObj = new ClientModel(this);
     }
@@ -101,8 +105,7 @@ public class ClientController implements Serializable {
                     modelObj.acceptRequest(email);
                 }
                 if (choise == 1) {
-                    modelObj.refuseRequest(email);
-                    System.out.println("choise 1");
+                    modelObj.refuseRequest(email,userId);
                 }
             }
         });
@@ -122,5 +125,7 @@ public class ClientController implements Serializable {
             System.out.println("offline");
         }
     }
-
+    public String[] getFriendRequest(int userId){
+        return modelObj.getFriendRequest(userId);
+    }
 }
