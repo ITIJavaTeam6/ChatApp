@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,5 +66,10 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
     public void receiveAdd(String email) throws RemoteException {
         System.out.println(email);
         model.receiveAdd(email);
+    }
+
+    @Override
+    public void refreshGroups(Vector<Group> groups) throws RemoteException {
+        model.refreshGroups(groups);
     }
 }

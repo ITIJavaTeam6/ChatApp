@@ -1,6 +1,7 @@
 package chat.client.view;
 
 import chat.client.controller.ChatController;
+import chat.client.controller.ClientController;
 import chat.data.model.Contact;
 import chat.data.model.Group;
 import java.awt.BorderLayout;
@@ -13,7 +14,6 @@ import java.awt.Point;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
@@ -21,6 +21,8 @@ import javax.swing.ListCellRenderer;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Vector;
+import javax.swing.SwingUtilities;
 
 @SuppressWarnings("serial")
 public class ContactsPanel extends JScrollPane {
@@ -62,6 +64,8 @@ public class ContactsPanel extends JScrollPane {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (me.getClickCount() == 2) {
+                    System.out.println(list.getSelectedValue().getId());
+                    System.out.println(list.getSelectedValue().getContacts().get(0).getFname());
                     chatController.openChatWindow(list.getSelectedValue());
                     list.setSelectedIndex(-1);
                 }
@@ -81,6 +85,19 @@ public class ContactsPanel extends JScrollPane {
 
     }
 
+    void refreshGroups(Vector<Group> groups) {
+        for (Group group : groups) {
+            System.err.println(group.getId());
+        }
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                list.setListData(groups);
+            }
+        });
+    }
+
     class MyRenderer implements ListCellRenderer<Group> {
 
         @Override
@@ -89,18 +106,46 @@ public class ContactsPanel extends JScrollPane {
                 boolean isSelected, boolean cellHasFocus) {
 
             JPanel panel = new JPanel();
-
-            JLabel name = new JLabel(value.getId() + "");
+            
+            String conversationName = new String();
+            for (Contact contact : value.getContacts()) {
+                if (contact.getId() != ClientController.userid) {
+                    conversationName += contact.getFname() + " " + contact .getLname();
+                    // add a coma if it's a group chat and not the last name
+                    if (value.getContacts().size() > 2 && value.getContacts().indexOf(contact) != value.getContacts().size()-1) {
+                        conversationName += ", ";
+                    }
+                }
+            }
+            JLabel name = new JLabel(conversationName);
             name.setForeground(Color.BLACK);
             name.setFont(getFont().deriveFont(Font.BOLD, 14));
 
-            JLabel status = new JLabel("hello world");
-            status.setForeground(new Color(100, 100, 100));
+            JLabel img = new JLabel(new ImageIcon("src/res/male.png"));
 
-            JLabel img = new JLabel(new ImageIcon("res/male.png"));
-
-            JLabel state = new JLabel(new ImageIcon("res/online.png"));
-
+            JLabel state = null;
+            if (value.getContacts().size() < 3) {
+                for (Contact contact : value.getContacts()) {
+                    if (contact.getId() != ClientController.userid) {
+                        switch (contact.getStatus()) {
+                            case Contact.ONLINE:
+                                state = new JLabel(new ImageIcon("src/res/online.png"));
+                                break;
+                            case Contact.OFFLINE:
+                                state = new JLabel(new ImageIcon("src/res/offline.png"));
+                                break;
+                            case Contact.BUSY:
+                                state = new JLabel(new ImageIcon("src/res/busy.png"));
+                                break;
+                            case Contact.AWAY:
+                                state = new JLabel(new ImageIcon("src/res/away.png"));
+                                break;
+                        }
+                    }
+                }
+                panel.add(state, BorderLayout.EAST);
+            }
+            
             panel.setLayout(new BorderLayout());
 //			GroupLayout layout = new GroupLayout(panel);
 //			panel.setLayout(layout);
@@ -136,7 +181,6 @@ public class ContactsPanel extends JScrollPane {
             panel.add(name, BorderLayout.CENTER);
 //						panel.add(new JLabel("hello there", JLabel.CENTER), BorderLayout.SOUTH);
 
-            panel.add(state, BorderLayout.EAST);
 
             if (highlightIndex == index) {
                 panel.setBackground(new Color(200, 200, 200));

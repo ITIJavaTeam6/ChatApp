@@ -15,6 +15,7 @@ import chat.data.model.Message;
 import chat.database.beans.User;
 import java.io.File;
 import java.io.Serializable;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -129,5 +130,9 @@ public class ClientController implements Serializable{
 
     public void receiveFile(byte[] fileContent, Group group) {
         chatController.receiveFile(fileContent, group);
+    }
+
+    public void refreshGroups(Vector<Group> groups) {
+        chatController.refreshGroups(groups);
     }
 }

@@ -10,6 +10,7 @@ import chat.data.model.Message;
 import java.io.File;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Vector;
 
 /**
  *
@@ -26,5 +27,5 @@ public interface RMIClientInterface extends Remote {
     public void serverStopping() throws RemoteException;
     public void serverAnnounce(String message) throws RemoteException;
     
-    
+    public void refreshGroups (Vector<Group> groups) throws RemoteException;
 }

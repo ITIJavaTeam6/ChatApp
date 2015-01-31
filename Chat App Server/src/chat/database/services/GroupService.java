@@ -1,11 +1,89 @@
 package chat.database.services;
 
+import chat.data.model.Contact;
+import chat.data.model.conversion.Converter;
 import chat.database.exceptions.MoreThanOneItemException;
 import chat.database.beans.Group;
+import chat.database.beans.User;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class GroupService {
+    
+    public Vector<chat.data.model.Group> getGroupsDataModelOfUser (int userid) throws SQLException {
+        Vector<chat.data.model.Group> groups = new Vector<>();
+        for (Integer groupid : getGroupsIdsOfUser(userid)) {
+            groups.add(getGroupDataModel(groupid));
+        }
+        
+        return groups;
+    }
+    
+    public Vector<Integer> getGroupsIdsOfUser(long userId) throws SQLException {
+        Connection connection = null;
+        Vector<Integer> groupsIds = new Vector<>();
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM chatgroup WHERE userId = " + userId);
+            while (rs.next()) {
+                groupsIds.add(rs.getInt(1));
+            }
+
+            rs.close();
+            stmnt.close();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            return groupsIds;
+        }
+
+    }
+    
+    public chat.data.model.Group getGroupDataModel (int groupid) throws SQLException {
+        chat.data.model.Group group = new chat.data.model.Group();
+        Vector<Contact> contacts = getContactsInGroup(groupid);
+        
+        group.setContacts(contacts);
+        group.setId(groupid);
+        
+        return group;
+    }
+    
+    public Vector<Contact> getContactsInGroup(int groupid) throws SQLException {
+        Connection connection = null;
+        Vector<Contact> contacts = new Vector<>();
+        
+        Vector<Integer> contactsIds = getUserIdsInGroup(groupid);
+        for (Integer id : contactsIds) {
+            UserService userService = new UserService();
+            User user = userService.selectOne(id);
+            System.out.println("first name:" + user.getFname());
+            contacts.add(Converter.fromUserToContact(user));
+        }
+        return contacts;
+    }
+    
+    public Vector<Integer> getUserIdsInGroup(int groupid) throws SQLException {
+        Connection connection = null;
+        Vector<Integer> userIds = new Vector<>();
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM chatgroup WHERE idgroup = " + groupid);
+            while (rs.next()) {
+                userIds.add(rs.getInt(2));
+            }
+
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            return userIds;
+        }
+    }
 
     public Group[] selectAll() throws SQLException {
         Connection connection = null;
@@ -15,7 +93,7 @@ public class GroupService {
             ArrayList<Group> list = new ArrayList<Group>();
             Group item;
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("SELECT * FROM group");
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM chatgroup");
             while (rs.next()) {
                 item = new Group();
                 item.setIdgroup(rs.getLong(1));
@@ -40,7 +118,7 @@ public class GroupService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("SELECT * FROM group WHERE idgroup = " + idgroup + " and userId = " + userId);
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM chatgroup WHERE idgroup = " + idgroup + " and userId = " + userId);
             int count = 0;
             while (rs.next()) {
                 count++;
@@ -70,7 +148,7 @@ public class GroupService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String insertQuery = "INSERT INTO group VALUES(" + item.getIdgroup()
+            String insertQuery = "INSERT INTO chatgroup VALUES(" + item.getIdgroup()
                     + ", " + item.getUserId() + ")";
             insertQuery = insertQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(insertQuery);
@@ -94,7 +172,7 @@ public class GroupService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String updateQuery = "UPDATE group SET userId = " + item.getUserId() + " WHERE " + "idgroup = " + item.getIdgroup();
+            String updateQuery = "UPDATE chatgroup SET userId = " + item.getUserId() + " WHERE " + "idgroup = " + item.getIdgroup();
             updateQuery = updateQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(updateQuery);
             stmnt.close();
@@ -117,7 +195,7 @@ public class GroupService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            int rowsAffected = stmnt.executeUpdate("DELETE FROM group WHERE idgroup = " + idgroup + " and userId = " + userId);
+            int rowsAffected = stmnt.executeUpdate("DELETE FROM chatgroup WHERE idgroup = " + idgroup + " and userId = " + userId);
             stmnt.close();
             if (rowsAffected != 0) {
                 return rowsAffected;

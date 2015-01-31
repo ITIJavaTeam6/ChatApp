@@ -2,11 +2,13 @@ package chat.client.view;
 
 import chat.client.controller.ChatController;
 import chat.client.controller.ClientController;
+import chat.data.model.Group;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,6 +20,7 @@ public class ContactsListView extends JFrame {
     private JPanel contentPane;
     ChatController chatController;
     ClientController con;
+    ContactsPanel contactsView;
 
     /**
      * Create the frame.
@@ -38,7 +41,7 @@ public class ContactsListView extends JFrame {
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
 
-        ContactsPanel contactsView = new ContactsPanel(chatController);
+        contactsView = new ContactsPanel(chatController);
         contentPane.add(contactsView, BorderLayout.CENTER);
 
         UserPanel userPanel = new UserPanel();
@@ -56,6 +59,10 @@ public class ContactsListView extends JFrame {
             }
         });
 
+    }
+
+    public void refreshGroups(Vector<Group> groups) {
+        contactsView.refreshGroups(groups);
     }
 
    
