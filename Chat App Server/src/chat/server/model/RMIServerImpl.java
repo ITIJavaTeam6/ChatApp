@@ -7,6 +7,7 @@ package chat.server.model;
 
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.*;
+import chat.database.beans.ChatGroup;
 import chat.database.beans.User;
 import chat.database.services.ContactService;
 import chat.database.services.DbService;
@@ -241,6 +242,57 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
 
     private boolean isNull(User user) {
         return user == null;
+    }
+    
+    
+    @Override
+    public int createGroup(int userId, int contactId) throws RemoteException {
+        chat.database.beans.ChatGroup sender = null;
+        chat.database.beans.ChatGroup receiver = null;
+        try {
+            DbService db = new DbService();
+            GroupService groupservice = new GroupService();
+            int groupId = groupservice.getGroupId();
+
+            sender = new chat.database.beans.ChatGroup();
+            sender.setUserId(userId);
+            groupservice.insert(sender, groupId);
+
+            receiver = new chat.database.beans.ChatGroup();
+            receiver.setUserId(contactId);
+            groupservice.insert(receiver, groupId);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return (int) sender.getIdgroup();
+    }
+
+    @Override
+    public void removeGroup(int contactId, int userID) {
+        ChatGroup groupId;
+        try {
+            DbService db = new DbService();
+            GroupService groupservice = new GroupService();
+            groupId = groupservice.selectOne(contactId, userID);
+            groupservice.delete(groupId.getIdgroup(), userID);
+            groupservice.delete(groupId.getIdgroup(), contactId);
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public String[] friendRequest(int userId) {
+        ContactService service = null;
+        try {
+            DbService db = new DbService();
+            service = new ContactService();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return service.getFriendRequest(userId);
     }
 
     public void sendFilePermission(File f, Group group, int receiverid, int senderid) {

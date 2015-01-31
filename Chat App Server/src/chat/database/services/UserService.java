@@ -8,6 +8,52 @@ import java.util.Vector;
 
 public class UserService {
 
+    public int getMales() throws SQLException {
+        Connection connection = null;
+        int count = 0;
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT count(gender) FROM user WHERE gender = 0");
+            
+            rs.next();
+            count = rs.getInt(1);
+            rs.close();
+
+            rs.close();
+            stmnt.close();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            return count;
+        }
+
+    }
+
+    public int getFemales() throws SQLException {
+        Connection connection = null;
+        int count = 0;
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT count(gender) FROM user WHERE gender = 1");
+            
+            rs.next();
+            count = rs.getInt(1);
+            rs.close();
+
+            rs.close();
+            stmnt.close();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            return count;
+        }
+
+    }
+
     public Vector loadContact(int userId) throws SQLException {
         Connection connection = null;
         ContactService contactService = new ContactService();
@@ -31,7 +77,6 @@ public class UserService {
         }
 
         return vect_container;
-
     }
 
 //    public Vector<User> loadContact(int userId) throws SQLException {
@@ -252,10 +297,9 @@ public class UserService {
             Statement stmnt = connection.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT count(status) FROM user WHERE status = 0");
 
-            while (rs.next()) {
-                count++;
-
-            }
+            rs.next();
+            count = rs.getInt(1);
+            rs.close();
 
             rs.close();
             stmnt.close();
@@ -275,11 +319,10 @@ public class UserService {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT count(status) FROM user WHERE status =1");
-
-            while (rs.next()) {
-                count++;
-
-            }
+            
+            rs.next();
+            count = rs.getInt(1);
+            rs.close();
 
             rs.close();
             stmnt.close();
@@ -299,11 +342,10 @@ public class UserService {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT count(status) FROM user WHERE status = 2");
-
-            while (rs.next()) {
-                count++;
-
-            }
+            
+            rs.next();
+            count = rs.getInt(1);
+            rs.close();
 
             rs.close();
             stmnt.close();
@@ -314,6 +356,26 @@ public class UserService {
             return count;
         }
 
+    }
+
+    public int getAwayStatus() throws SQLException {
+        Connection connection = null;
+        int count = 0;
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT count(status) FROM user WHERE status = 3");
+            
+            rs.next();
+            count = rs.getInt(1);
+            rs.close();
+            stmnt.close();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            return count;
+        }
     }
 
 }

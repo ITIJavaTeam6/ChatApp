@@ -4,6 +4,9 @@ import chat.database.exceptions.MoreThanOneItemException;
 import chat.database.beans.Contact;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ContactService {
 
@@ -123,8 +126,10 @@ public class ContactService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
+            System.out.println(item.getContactId());
+            System.out.println(item.getUserId());
             String insertQuery = "INSERT INTO contact VALUES(" + item.getContactId()
-                    + ", " + item.getUserId() + ")";
+                    + ", " + item.getUserId() + "," + item.getPending() + ")";
             insertQuery = insertQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(insertQuery);
             stmnt.close();
@@ -168,9 +173,10 @@ public class ContactService {
     public int delete(long contactId, long userId) throws SQLException {
         Connection connection = null;
         try {
+            System.out.println("in database delete ");
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            int rowsAffected = stmnt.executeUpdate("DELETE FROM contact WHERE contactId = " + contactId + " and userId = " + userId);
+            int rowsAffected = stmnt.executeUpdate("DELETE FROM contact WHERE contactId = " + userId + " and userId = " + contactId);
             stmnt.close();
             if (rowsAffected != 0) {
                 return rowsAffected;
@@ -186,4 +192,39 @@ public class ContactService {
 
     }
 
+    public String[] getFriendRequest(int userId) {
+        Vector<String> vector = new Vector<String>();
+        String[] arr = null;
+        try {
+            Connection connection = null;
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT contactid FROM contact where userid=" + userId + " and binding=1");
+            while (rs.next()) {
+                vector.add(getEmail((int)rs.getLong(1)));
+            }
+            arr = new String[vector.size()];
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = vector.get(i);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ContactService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+    public String getEmail(int id){
+        Connection connection = null;
+        String email="";
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT email from user where iduser="+id+"");
+            rs.next();
+            email=rs.getString(1);
+        } catch (SQLException ex) {
+            Logger.getLogger(ContactService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return email;
+    }
 }
