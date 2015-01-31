@@ -223,4 +223,8 @@ public class ClientModel implements Serializable {
     void refreshGroups(Vector<Group> groups) {
         controller.refreshGroups(groups);
     }
+
+    public String retrievePassword(String text) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
