@@ -11,10 +11,7 @@ import java.awt.event.WindowEvent;
 import java.util.Vector;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
@@ -24,7 +21,7 @@ public class ContactsListView extends JFrame {
     ChatController chatController;
     ClientController con;
     ContactsPanel contactsView;
-    
+
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.ButtonGroup buttonGroup1;

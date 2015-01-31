@@ -390,7 +390,15 @@ public class SignInFinal extends javax.swing.JFrame {
             Element root = doc.getDocumentElement();
 
             NodeList remember = root.getElementsByTagName("rememberMe");
+            NodeList rememberpass = root.getElementsByTagName("rememberPassword");
+
             Element e1 = (Element) remember.item(0);
+            Element e2 = (Element) rememberpass.item(0);
+
+            if (e1 == null || e2 == null) {
+                generateClientConfigXML();
+
+            }
 
             if (Boolean.parseBoolean(e1.getTextContent())) {
                 NodeList userid = root.getElementsByTagName("userID");
@@ -398,9 +406,6 @@ public class SignInFinal extends javax.swing.JFrame {
                 jTextField1.setText(e.getTextContent());
                 jCheckBox1.setSelected(true);
             }
-
-            NodeList rememberpass = root.getElementsByTagName("rememberPassword");
-            Element e2 = (Element) rememberpass.item(0);
 
             if (Boolean.parseBoolean(e2.getTextContent())) {
                 NodeList pass = root.getElementsByTagName("password");
@@ -469,27 +474,28 @@ public class SignInFinal extends javax.swing.JFrame {
 
             //theme
             Element staffElement = document.createElement("theme");
+            staffElement.appendChild(document.createTextNode("9"));
             rootElement.appendChild(staffElement);
 
             //userID
             Element fNameElement = document.createElement("userID");
             fNameElement.appendChild(document.createTextNode("Muhammad"));
-            staffElement.appendChild(fNameElement);
+            rootElement.appendChild(fNameElement);
 
             //pass
             Element lNameElement = document.createElement("password");
             lNameElement.appendChild(document.createTextNode("Edmerdash"));
-            staffElement.appendChild(lNameElement);
+            rootElement.appendChild(lNameElement);
 
             //rememberME
             Element nickname = document.createElement("rememberMe");
             nickname.appendChild(document.createTextNode("true"));
-            staffElement.appendChild(nickname);
+            rootElement.appendChild(nickname);
 
             //rememberPassword
             Element salary = document.createElement("rememberPassword");
             salary.appendChild(document.createTextNode("true"));
-            staffElement.appendChild(salary);
+            rootElement.appendChild(salary);
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();

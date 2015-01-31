@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<root>
-<theme>
-<userID>Muhammad</userID>
-<password>Edmerdash</password>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><root>
+<theme>9</theme>
+<userID>lol@ymail.com</userID>
+<password>123</password>
 <rememberMe>true</rememberMe>
 <rememberPassword>true</rememberPassword>
-</theme>
 </root>
