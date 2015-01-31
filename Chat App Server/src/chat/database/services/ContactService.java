@@ -70,6 +70,8 @@ public class ContactService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
+            System.out.println(item.getContactId());
+            System.out.println(item.getUserId());
             String insertQuery = "INSERT INTO contact VALUES(" + item.getContactId()
                     + ", " + item.getUserId() + ")";
             insertQuery = insertQuery.replace("'null'", "null");
@@ -115,6 +117,7 @@ public class ContactService {
     public int delete(long contactId, long userId) throws SQLException {
         Connection connection = null;
         try {
+            System.out.println("in database delete ");
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
             int rowsAffected = stmnt.executeUpdate("DELETE FROM contact WHERE contactId = " + contactId + " and userId = " + userId);

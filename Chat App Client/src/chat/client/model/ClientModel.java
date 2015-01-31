@@ -167,37 +167,40 @@ public class ClientModel implements Serializable {
     public void insertAddRequest(String mail) {
         try {
             Contact contact = new Contact();
-            contact.setUserId(userid);
-            contact.setContactId(server.checkUserExist(mail));
+            contact.setUserId(server.checkUserExist(mail));
+            contact.setContactId(userid);
             server.insertAdd(contact);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void acceptRequest() {
+    public void acceptRequest(String email) {
         try {
+            int id = server.checkUserExist(email);
             Contact contact = new Contact();
-            contact.setUserId(userid);
-            contact.setContactId(contactid);
+            contact.setUserId(id);
+            contact.setContactId(userid);
             server.insertAdd(contact);
-            Contact user = new Contact();
-            user.setUserId(contactid);
-            user.setContactId(userid);
-            server.insertAdd(user);
+            server.createGroup(userid, id);
             System.out.println("added");
         } catch (RemoteException ex) {
-            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
 
     }
 
-    public void refuseRequest() {
+    public void refuseRequest(String email) {
+
         try {
             Contact contact = new Contact();
-            contact.setUserId(userid);
-            contact.setContactId(contactid);
+            int contactId = server.checkUserExist(email);
+            contact.setUserId(contactId);
+            contact.setContactId(userid);
+            //server.removeGroup(contactId, userid);
             server.removeAdd(contact);
+            System.out.println("userId " + server.checkUserExist(email));
+            System.out.println("contactId " + userid);
             System.out.println("deleted");
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);

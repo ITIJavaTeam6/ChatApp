@@ -7,9 +7,11 @@ package chat.server.model;
 
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.*;
+import chat.database.beans.ChatGroup;
 import chat.database.beans.User;
 import chat.database.services.ContactService;
 import chat.database.services.DbService;
+import chat.database.services.GroupService;
 import chat.database.services.UserService;
 import chat.server.interfaces.RMIServerInterface;
 import java.rmi.RemoteException;
@@ -96,7 +98,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
 
     @Override
     public void changeState(int value, int userID) throws RemoteException {
-        UserService user ;
+        UserService user;
         try {
             System.out.println("here in server");
             DbService db = new DbService();
@@ -165,13 +167,50 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @Override
     public void removeAdd(chat.database.beans.Contact cont) throws RemoteException {
         try {
-            System.out.println("here in server");
+            System.out.println("here in server removeAdd");
             DbService db = new DbService();
             ContactService contact = new ContactService();
-            contact.delete(cont.getContactId(),cont.getUserId());
+            contact.delete(cont.getContactId(), cont.getUserId());
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public int createGroup(int userId, int contactId) throws RemoteException {
+        chat.database.beans.ChatGroup sender = null;
+        chat.database.beans.ChatGroup receiver = null;
+        try {
+            DbService db = new DbService();
+            GroupService groupservice = new GroupService();
+            sender = new chat.database.beans.ChatGroup();
+            sender.setUserId(userId);
+            groupservice.insert(sender);
+            int groupid = (int) sender.getIdgroup();
+            System.out.println(groupid);
+            receiver = new chat.database.beans.ChatGroup();
+            receiver.setIdgroup(groupid);
+            receiver.setUserId(contactId);
+            groupservice.insert(receiver);
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return (int) sender.getIdgroup();
+    }
+
+    @Override
+    public void removeGroup(int contactId, int userID) {
+        ChatGroup groupId;
+        try {
+            DbService db = new DbService();
+            GroupService groupservice = new GroupService();
+            groupId = groupservice.selectOne(contactId, userID);
+            groupservice.delete(groupId.getIdgroup(), userID);
+            groupservice.delete(groupId.getIdgroup(), contactId);
         } catch (SQLException ex) {
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

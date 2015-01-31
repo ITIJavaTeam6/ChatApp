@@ -1,29 +1,29 @@
 package chat.database.services;
 
 import chat.database.exceptions.MoreThanOneItemException;
-import chat.database.beans.Group;
+import chat.database.beans.ChatGroup;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class GroupService {
 
-    public Group[] selectAll() throws SQLException {
+    public ChatGroup[] selectAll() throws SQLException {
         Connection connection = null;
-        Group[] arr = null;
+        ChatGroup[] arr = null;
         try {
             connection = new DbService().getConnection();
-            ArrayList<Group> list = new ArrayList<Group>();
-            Group item;
+            ArrayList<ChatGroup> list = new ArrayList<ChatGroup>();
+            ChatGroup item;
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("SELECT * FROM group");
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM ChatGroup");
             while (rs.next()) {
-                item = new Group();
+                item = new ChatGroup();
                 item.setIdgroup(rs.getLong(1));
                 item.setUserId(rs.getLong(2));
                 list.add(item);
             }
 
-            arr = new Group[list.size()];
+            arr = new ChatGroup[list.size()];
             list.toArray(arr);
         } finally {
             if (connection != null) {
@@ -34,18 +34,18 @@ public class GroupService {
 
     }
 
-    public Group selectOne(long idgroup, long userId) throws SQLException {
+    public ChatGroup selectOne(long idgroup, long userId) throws SQLException {
         Connection connection = null;
-        Group item = null;
+        ChatGroup item = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("SELECT * FROM group WHERE idgroup = " + idgroup + " and userId = " + userId);
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM ChatGroup WHERE idgroup = " + idgroup + " and userId = " + userId);
             int count = 0;
             while (rs.next()) {
                 count++;
                 if (count == 1) {
-                    item = new Group();
+                    item = new ChatGroup();
                     item.setIdgroup(rs.getLong(1));
                     item.setUserId(rs.getLong(2));
                 } else {
@@ -65,12 +65,12 @@ public class GroupService {
 
     }
 
-    public int insert(Group item) throws SQLException {
+    public int insert(ChatGroup item) throws SQLException {
         Connection connection = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String insertQuery = "INSERT INTO group VALUES(" + item.getIdgroup()
+            String insertQuery = "INSERT INTO ChatGroup VALUES(" + item.getIdgroup()
                     + ", " + item.getUserId() + ")";
             insertQuery = insertQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(insertQuery);
@@ -89,12 +89,12 @@ public class GroupService {
 
     }
 
-    public int update(Group item) throws SQLException {
+    public int update(ChatGroup item) throws SQLException {
         Connection connection = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String updateQuery = "UPDATE group SET userId = " + item.getUserId() + " WHERE " + "idgroup = " + item.getIdgroup();
+            String updateQuery = "UPDATE ChatGroup SET userId = " + item.getUserId() + " WHERE " + "idgroup = " + item.getIdgroup();
             updateQuery = updateQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(updateQuery);
             stmnt.close();
@@ -117,7 +117,7 @@ public class GroupService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            int rowsAffected = stmnt.executeUpdate("DELETE FROM group WHERE idgroup = " + idgroup + " and userId = " + userId);
+            int rowsAffected = stmnt.executeUpdate("DELETE FROM ChatGroup WHERE idgroup = " + idgroup + " and userId = " + userId);
             stmnt.close();
             if (rowsAffected != 0) {
                 return rowsAffected;
