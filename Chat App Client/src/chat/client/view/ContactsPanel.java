@@ -34,7 +34,7 @@ public class ContactsPanel extends JScrollPane {
     public ContactsPanel(ChatController chatController) {
         this.chatController = chatController;
         DefaultListModel<Group> listModel = new DefaultListModel<>();
-        
+
         Contact c1 = new Contact();
         Contact c2 = new Contact();
         c1.setId(1);
@@ -42,11 +42,11 @@ public class ContactsPanel extends JScrollPane {
         Group g1 = new Group();
         g1.addContact(c1);
         g1.addContact(c2);
-        
+
         g1.setId(1);
-        
+
         listModel.addElement(g1);
-        
+
         list = new JList<>(listModel);
 
         // setting highlight index when mouse hovers on a menu item
