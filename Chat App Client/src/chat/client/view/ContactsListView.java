@@ -8,35 +8,55 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 @SuppressWarnings("serial")
 public class ContactsListView extends JFrame {
 
-    private JPanel contentPane;
+    private final JPanel contentPane;
     ChatController chatController;
     ClientController con;
     ContactsPanel contactsView;
 
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem10;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem11;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem12;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem3;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem4;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem5;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem6;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem7;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem8;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem9;
+    private final javax.swing.JMenuBar jMenuBar1;
+    private final javax.swing.JMenu jMenu1;
+    private final javax.swing.ButtonGroup buttonGroup1;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem10;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem11;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem12;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem3;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem4;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem5;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem6;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem7;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem8;
+    private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem9;
 
     /**
      * Create the frame.

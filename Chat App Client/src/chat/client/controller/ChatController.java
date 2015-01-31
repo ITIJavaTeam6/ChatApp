@@ -54,6 +54,7 @@ public class ChatController {
     Map<Integer, ChatWindow> chatWindows = new HashMap<>();
 
     public ChatController(ClientController clientController) {
+        this.setLookAndFeel(getLookAndFeel());
         this.clientController = clientController;
         contactsListView = new ContactsListView(this, clientController);
         contactsListView.setVisible(true);
