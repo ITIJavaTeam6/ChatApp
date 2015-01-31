@@ -11,17 +11,15 @@ import java.util.Date;
  *
  * @author AmoOOOnA
  */
-enum statusenum {
-
-    online, offline, busy, awy
-};
-
-enum genderenum {
-
-    female, male
-};
 
 public class Contact implements Serializable{
+    public static final int ONLINE = 0;
+    public static final int OFFLINE = 1;
+    public static final int BUSY = 2;
+    public static final int AWAY = 3;
+    
+    public static final int MALE = 0;
+    public static final int FEMALE = 1;
 
     private String email;
     private int id;
@@ -29,8 +27,8 @@ public class Contact implements Serializable{
     private String lname;
     private String pass;//TODO
     private Date birthdate;
-    private statusenum status;
-    private genderenum gender;
+    private int status;
+    private int gender;
 
     public String getEmail() {
         return email;
@@ -80,19 +78,19 @@ public class Contact implements Serializable{
         this.birthdate = birthdate;
     }
 
-    public statusenum getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(statusenum status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public genderenum getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(genderenum gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
     

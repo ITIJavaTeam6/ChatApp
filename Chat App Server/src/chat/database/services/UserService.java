@@ -4,9 +4,51 @@ import chat.database.exceptions.MoreThanOneItemException;
 import chat.database.beans.User;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class UserService {
 
+    public Vector loadContact(int userId) throws SQLException {
+        Connection connection = null;
+        ContactService contactService = new ContactService();
+        Vector vect = null;
+        Statement stmt = connection.createStatement();
+        String querystring = new String("select fname,lname,password,email,birthdate,gender from contacts where userId=" + userId + "");
+        ResultSet rs = stmt.executeQuery(querystring);
+        int i = 0;
+        Vector vect_container = new Vector();
+        while (rs.next()) {
+            vect = new Vector();
+            vect.addElement(rs.getString("fname"));
+            vect.addElement(rs.getString("lname"));
+            vect.addElement(rs.getString("password"));
+            vect.addElement(rs.getString("email"));
+            vect.addElement(rs.getString("birthdate"));
+            vect.addElement(rs.getInt("gender"));
+            vect_container.add(vect);
+            System.out.println(vect_container.get(i));
+            i++;
+        }
+
+        return vect_container;
+
+    }
+
+//    public Vector<User> loadContact(int userId) throws SQLException {
+//        Connection connection = null;
+//        ContactService contactService = new ContactService();
+//        //User[] arr = null;
+//        Vector<User> list = new Vector<>();
+//
+//        int[] contactsid = contactService.getContacts(userId);
+//        for (int i = 0; i < contactsid.length; i++) {
+//
+//            list.add(selectOne(contactsid[i]));
+//
+//        }
+//        return list;
+//
+//    }
     public User[] selectAll() throws SQLException {
         Connection connection = null;
         User[] arr = null;
@@ -196,6 +238,78 @@ public class UserService {
             if (connection != null) {
                 connection.close();
             }
+        }
+
+    }
+
+    public int getOnlineStatus() throws SQLException {
+        Connection connection = null;
+        int count = 0;
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT count(status) FROM user WHERE status = 0");
+
+            while (rs.next()) {
+                count++;
+
+            }
+
+            rs.close();
+            stmnt.close();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            return count;
+        }
+
+    }
+
+    public int getOffLineStatus() throws SQLException {
+        Connection connection = null;
+        int count = 0;
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT count(status) FROM user WHERE status =1");
+
+            while (rs.next()) {
+                count++;
+
+            }
+
+            rs.close();
+            stmnt.close();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            return count;
+        }
+
+    }
+
+    public int getBusyStatus() throws SQLException {
+        Connection connection = null;
+        int count = 0;
+        try {
+            connection = new DbService().getConnection();
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("SELECT count(status) FROM user WHERE status = 2");
+
+            while (rs.next()) {
+                count++;
+
+            }
+
+            rs.close();
+            stmnt.close();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            return count;
         }
 
     }

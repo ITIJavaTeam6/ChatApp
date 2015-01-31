@@ -10,8 +10,10 @@ import chat.data.model.*;
 import chat.database.beans.User;
 import chat.database.services.ContactService;
 import chat.database.services.DbService;
+import chat.database.services.GroupService;
 import chat.database.services.UserService;
 import chat.server.interfaces.RMIServerInterface;
+import java.io.File;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
@@ -93,25 +95,68 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     @Override
-    public void changeState(int value, int userID) throws RemoteException {
-        UserService user;
+    public void changeState(int status, int userID) throws RemoteException {
+        UserService user = new UserService();
         try {
             System.out.println("here in server");
-            DbService db = new DbService();
-            user = new UserService();
+            ContactService service = new ContactService();
             User x = user.selectOne(userID);
             if (x != null) {
-                x.setStatus(value);
+                x.setStatus(status);
                 user.update(x);
                 System.out.println("state changed :)");
+                int[] v = service.getContacts(userID);
+                
+                updateUserContactList(userID);
+                for (int i = 0; i < v.length; i++) {
+
+                    updateUserContactList(v[i]);
+                }
+
             } else {
                 System.out.println("error");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             //Logger.getLogger(ChangeStateImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateUserContactList(int userId) {
+        if (clients.containsKey(userId)) {
+            try {
+                GroupService user = new GroupService();
+    //        try {
+    //            System.out.println("here in server");
+    //            DbService db = new DbService();
+    //            UserService users = new UserService();
+    //            ContactService service = new ContactService();
+    //
+    //            int[] v = service.getContacts(userId);
+    //            for (int i = 0; i < v.length; i++) {
+    //                nested_contacts = service.getContacts(v[i]);
+    //              
+    //            }
+    //
+    //        } catch (SQLException ex) {
+    //            ex.printStackTrace();
+    //        }
+                Vector<Group> groups = user.getGroupsDataModelOfUser(userId);
+                System.out.println("updating user contact list");
+                for (Group group : groups) {
+                    System.out.print("this is his groups ");
+                    System.out.println(group.getId());
+                }
+                try {
+                    clients.get(userId).refreshGroups(groups);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -196,5 +241,23 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
 
     private boolean isNull(User user) {
         return user == null;
+    public void sendFilePermission(File f, Group group, int receiverid, int senderid) {
+        RMIClientInterface sender = clients.get(senderid);
+        if (clients.containsKey(receiverid)) {
+            RMIClientInterface receiver = clients.get(receiverid);
+            try {
+                String fileName = f.getName();
+                boolean isAccepted =  receiver.receiveFilePermission(fileName, group);
+                sender.sendFile(f, group, isAccepted, receiver);
+            } catch (RemoteException ex) {
+                Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                sender.sendFile(f, group, false, null);
+            } catch (RemoteException ex) {
+                Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

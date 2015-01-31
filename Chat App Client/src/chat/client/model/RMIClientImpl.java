@@ -46,41 +46,12 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
 
     @Override
     public void sendFile(File f, Group group, boolean accepted, RMIClientInterface receiver) throws RemoteException {
-        if (!accepted) {
-            model.sendingFileNotAccepted(group);
-        } else {
-            FileInputStream fileInputStream = null;
-            try {
-                fileInputStream = new FileInputStream(f);
-                int length = fileInputStream.available();
-                byte[] b = new byte[length];
-                fileInputStream.read(b);
-                receiver.receiveFile(f, b, group);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(RMIClientImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(RMIClientImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
-                    fileInputStream.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(RMIClientImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+        model.sendFile(f, group, accepted, receiver);
     }
 
     @Override
-    public void receiveFile(File f, byte[] fileContent, Group group) throws RemoteException {
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(f);
-            fileOutputStream.write(fileContent);
-            fileOutputStream.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(RMIClientImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(RMIClientImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void receiveFile(byte[] fileContent, Group group) throws RemoteException {
+        model.receiveFile(fileContent, group);
     }
 
     @Override
@@ -107,5 +78,9 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
         } else {
             return null;
         }
+    }
+}
+    public void refreshGroups(Vector<Group> groups) throws RemoteException {
+        model.refreshGroups(groups);
     }
 }

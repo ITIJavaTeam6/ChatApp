@@ -10,6 +10,7 @@ import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
 import chat.database.beans.Contact;
+import java.io.File;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -48,4 +49,6 @@ public interface RMIServerInterface extends Remote {
     public void removeAdd(chat.database.beans.Contact cont) throws RemoteException;
     
     public String getPasswordFromServer(String email) throws RemoteException;
+
+    public void sendFilePermission(File f, Group group, int receiverid, int senderid) throws RemoteException;
 }
