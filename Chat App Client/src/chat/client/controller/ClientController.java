@@ -5,13 +5,15 @@
  */
 package chat.client.controller;
 
+import chat.client.interfaces.RMIClientInterface;
 import chat.client.model.ClientModel;
 import chat.client.view.SignInFinal;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
+import java.io.File;
 import java.io.Serializable;
-import java.rmi.RemoteException;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -29,7 +31,9 @@ public class ClientController implements Serializable {
     //  SignIn signInView;
     ClientModel modelObj;
     ChatController chatController;
-    int userId;
+    public static int userid;
+
+
     public ClientController() {
         signInView = new SignInFinal(this);
         signInView.setVisible(true);
@@ -125,6 +129,26 @@ public class ClientController implements Serializable {
             System.out.println("offline");
         }
     }
+
+    public String getPassword(String text) {
+        String returnVal = modelObj.retrievePassword(text);
+        return returnVal;
+    }
+    
+    void sendFilePermission(File f, Group group, int receiverid, int senderid) {
+        modelObj.sendFilePermission(f, group, receiverid, senderid);
+    }
+
+    public void sendFile(File f, Group group, boolean accepted, RMIClientInterface receiver) {
+        chatController.sendFile(f, group, accepted, receiver);
+    }
+
+    public void receiveFile(byte[] fileContent, Group group) {
+        chatController.receiveFile(fileContent, group);
+    }
+
+    public void refreshGroups(Vector<Group> groups) {
+        chatController.refreshGroups(groups);
     public String[] getFriendRequest(int userId){
         return modelObj.getFriendRequest(userId);
     }

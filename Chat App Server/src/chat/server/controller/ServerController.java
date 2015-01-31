@@ -49,7 +49,7 @@ public class ServerController {
             registry = LocateRegistry.createRegistry(5000);
             registry.rebind("chat", server);
             registry.rebind("signIn", signIn);
-            // registry.rebind("changState", state);
+            
             System.out.println("Waiting for connections");
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
@@ -70,7 +70,6 @@ public class ServerController {
         try {
             registry.unbind("chat");
             registry.unbind("signIn");
-            registry.unbind("changState");
 
             UnicastRemoteObject.unexportObject(signIn, true);
             UnicastRemoteObject.unexportObject(server, true);

@@ -10,6 +10,59 @@ import java.util.logging.Logger;
 
 public class ContactService {
 
+//    public int[] getNonOffLineContacts(int userId) throws SQLException {
+//        Connection connection = null;
+//        int[] arr;
+//        ArrayList<Integer> list = new ArrayList<Integer>();
+//
+//        connection = new DbService().getConnection();
+//
+//        Statement stmnt = connection.createStatement();
+//        System.out.println(userId);
+//        ResultSet rs = stmnt.executeQuery("SELECT contactId FROM contact where userId= " + userId + " and status <> 1");
+//        while (rs.next()) {
+//            list.add(rs.getInt("contactId"));
+//        }
+//        arr = new int[list.size()];
+//        for (int i = 0; i < list.size(); i++) {
+//            arr[i] = list.get(i);
+//        }
+//
+//        if (connection != null) {
+//            connection.close();
+//        }
+//
+//        return arr;
+//
+//    }
+
+    public int[] getContacts(int userId) throws SQLException {
+        Connection connection = null;
+        int[] arr;
+        ArrayList<Integer> list = new ArrayList<Integer>();
+
+        connection = new DbService().getConnection();
+
+        Statement stmnt = connection.createStatement();
+        System.out.println(userId);
+        ResultSet rs = stmnt.executeQuery("SELECT contactId FROM contact where userId= " + userId + "");
+        while (rs.next()) {
+            list.add(rs.getInt("contactId"));
+        }
+        arr = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            arr[i] = list.get(i);
+        }
+
+//        } finally {
+//            if (connection != null) {
+//                connection.close();
+//            }
+//        }
+        return arr;
+
+    }
+
     public Contact[] selectAll() throws SQLException {
         Connection connection = null;
         Contact[] arr = null;
