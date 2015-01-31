@@ -78,13 +78,14 @@ public class UserService {
         }
 
     }
-     public User selectOne(String email) throws SQLException {
+
+    public User selectOne(String email) throws SQLException {
         Connection connection = null;
         User item = null;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("SELECT * FROM user WHERE email = '"+email+"'" );
+            ResultSet rs = stmnt.executeQuery("SELECT * FROM user WHERE email = '" + email + "'");
             int count = 0;
             while (rs.next()) {
                 count++;
@@ -113,8 +114,8 @@ public class UserService {
             }
             return item;
         }
-
     }
+
     public int insert(User item) throws SQLException {
         Connection connection = null;
         try {
@@ -198,5 +199,5 @@ public class UserService {
         }
 
     }
-    
+
 }

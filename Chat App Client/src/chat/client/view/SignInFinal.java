@@ -6,6 +6,8 @@
 package chat.client.view;
 
 import chat.client.controller.ClientController;
+import chat.client.gui.util.GUIUtils;
+import java.awt.Cursor;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,12 +19,15 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -46,6 +51,11 @@ public class SignInFinal extends javax.swing.JFrame {
     public SignInFinal(ClientController aThis) {
         this.controller = aThis;
         initComponents();
+        this.setIconImage(GUIUtils.logo);
+        getRootPane().setDefaultButton(jButton1);
+        jPanel1.getRootPane().setDefaultButton(jButton1);
+        this.setIconImage(GUIUtils.logo);
+        getFrameMemory();
     }
 
     private SignInFinal() {
@@ -74,6 +84,7 @@ public class SignInFinal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Chatto");
         setMinimumSize(new java.awt.Dimension(320, 710));
         setResizable(false);
 
@@ -121,11 +132,28 @@ public class SignInFinal extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel4MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel4MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel4MouseExited(evt);
+            }
         });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 255));
         jLabel5.setText("Forget your password? ");
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel5MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel5MouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -145,17 +173,16 @@ public class SignInFinal extends javax.swing.JFrame {
                                     .addComponent(jLabel4)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(41, 41, 41)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jTextField1)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jPasswordField1)
-                                        .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jCheckBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(68, 68, 68)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jTextField1)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jPasswordField1)
+                                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jCheckBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(109, 109, 109)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 41, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -178,9 +205,9 @@ public class SignInFinal extends javax.swing.JFrame {
                 .addComponent(jCheckBox2)
                 .addGap(29, 29, 29)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addContainerGap())
         );
@@ -198,10 +225,14 @@ public class SignInFinal extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (!jTextField1.getText().matches(EMAIL_PATTERN)) {
             showErrorMessage("Please enter a valid ID", "Invalid data");
+            jTextField1.setText("");
+            jTextField1.requestFocus();
             isReadyToSignIn = false;
         }
         if (jPasswordField1.getText().isEmpty()) {
             showErrorMessage("Please enter a password", "Empty password");
+            jPasswordField1.setText("");
+            jPasswordField1.requestFocus();
             isReadyToSignIn = false;
         }
 
@@ -221,15 +252,40 @@ public class SignInFinal extends javax.swing.JFrame {
         jPasswordField1.selectAll();
     }//GEN-LAST:event_jPasswordField1FocusGained
 
+    private void jLabel4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseEntered
+        Cursor normalCursor = new Cursor(Cursor.HAND_CURSOR);
+        setCursor(normalCursor);
+    }//GEN-LAST:event_jLabel4MouseEntered
+
+    private void jLabel4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseExited
+        Cursor normalCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+        setCursor(normalCursor);
+    }//GEN-LAST:event_jLabel4MouseExited
+
+    private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
+        Cursor normalCursor = new Cursor(Cursor.HAND_CURSOR);
+        setCursor(normalCursor);
+    }//GEN-LAST:event_jLabel5MouseEntered
+
+    private void jLabel5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseExited
+        Cursor normalCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+        setCursor(normalCursor);
+    }//GEN-LAST:event_jLabel5MouseExited
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        CallMyPassword callMyPassword = new CallMyPassword(controller);
+        callMyPassword.setVisible(true);
+    }//GEN-LAST:event_jLabel5MouseClicked
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+         
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -246,15 +302,9 @@ public class SignInFinal extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(SignInFinal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+    */
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SignInFinal().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -322,6 +372,7 @@ public class SignInFinal extends javax.swing.JFrame {
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer t = tf.newTransformer();
             t.transform(src, sr);
+
         } catch (ParserConfigurationException ex) {
             System.out.println("7a7aaaaaaaaaaaaaaaaaaaa");
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
@@ -330,37 +381,57 @@ public class SignInFinal extends javax.swing.JFrame {
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             try {
-                String data = " <?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><!--\n"
-                        + "    Document   : ClientConfig.xml\n"
-                        + "    Created on : 08 ????, 2010, 09:38 ?\n"
-                        + "    Author     : Lupate\n"
-                        + "    Description:\n"
-                        + "        Purpose of the document follows.\n"
-                        + "--><root>\n"
-                        + "    <theme>9</theme>\n"
-                        + "    <userID></userID>\n"
-                        + "    <password></password>\n"
-                        + "    <rememberMe></rememberMe>\n"
-                        + "    <rememberPassword></rememberPassword>\n"
-                        + "</root>";
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = builderFactory.newDocumentBuilder();
 
-                File file = new File("ClientConfig.xml");
+                //root 
+                Document document = builder.newDocument();
+                Element rootElement = document.createElement("root");
+                document.appendChild(rootElement);
 
-                //if file doesnt exists, then create it
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
+                //theme
+                Element staffElement = document.createElement("theme");
+                rootElement.appendChild(staffElement);
 
-                //true = append file
-                FileWriter fileWritter = new FileWriter(file.getName(), true);
-                BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-                bufferWritter.write(data);
-                bufferWritter.close();
+                //userID
+                Element fNameElement = document.createElement("userID");
+                fNameElement.appendChild(document.createTextNode("Muhammad"));
+                staffElement.appendChild(fNameElement);
 
-                System.out.println("Done appending xml ..");
+                //pass
+                Element lNameElement = document.createElement("password");
+                lNameElement.appendChild(document.createTextNode("Edmerdash"));
+                staffElement.appendChild(lNameElement);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                //rememberME
+                Element nickname = document.createElement("rememberMe");
+                nickname.appendChild(document.createTextNode("true"));
+                staffElement.appendChild(nickname);
+
+                //rememberPassword
+                Element salary = document.createElement("rememberPassword");
+                salary.appendChild(document.createTextNode("true"));
+                staffElement.appendChild(salary);
+
+                // write the content into xml file
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                transformer.setOutputProperty(OutputKeys.INDENT, "YES");
+                DOMSource source = new DOMSource(document);
+                StreamResult result = new StreamResult(new File("ClientConfig.xml"));
+
+                // Output to console for testing
+                // StreamResult result = new StreamResult(System.out);
+                transformer.transform(source, result);
+
+                System.out.println("xml file saved..!");
+
+            } catch (ParserConfigurationException ex1) {
+                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (TransformerConfigurationException ex1) {
+                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (TransformerException ex1) {
+                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
             }
 
         } catch (TransformerException ex) {
@@ -397,11 +468,102 @@ public class SignInFinal extends javax.swing.JFrame {
             }
 
         } catch (ParserConfigurationException ex) {
+            System.out.println("mmmmmmmmmmmmmmmmmmmmm");
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
+            System.out.println("xxxxxxxxxxxxxxxxxxxxxx");
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = builderFactory.newDocumentBuilder();
+
+                //root 
+                Document document = builder.newDocument();
+                Element rootElement = document.createElement("root");
+                document.appendChild(rootElement);
+
+                //theme
+                Element staffElement = document.createElement("theme");
+                rootElement.appendChild(staffElement);
+
+                //userID
+                Element fNameElement = document.createElement("userID");
+                fNameElement.appendChild(document.createTextNode("Muhammad"));
+                staffElement.appendChild(fNameElement);
+
+                //pass
+                Element lNameElement = document.createElement("password");
+                lNameElement.appendChild(document.createTextNode("Edmerdash"));
+                staffElement.appendChild(lNameElement);
+
+                //rememberME
+                Element nickname = document.createElement("rememberMe");
+                nickname.appendChild(document.createTextNode("true"));
+                staffElement.appendChild(nickname);
+
+                //rememberPassword
+                Element salary = document.createElement("rememberPassword");
+                salary.appendChild(document.createTextNode("true"));
+                staffElement.appendChild(salary);
+
+                // write the content into xml file
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                transformer.setOutputProperty(OutputKeys.INDENT, "YES");
+                DOMSource source = new DOMSource(document);
+                StreamResult result = new StreamResult(new File("ClientConfig.xml"));
+
+                // Output to console for testing
+                // StreamResult result = new StreamResult(System.out);
+                transformer.transform(source, result);
+
+                System.out.println("xml file saved..!");
+
+            } catch (ParserConfigurationException ex1) {
+                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (TransformerConfigurationException ex1) {
+                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (TransformerException ex1) {
+                Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+
+            /*
+             try {
+             String data = " <?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><!--\n"
+             + "    Document   : ClientConfig.xml\n"
+             + "    Created on : ?\n"
+             + "    Author     : Lupate\n"
+             + "    Description:\n"
+             + "        Purpose of the document follows.\n"
+             + "--><root>\n"
+             + "    <theme>9</theme>\n"
+             + "    <userID>example@server.com</userID>\n"
+             + "    <password>55555</password>\n"
+             + "    <rememberMe>true</rememberMe>\n"
+             + "    <rememberPassword>true</rememberPassword>\n"
+             + "</root>";
+
+             File file = new File("ClientConfig.xml");
+
+             //if file doesnt exists, then create it
+             if (!file.exists()) {
+             file.createNewFile();
+             }
+
+             //true = append file
+             FileWriter fileWritter = new FileWriter(file.getName(), true);
+             BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+             bufferWritter.write(data);
+             bufferWritter.close();
+
+             System.out.println("Done appending xml ..");
+
+             } catch (IOException e) {
+             e.printStackTrace();
+             }
+
+             */
         }
     }
 }

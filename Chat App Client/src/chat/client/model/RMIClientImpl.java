@@ -9,6 +9,7 @@ package chat.client.model;
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.Group;
 import chat.data.model.Message;
+import chat.database.beans.User;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,10 +26,11 @@ import java.util.logging.Logger;
  *
  * @author sharno
  */
-public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInterface,Serializable {
+public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInterface, Serializable {
+
     ClientModel model;
-    
-    public RMIClientImpl (ClientModel model) throws RemoteException {
+
+    public RMIClientImpl(ClientModel model) throws RemoteException {
         this.model = model;
     }
 
@@ -35,7 +38,7 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
     public void receiveMessage(Message message, Group group) throws RemoteException {
         model.displayMessage(message, group);
     }
-    
+
     @Override
     public boolean receiveFilePermission(String fileNameString, Group group) throws RemoteException {
         return model.displayReceiveFilePermission(fileNameString, group);
@@ -43,7 +46,7 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
 
     @Override
     public void sendFile(File f, Group group, boolean accepted, RMIClientInterface receiver) throws RemoteException {
-        if (! accepted) {
+        if (!accepted) {
             model.sendingFileNotAccepted(group);
         } else {
             FileInputStream fileInputStream = null;
@@ -94,5 +97,15 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
     public void receiveAdd(String email) throws RemoteException {
         System.out.println(email);
         model.receiveAdd(email);
+    }
+
+    @Override
+    public String getPassword(String email) throws RemoteException {
+        String pass = model.retrievePassword(email);
+        if (pass != null) {
+            return pass;
+        } else {
+            return null;
+        }
     }
 }

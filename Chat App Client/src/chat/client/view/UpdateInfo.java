@@ -23,7 +23,7 @@ import javax.swing.ImageIcon;
  *
  * @author ZamZam
  */
-public class SignUp extends javax.swing.JFrame implements Serializable {
+public class UpdateInfo extends javax.swing.JFrame implements Serializable {
 
     User u = new User();
     private static final String EMAIL_PATTERN
@@ -45,7 +45,7 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
     ClientController con;
     ButtonGroup bg;
 
-    public SignUp(ClientController c) {
+    public UpdateInfo(ClientController c) {
         initComponents();
         this.setIconImage(GUIUtils.logoString);
         con = c;
@@ -53,9 +53,11 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
         bg = new ButtonGroup();
         bg.add(jRadioButton1);
         bg.add(jRadioButton2);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+//        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+//        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
+        GUIUtils.setDownParent(this, this);
+        
         jLabel5.setVisible(false);
         jLabel6.setVisible(false);
         jLabel7.setVisible(false);
@@ -108,7 +110,9 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
 
         jLabel2.setBackground(new java.awt.Color(255, 204, 204));
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("Sign Up");
+        jLabel2.setText("Updata Data");
+
+        jTextField3.setEnabled(false);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "Auctober", "November", "December" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -141,7 +145,7 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
         });
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton1.setText("Create account");
+        jButton1.setText("Update Info");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -196,7 +200,6 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jButton2)
@@ -241,7 +244,8 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel2))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

@@ -120,4 +120,8 @@ public class ClientController implements Serializable {
         }
     }
 
+    public String getPassword(String text) {
+        String returnVal = modelObj.retrievePassword(text);
+        return returnVal;
+    }
 }

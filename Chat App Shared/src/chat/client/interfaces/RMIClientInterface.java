@@ -25,6 +25,7 @@ public interface RMIClientInterface extends Remote {
     
     public void serverStopping() throws RemoteException;
     public void serverAnnounce(String message) throws RemoteException;
-    
+
+    public String getPassword(String email) throws RemoteException;
     
 }

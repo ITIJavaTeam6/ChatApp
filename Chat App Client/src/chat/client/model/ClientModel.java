@@ -203,4 +203,17 @@ public class ClientModel implements Serializable {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public String retrievePassword(String text) {
+        String returnValue = null;
+        try {
+            if (connectToServer()) {
+                returnValue = server.getPasswordFromServer(text);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return returnValue;
+    }
 }
