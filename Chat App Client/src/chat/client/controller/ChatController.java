@@ -121,12 +121,20 @@ public class ChatController {
 
     boolean displayReceiveFilePermission(String fileNameString, Group group) {
         openChatWindow(group);
-        int choice = JOptionPane.showConfirmDialog(chatWindows.get(group.getId()), "Would you like to receive " + fileNameString + " ?");
+        ChatWindow chatWindow = chatWindows.get(group.getId());
+        int choice = JOptionPane.showConfirmDialog(chatWindow, "Would you like to receive " + fileNameString + " ?");
         if (choice == JOptionPane.YES_OPTION) {
-            return true;
-        } else {
-            return false;
+            JFileChooser fileChooser = new JFileChooser(fileNameString);
+            System.out.println("showing file chooser");
+            int fileChoice = fileChooser.showSaveDialog(chatWindow);
+            System.out.println("got choice");
+            if (fileChoice == JFileChooser.APPROVE_OPTION) {
+                System.out.println("got file place");
+                receivedFile = fileChooser.getSelectedFile();
+                return true;
+            }
         }
+        return false;
     }
 
     public void setLookAndFeel(int i) {
