@@ -124,7 +124,7 @@ public class ClientController implements Serializable {
     public void sendAdd(String mail) {
         int state = modelObj.checkUserExist(mail);
         if (state == 3) {
-            modelObj.sendAdd(mail);
+            modelObj.sendAdd(mail,userId);
             System.out.println("online");
         } else {
             modelObj.insertAddRequest(mail);
