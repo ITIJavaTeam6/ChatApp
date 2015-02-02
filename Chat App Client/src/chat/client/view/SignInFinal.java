@@ -51,8 +51,8 @@ public class SignInFinal extends javax.swing.JFrame {
         this.setIconImage(GUIUtils.logo);
         getRootPane().setDefaultButton(jButton1);
         jPanel1.getRootPane().setDefaultButton(jButton1);
-        getFrameMemory();
         jLabel1.setIcon(new ImageIcon(GUIUtils.logoString));
+        getFrameMemory();
     }
 
     private SignInFinal() {
@@ -89,6 +89,7 @@ public class SignInFinal extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(125, 240));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chat/client/view/login_icon.png"))); // NOI18N
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel1.setMinimumSize(new java.awt.Dimension(312, 150));
 
@@ -158,29 +159,26 @@ public class SignInFinal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(78, 78, 78)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jPasswordField1)
-                                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jCheckBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(109, 109, 109)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 41, Short.MAX_VALUE))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2)
+                            .addComponent(jTextField1)
+                            .addComponent(jLabel3)
+                            .addComponent(jPasswordField1)
+                            .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jCheckBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(109, 109, 109)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,25 +217,7 @@ public class SignInFinal extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (!jTextField1.getText().matches(EMAIL_PATTERN)) {
-            showErrorMessage("Please enter a valid ID", "Invalid data");
-            jTextField1.setText("");
-            jTextField1.requestFocus();
-            isReadyToSignIn = false;
-        }
-        if (jPasswordField1.getText().isEmpty()) {
-            showErrorMessage("Please enter a password", "Empty password");
-            jPasswordField1.setText("");
-            jPasswordField1.requestFocus();
-            isReadyToSignIn = false;
-        }
-
-        if (isReadyToSignIn) {
-            System.out.println("User data is valid .. ready to sign in");
-            setFrameMemory();
-            controller.signIn(jTextField1.getText(), jPasswordField1.getText());
-
-        }
+        signIn();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
@@ -391,29 +371,35 @@ public class SignInFinal extends javax.swing.JFrame {
 
             NodeList remember = root.getElementsByTagName("rememberMe");
             NodeList rememberpass = root.getElementsByTagName("rememberPassword");
+            NodeList isExit = root.getElementsByTagName("isExit");
 
             Element e1 = (Element) remember.item(0);
             Element e2 = (Element) rememberpass.item(0);
+            Element e3 = (Element) isExit.item(0);
 
-            if (e1 == null || e2 == null) {
+            if (e1 == null || e2 == null || e3 == null) {
                 generateClientConfigXML();
 
-            }
+            } else {
 
-            if (Boolean.parseBoolean(e1.getTextContent())) {
-                NodeList userid = root.getElementsByTagName("userID");
-                Element e = (Element) userid.item(0);
-                jTextField1.setText(e.getTextContent());
-                jCheckBox1.setSelected(true);
-            }
+                if (Boolean.parseBoolean(e1.getTextContent())) {
+                    NodeList userid = root.getElementsByTagName("userID");
+                    Element e = (Element) userid.item(0);
+                    jTextField1.setText(e.getTextContent());
+                    jCheckBox1.setSelected(true);
+                }
 
-            if (Boolean.parseBoolean(e2.getTextContent())) {
-                NodeList pass = root.getElementsByTagName("password");
-                Element e = (Element) pass.item(0);
-                jPasswordField1.setText(e.getTextContent());
-                jCheckBox2.setSelected(true);
-            }
+                if (Boolean.parseBoolean(e2.getTextContent())) {
+                    NodeList pass = root.getElementsByTagName("password");
+                    Element e = (Element) pass.item(0);
+                    jPasswordField1.setText(e.getTextContent());
+                    jCheckBox2.setSelected(true);
+                }
 
+                if (Boolean.parseBoolean(e3.getTextContent())) {
+                    signIn();
+                }
+            }
         } catch (ParserConfigurationException ex) {
             System.out.println("mmmmmmmmmmmmmmmmmmmmm");
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
@@ -497,6 +483,11 @@ public class SignInFinal extends javax.swing.JFrame {
             salary.appendChild(document.createTextNode("true"));
             rootElement.appendChild(salary);
 
+            //isExit
+            Element isExit = document.createElement("isExit");
+            isExit.appendChild(document.createTextNode("true"));
+            rootElement.appendChild(isExit);
+
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -516,6 +507,29 @@ public class SignInFinal extends javax.swing.JFrame {
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerException ex) {
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void signIn() {
+        System.out.println("inside siginIn();******************************");
+        if (!jTextField1.getText().matches(EMAIL_PATTERN)) {
+            showErrorMessage("Please enter a valid ID", "Invalid data");
+            jTextField1.setText("");
+            jTextField1.requestFocus();
+            isReadyToSignIn = false;
+        }
+        if (jPasswordField1.getText().isEmpty()) {
+            showErrorMessage("Please enter a password", "Empty password");
+            jPasswordField1.setText("");
+            jPasswordField1.requestFocus();
+            isReadyToSignIn = false;
+        }
+
+        if (isReadyToSignIn) {
+            System.out.println("User data is valid .. ready to sign in");
+            setFrameMemory();
+            controller.signIn(jTextField1.getText(), jPasswordField1.getText());
+            this.dispose();
         }
     }
 }

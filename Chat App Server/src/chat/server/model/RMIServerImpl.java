@@ -47,6 +47,8 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     public void unregister(RMIClientInterface client, Integer userid) throws RemoteException {
         clients.remove(userid, client);
         System.out.println("unregistered client");
+        
+        changeState(Contact.OFFLINE, userid);
     }
 //
 
