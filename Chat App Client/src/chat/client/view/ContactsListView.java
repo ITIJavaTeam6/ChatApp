@@ -48,7 +48,7 @@ public class ContactsListView extends JFrame {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
         setResizable(false);
-        setBounds(screenWidth - 400, 90, 300, 600);
+        setBounds(screenWidth - 400, 90, 250, 600);  //change here 300
         setMinimumSize(new Dimension(300, 600));
         setMaximumSize(new Dimension(400, 700));
 
@@ -60,7 +60,7 @@ public class ContactsListView extends JFrame {
         contactsView = new ContactsPanel(chatController);
         contentPane.add(contactsView, BorderLayout.CENTER);
 
-        UserPanel userPanel = new UserPanel();
+        UserPanel userPanel = new UserPanel(clientcontroller);
         contentPane.add(userPanel, BorderLayout.NORTH);
 
         ButtonsPanel buttonsPanel = new ButtonsPanel(con);

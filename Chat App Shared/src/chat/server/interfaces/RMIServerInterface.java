@@ -34,7 +34,7 @@ public interface RMIServerInterface extends Remote {
 
     public void sendMessage(Message message, Group group) throws RemoteException;
 
-    public void sendAdd(String email, RMIClientInterface c) throws RemoteException;
+    public void sendAdd(String email,int userId) throws RemoteException;
 
     public void callForSendFilePermission(String fileName, Group group, int receiverid) throws RemoteException;
 
