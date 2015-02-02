@@ -8,6 +8,7 @@ package chat.client.controller;
 import chat.client.interfaces.RMIClientInterface;
 import chat.client.model.ClientModel;
 import chat.client.view.SignInFinal;
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
@@ -154,5 +155,9 @@ public class ClientController implements Serializable {
 
     public String[] getFriendRequest(int userId) {
         return modelObj.getFriendRequest(userId);
+    }
+
+    public void createGroupChat(Vector<Contact> groupContacts) {
+        modelObj.createGroupChat(groupContacts);
     }
 }
