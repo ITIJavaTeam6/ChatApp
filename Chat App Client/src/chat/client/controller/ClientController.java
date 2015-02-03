@@ -54,7 +54,7 @@ public class ClientController implements Serializable {
             signInView.setVisible(true);
             GUIUtils.setCentreScreen(signInView);
         }
-        
+
     }
 
     private void readServerConfig() {
@@ -96,10 +96,9 @@ public class ClientController implements Serializable {
             signInView.showErrorMessage("Server is down, please come back again after several minutes ..!", "Server Maintaince");
         } else if (id == ClientModel.USER_NOT_FOUND) {
             signInView.showErrorMessage("Invalid ID or password", "User Not Found");
-        } else if(id==-3){
-            this.reciveMessage("you already sign in !");
-        }
-        else {
+        } else if (id == -3) {
+            this.reciveMessage("You already signed in !");
+        } else {
             chatController = new ChatController(this);
             modelObj.changeState(0, id);
             userId = id;
@@ -136,8 +135,9 @@ public class ClientController implements Serializable {
         modelObj = new ClientModel(this, serverIP);
     }
 
-    public void signUp(User u) {
-        modelObj.signUp(u);
+    public boolean signUp(User u) {
+        boolean exist = modelObj.signUp(u);
+        return exist;
     }
 
     public boolean displayReceiveFilePermission(String fileNameString, Group group) {

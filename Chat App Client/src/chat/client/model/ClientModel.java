@@ -57,7 +57,7 @@ public class ClientModel implements Serializable {
             registry = LocateRegistry.getRegistry(serverIP, PORT_NUMBER);
             server = (RMIServerInterface) registry.lookup("chat");
             signInObj = (SignInInt) registry.lookup("signIn");
-            
+
             System.out.println("connected to server");
             return true;
         } catch (RemoteException ex) {
@@ -78,16 +78,15 @@ public class ClientModel implements Serializable {
                 Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            if (id != -1&&id!=-3) {
+            if (id != -1 && id != -3) {
                 try {
                     server.register(client, id);
                     userid = id;
                 } catch (RemoteException ex) {
                     Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            else{
-                id=-3;
+            } else {
+                id = -3;
             }
             return id;
         } else {
@@ -133,14 +132,16 @@ public class ClientModel implements Serializable {
         controller.serverAnnounce(message);
     }
 
-    public void signUp(User u) {
+    public boolean signUp(User u) {
+        boolean exist = false;
         try {
             if (connectToServer()) {
-                server.signUp(u);
+                exist = server.signUp(u);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return exist;
     }
 
     boolean displayReceiveFilePermission(String fileNameString, Group group) {
@@ -162,9 +163,9 @@ public class ClientModel implements Serializable {
         return contactid;
     }
 
-    public void sendAdd(String mail,int userId) {
+    public void sendAdd(String mail, int userId) {
         try {
-            server.sendAdd(mail,userId);
+            server.sendAdd(mail, userId);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -175,11 +176,11 @@ public class ClientModel implements Serializable {
             Contact contact = new Contact();
             contact.setUserId(server.checkUserExist(mail));
             contact.setContactId(userid);
-            System.out.println("model insertAddRequest "+contact.getUserId());
-            System.out.println("model insertAddRequest "+contact.getContactId());
+            System.out.println("model insertAddRequest " + contact.getUserId());
+            System.out.println("model insertAddRequest " + contact.getContactId());
             contact.setPending(true);
             server.insertAdd(contact);
-            
+
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -189,28 +190,29 @@ public class ClientModel implements Serializable {
         try {
             int id = server.checkUserExist(email);
             Contact contact = new Contact();
-            Contact sender=new Contact();
-            
+            Contact sender = new Contact();
+
             contact.setUserId(id);
             contact.setContactId(userid);
             contact.setPending(false);
-            
+
             sender.setContactId(id);
             sender.setUserId(userid);
             sender.setPending(false);
-            
+
             server.insertAdd(contact);
             server.insertAdd(sender);
-            
+
             server.createGroup(userid, id);
             System.out.println("added");
+
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
 
     }
 
-    public void refuseRequest(String email,int userId) {
+    public void refuseRequest(String email, int userId) {
 
         try {
             Contact contact = new Contact();
@@ -250,16 +252,16 @@ public class ClientModel implements Serializable {
     public String retrievePassword(String text) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public String[] getFriendRequest(int userId){
+
+    public String[] getFriendRequest(int userId) {
         try {
             return server.friendRequest(userId);
         } catch (RemoteException ex) {
             return null;
         }
     }
-    
-    public void receiveMessage(String s){
+
+    public void receiveMessage(String s) {
         controller.reciveMessage(s);
     }
 }

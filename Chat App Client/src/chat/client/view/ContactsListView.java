@@ -2,6 +2,7 @@ package chat.client.view;
 
 import chat.client.controller.ChatController;
 import chat.client.controller.ClientController;
+import chat.client.gui.util.GUIUtils;
 import chat.data.model.Group;
 import java.awt.BorderLayout;
 import java.awt.Dimension;

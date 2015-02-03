@@ -8,6 +8,7 @@ package chat.client.view;
 
 import chat.client.controller.ChatController;
 import chat.client.controller.ClientController;
+import chat.client.gui.util.AudioPlayer;
 import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
@@ -172,6 +173,7 @@ public class ChatWindow extends javax.swing.JFrame {
 
     public void displayMessage(Message message) {
         jEditorPane1.setText(jEditorPane1.getText() + "\n" + message.getText());
+        AudioPlayer player = new AudioPlayer("chimes.wav");
     }
     public void displayMessage(String message) {
         jEditorPane1.setText(jEditorPane1.getText() + "\n" + message);

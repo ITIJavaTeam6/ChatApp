@@ -14,6 +14,7 @@ import chat.database.services.DbService;
 import chat.database.services.GroupService;
 import chat.database.services.UserService;
 import chat.server.interfaces.RMIServerInterface;
+import com.sun.scenario.effect.impl.sw.sse.SSERendererDelegate;
 import java.io.File;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -87,15 +88,22 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     }
 
     @Override
-    public void signUp(User u) throws RemoteException {
+    public boolean signUp(User u) throws RemoteException {
+        boolean exist = false;
         try {
             System.out.println("here in server imp");
             DbService dbService = new DbService();
             UserService service = new UserService();
-            service.insert(u);
+            User user = service.selectOne(u.getEmail());
+            if(user == null){
+                service.insert(u);
+            }else{
+                return true;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return exist;
     }
 
     @Override

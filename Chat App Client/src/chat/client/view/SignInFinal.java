@@ -51,7 +51,7 @@ public class SignInFinal extends javax.swing.JFrame {
         this.setIconImage(GUIUtils.logo);
         getRootPane().setDefaultButton(jButton1);
         jPanel1.getRootPane().setDefaultButton(jButton1);
-        jLabel1.setIcon(new ImageIcon(GUIUtils.logoString));
+//        jLabel1.setIcon(new ImageIcon(GUIUtils.logoString));
     }
 
     private SignInFinal() {
@@ -88,7 +88,7 @@ public class SignInFinal extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(125, 240));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chat/client/view/login_icon.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/login.png"))); // NOI18N
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel1.setMinimumSize(new java.awt.Dimension(312, 150));
 
@@ -182,9 +182,9 @@ public class SignInFinal extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
