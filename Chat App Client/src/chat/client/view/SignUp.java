@@ -11,7 +11,9 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Vector;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
 /*
@@ -30,10 +32,10 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
             = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-    private static final String Name_pattern = "^[a-z_-]{3,15}$";
-    String Fname;
-    String Lname;
-    String Email;
+    private static final String Name_pattern = "^[a-zA-Z_-]{3,15}$";
+    String fName;
+    String lName;
+    String email;
     String password;
     Long gender;
     Date birthDate;
@@ -47,7 +49,7 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
 
     public SignUp(ClientController c) {
         initComponents();
-        this.setIconImage(GUIUtils.logoString);
+//        this.setIconImage(GUIUtils.logoString);
         con = c;
         this.setResizable(false);
         bg = new ButtonGroup();
@@ -62,8 +64,8 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
         jLabel8.setVisible(false);
         jLabel9.setVisible(false);
 
-        TextPrompt tp1 = new TextPrompt("First name", jTextField1);
-        TextPrompt tp2 = new TextPrompt("Last name", jTextField2);
+//        TextPrompt tp1 = new TextPrompt("First name", jTextField1);
+//        TextPrompt tp2 = new TextPrompt("Last name", jTextField2);
         TextPrompt tp3 = new TextPrompt("EMail ", jTextField3);
         TextPrompt tp4 = new TextPrompt("Password  ", jPasswordField1);
         jButton1.setOpaque(true);
@@ -105,24 +107,19 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Chatto");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel2.setBackground(new java.awt.Color(255, 204, 204));
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Sign Up");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "Auctober", "November", "December" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "Auctober", "November", "December" }));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Year", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015" }));
 
@@ -301,37 +298,37 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        Fname = jTextField1.getText();
-        Lname = jTextField2.getText();
-        Email = jTextField3.getText();
+        fName = jTextField1.getText();
+        lName = jTextField2.getText();
+        email = jTextField3.getText();
         password = jPasswordField1.getText();
-        month = jComboBox1.getSelectedIndex() - 1;
-        day = jComboBox2.getSelectedIndex();
-        year = jComboBox3.getSelectedIndex() - 1900;
+        month = jComboBox1.getSelectedIndex();
+        day = jComboBox2.getSelectedIndex() + 1;
+        year = (Integer.parseInt(jComboBox3.getSelectedItem().toString()) - 1900);
 
-        if (!Fname.matches(Name_pattern)) {
+        if (!fName.matches(Name_pattern)) {
             jLabel5.setVisible(true);
             flag = false;
             System.out.println("Fname if");
         } else {
             jLabel5.setVisible(false);
-            System.out.println(Fname);
+            System.out.println(fName);
         }
-        if (!Lname.matches(Name_pattern)) {
+        if (!lName.matches(Name_pattern)) {
             jLabel9.setVisible(true);
             flag = false;
             System.out.println("Lname if");
         } else {
             jLabel9.setVisible(false);
-            System.out.println(Lname);
+            System.out.println(lName);
         }
-        if (!Email.matches(EMAIL_PATTERN)) {
+        if (!email.matches(EMAIL_PATTERN)) {
             jLabel6.setVisible(true);
             flag = false;
             System.out.println("Email if");
         } else {
             jLabel6.setVisible(false);
-            System.out.println(Email);
+            System.out.println(email);
         }
         if (!jRadioButton1.isSelected() && !jRadioButton2.isSelected()) {
             jLabel8.setVisible(true);
@@ -352,28 +349,32 @@ public class SignUp extends javax.swing.JFrame implements Serializable {
         }
         System.out.println(password);
         if (flag) {
-            u = new User(Fname, Lname, password, birthDate, 0, 2, new Timestamp(System.currentTimeMillis()), Email);
-            con.signUp(u);
-            System.out.println("user added");
-            flag = false;
-        }
-        if (!flag) {
-            JOptionPane.showMessageDialog(this, "error");
+            u = new User(fName, lName, password, birthDate, 0, 2, new Timestamp(System.currentTimeMillis()), email);
+            boolean exist = con.signUp(u);
+            if (exist) {
+                JOptionPane.showMessageDialog(this, "This is a registered email, please sign up with a new account ..!", "Email Exist", JOptionPane.ERROR_MESSAGE);
+            } else {
+                System.out.println("user added");
+                flag = false;
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Please, Insert invalid data to register ..!", "Invalid Data", JOptionPane.ERROR_MESSAGE);
         }
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        Vector<String> modelYears = new Vector<>();
+        for (int i = 2014; i > 1950; i--) {
+            modelYears.add(i + "");
+        }
+        jComboBox3.setModel(new DefaultComboBoxModel(modelYears));
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : ServerConfig.xml
+    Created on : 02-02-2015 06:19:31 AM
+    Author     : Lupate
+    Description:
+        Purpose of the document follows.
+-->
+
+<root>
+    <serverIP>127.0.0.1</serverIP>
+</root>

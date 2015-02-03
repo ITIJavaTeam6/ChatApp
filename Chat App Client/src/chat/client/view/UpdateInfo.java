@@ -47,7 +47,7 @@ public class UpdateInfo extends javax.swing.JFrame implements Serializable {
 
     public UpdateInfo(ClientController c) {
         initComponents();
-        this.setIconImage(GUIUtils.logoString);
+//        this.setIconImage(GUIUtils.logoString);
         con = c;
         this.setResizable(false);
         bg = new ButtonGroup();
@@ -57,15 +57,15 @@ public class UpdateInfo extends javax.swing.JFrame implements Serializable {
 //        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
         GUIUtils.setDownParent(this, this);
-        
+
         jLabel5.setVisible(false);
         jLabel6.setVisible(false);
         jLabel7.setVisible(false);
         jLabel8.setVisible(false);
         jLabel9.setVisible(false);
 
-        TextPrompt tp1 = new TextPrompt("First name", jTextField1);
-        TextPrompt tp2 = new TextPrompt("Last name", jTextField2);
+        TextPrompt tp1 = new TextPrompt("First name", jTextField2);
+        TextPrompt tp2 = new TextPrompt("Last name", jTextField1);
         TextPrompt tp3 = new TextPrompt("EMail ", jTextField3);
         TextPrompt tp4 = new TextPrompt("Password  ", jPasswordField1);
         jButton1.setOpaque(true);

@@ -2,6 +2,7 @@ package chat.client.view;
 
 import chat.client.controller.ChatController;
 import chat.client.controller.ClientController;
+import chat.client.gui.util.GUIUtils;
 import chat.data.model.Contact;
 import chat.data.model.Group;
 import java.awt.BorderLayout;
@@ -9,11 +10,28 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 @SuppressWarnings("serial")
 public class ContactsListView extends JFrame {
@@ -24,7 +42,12 @@ public class ContactsListView extends JFrame {
     ContactsPanel contactsView;
 
     private final javax.swing.JMenuBar jMenuBar1;
-    private final javax.swing.JMenu jMenu1;
+    private final javax.swing.JMenu mnuMessanger;
+    private final javax.swing.JMenuItem mnuExit;
+    private final javax.swing.JMenuItem mnuSignOut;
+    private final javax.swing.JMenu mnuContacts;
+    private final javax.swing.JMenu mnuThemes;
+//    private final javax.swing.JMenu mnuHelp;
     private final javax.swing.ButtonGroup buttonGroup1;
     private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private final javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem10;
@@ -77,7 +100,11 @@ public class ContactsListView extends JFrame {
         });
 
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        mnuMessanger = new javax.swing.JMenu();
+        mnuExit = new javax.swing.JMenuItem();
+        mnuSignOut = new javax.swing.JMenuItem();
+        mnuContacts = new javax.swing.JMenu();
+        mnuThemes = new javax.swing.JMenu();
         buttonGroup1 = new javax.swing.ButtonGroup();
         jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         jRadioButtonMenuItem3 = new javax.swing.JRadioButtonMenuItem();
@@ -105,7 +132,27 @@ public class ContactsListView extends JFrame {
         buttonGroup1.add(jRadioButtonMenuItem11);
         buttonGroup1.add(jRadioButtonMenuItem12);
 
-        jMenu1.setText("Themes");
+        mnuMessanger.setText("Massenger");
+
+        mnuExit.setText("Exit Account");
+        mnuExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExitActionPerformed(evt);
+            }
+        });
+        mnuMessanger.add(mnuExit);
+
+        mnuSignOut.setText("Sign out");
+        mnuSignOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuSignOutActionPerformed(evt);
+            }
+        });
+        mnuMessanger.add(mnuSignOut);
+
+        jMenuBar1.add(mnuMessanger);
+
+        mnuThemes.setText("Themes");
 
         jRadioButtonMenuItem1.setSelected(true);
         jRadioButtonMenuItem1.setText("Live");
@@ -114,7 +161,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem1);
+        mnuThemes.add(jRadioButtonMenuItem1);
 
         jRadioButtonMenuItem3.setSelected(true);
         jRadioButtonMenuItem3.setText("Easy");
@@ -123,7 +170,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem3ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem3);
+        mnuThemes.add(jRadioButtonMenuItem3);
 
         jRadioButtonMenuItem5.setSelected(true);
         jRadioButtonMenuItem5.setText("Natural");
@@ -132,7 +179,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem5ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem5);
+        mnuThemes.add(jRadioButtonMenuItem5);
 
         jRadioButtonMenuItem8.setSelected(true);
         jRadioButtonMenuItem8.setText("Pure");
@@ -141,7 +188,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem8ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem8);
+        mnuThemes.add(jRadioButtonMenuItem8);
 
         jRadioButtonMenuItem10.setSelected(true);
         jRadioButtonMenuItem10.setText("Classic");
@@ -150,7 +197,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem10ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem10);
+        mnuThemes.add(jRadioButtonMenuItem10);
 
         jRadioButtonMenuItem7.setSelected(true);
         jRadioButtonMenuItem7.setText("Milk And Honey");
@@ -159,7 +206,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem7ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem7);
+        mnuThemes.add(jRadioButtonMenuItem7);
 
         jRadioButtonMenuItem9.setSelected(true);
         jRadioButtonMenuItem9.setText("Adventure");
@@ -168,7 +215,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem9ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem9);
+        mnuThemes.add(jRadioButtonMenuItem9);
 
         jRadioButtonMenuItem12.setSelected(true);
         jRadioButtonMenuItem12.setText("Media");
@@ -177,7 +224,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem12ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem12);
+        mnuThemes.add(jRadioButtonMenuItem12);
 
         jRadioButtonMenuItem6.setSelected(true);
         jRadioButtonMenuItem6.setText("Music");
@@ -186,7 +233,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem6ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem6);
+        mnuThemes.add(jRadioButtonMenuItem6);
 
         jRadioButtonMenuItem11.setSelected(true);
         jRadioButtonMenuItem11.setText("Streems");
@@ -195,7 +242,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem11ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem11);
+        mnuThemes.add(jRadioButtonMenuItem11);
 
         jRadioButtonMenuItem4.setSelected(true);
         jRadioButtonMenuItem4.setText("Default");
@@ -204,7 +251,7 @@ public class ContactsListView extends JFrame {
                 jRadioButtonMenuItem4ActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItem4);
+        mnuThemes.add(jRadioButtonMenuItem4);
 
         jRadioButtonMenuItem2.setSelected(true);
         jRadioButtonMenuItem2.setText("Dark");
@@ -215,7 +262,7 @@ public class ContactsListView extends JFrame {
         });
         contactsView.add(jRadioButtonMenuItem2);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(mnuThemes);
 
 //       contentPane.add(jMenuBar1);
         this.setJMenuBar(jMenuBar1);
@@ -279,6 +326,59 @@ public class ContactsListView extends JFrame {
     public void refreshGroups(Vector<Group> groups) {
         contactsView.refreshGroups(groups);
     }
+
+    private void mnuExitActionPerformed(java.awt.event.ActionEvent evt) {
+        chatController.unregister();
+        boolean exit = true;
+        setIsExit(exit);
+//        chatController.logout();
+        System.exit(0);
+    }
+
+    private void mnuSignOutActionPerformed(java.awt.event.ActionEvent evt) {
+        // unregister user from the server online users Map
+        chatController.unregister();
+        //false >> is Exit
+        boolean exit = false;
+        setIsExit(exit);
+        // dispose this frame 
+        chatController.logout();
+    }
+
+    private void setIsExit(boolean exit) {
+        try {
+            //        if (edit == null || !edit.isVisible()) {
+//            edit = new EditInformation(controller);
+//            GUIUtils.setCentreParent(edit, this);
+//            edit.setVisible(true);
+//        }
+//        edit.requestFocus();
+            DocumentBuilder docbulid = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = docbulid.parse(new File("ClientConfig.xml"));
+            Element root = doc.getDocumentElement();
+            NodeList ifExit = root.getElementsByTagName("isExit");
+            Element e = (Element) ifExit.item(0);
+            if (exit) {
+                e.setTextContent("true");
+            } else {
+                e.setTextContent("false");
+            }
+
+            StreamResult sr = new StreamResult(new File("ClientConfig.xml"));
+            Source src = new DOMSource(doc);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer t = tf.newTransformer();
+            t.transform(src, sr);
+
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(ContactsListView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(ContactsListView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ContactsListView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(ContactsListView.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     void createGroupChat(Vector<Contact> groupContacts) {
         con.createGroupChat(groupContacts);

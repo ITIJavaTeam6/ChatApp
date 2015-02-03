@@ -5,6 +5,7 @@
  */
 package chat.client.controller;
 
+import chat.client.gui.util.GUIUtils;
 import chat.client.interfaces.RMIClientInterface;
 import chat.client.model.ClientModel;
 import chat.client.view.SignInFinal;
@@ -13,10 +14,18 @@ import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  *
@@ -34,10 +43,52 @@ public class ClientController implements Serializable {
     ChatController chatController;
     public static int userId;
 
+    String serverIP;
+
     public ClientController() {
+        readServerConfig();
+        modelObj = new ClientModel(this, serverIP);
         signInView = new SignInFinal(this);
-        signInView.setVisible(true);
-        modelObj = new ClientModel(this);
+        signInView.getFrameMemory();
+
+        if (signInView != null) {
+            signInView.setVisible(true);
+            GUIUtils.setCentreScreen(signInView);
+        }
+
+    }
+
+    private void readServerConfig() {
+        //to read the server ip configuration from ServerConfig.xml
+        try {
+            SAXParserFactory.newInstance().newSAXParser().parse(new File("ServerConfig.xml"), new DefaultHandler() {
+
+                boolean startReading;
+
+                @Override
+                public void characters(char[] ch, int start, int length) throws SAXException {
+                    if (startReading) {
+                        serverIP = new String(ch, start, length);
+                        startReading = false;
+                    }
+                }
+
+                @Override
+                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+                    if (qName.equalsIgnoreCase("serverIP")) {
+                        startReading = true;
+                    } else {
+                        startReading = false;
+                    }
+                }
+            });
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void signIn(String email, String pass) {
@@ -46,14 +97,14 @@ public class ClientController implements Serializable {
             signInView.showErrorMessage("Server is down, please come back again after several minutes ..!", "Server Maintaince");
         } else if (id == ClientModel.USER_NOT_FOUND) {
             signInView.showErrorMessage("Invalid ID or password", "User Not Found");
-        } else if(id==-3){
-            this.reciveMessage("you already sign in !");
-        }
-        else {
+        } else if (id == -3) {
+            this.reciveMessage("You already signed in !");
+        } else {
             chatController = new ChatController(this);
             modelObj.changeState(0, id);
             userId = id;
             signInView.dispose();
+            signInView = null;
         }
     }
 
@@ -80,12 +131,14 @@ public class ClientController implements Serializable {
     public void serverStopping() {
         chatController.serverStopping();
         signInView = new SignInFinal(this);
+        signInView.getFrameMemory();
         signInView.setVisible(true);
-        modelObj = new ClientModel(this);
+        modelObj = new ClientModel(this, serverIP);
     }
 
-    public void signUp(User u) {
-        modelObj.signUp(u);
+    public boolean signUp(User u) {
+        boolean exist = modelObj.signUp(u);
+        return exist;
     }
 
     public boolean displayReceiveFilePermission(String fileNameString, Group group) {

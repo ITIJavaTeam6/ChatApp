@@ -25,7 +25,7 @@ public interface RMIServerInterface extends Remote {
 
     public void unregister(RMIClientInterface client, Integer userid) throws RemoteException;
 
-    public void signUp(User u) throws RemoteException;
+    public boolean signUp(User u) throws RemoteException;
 
     public void addContact(String Email) throws RemoteException;
 

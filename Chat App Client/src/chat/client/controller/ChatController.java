@@ -319,4 +319,9 @@ public class ChatController {
         groupsList = groups;
         contactsListView.refreshGroups(groups);
     }
+
+    public void logout() {
+        clientController.serverStopping();
+    }
+
 }
