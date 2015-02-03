@@ -157,9 +157,9 @@ public class ClientModel implements Serializable {
         return contactid;
     }
 
-    public void sendAdd(String mail) {
+    public void sendAdd(String mail,int userId) {
         try {
-            server.sendAdd(mail, client);
+            server.sendAdd(mail,userId);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }

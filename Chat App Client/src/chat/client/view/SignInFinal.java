@@ -89,6 +89,7 @@ public class SignInFinal extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(125, 240));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chat/client/view/login_icon.png"))); // NOI18N
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel1.setMinimumSize(new java.awt.Dimension(312, 150));
 

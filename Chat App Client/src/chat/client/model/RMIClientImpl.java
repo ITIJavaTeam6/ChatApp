@@ -9,19 +9,11 @@ package chat.client.model;
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.Group;
 import chat.data.model.Message;
-import chat.database.beans.User;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.SQLException;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

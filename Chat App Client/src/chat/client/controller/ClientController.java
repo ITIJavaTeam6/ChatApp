@@ -48,7 +48,7 @@ public class ClientController implements Serializable {
             signInView.showErrorMessage("Invalid ID or password", "User Not Found");
         } else {
             chatController = new ChatController(this);
-            modelObj.changeState(3, id);
+            modelObj.changeState(0, id);
             userId = id;
             String[] x = modelObj.getFriendRequest(id);
             if (x != null) {
@@ -61,7 +61,7 @@ public class ClientController implements Serializable {
     }
 
     public void changeState(int state) {
-        modelObj.changeState(state, 5);
+        modelObj.changeState(state, userId);
     }
 
     public void displayMessage(Message message, Group group) {
@@ -124,7 +124,7 @@ public class ClientController implements Serializable {
     public void sendAdd(String mail) {
         int state = modelObj.checkUserExist(mail);
         if (state == 3) {
-            modelObj.sendAdd(mail,userId);
+            modelObj.sendAdd(mail, userId);
             System.out.println("online");
         } else {
             modelObj.insertAddRequest(mail);

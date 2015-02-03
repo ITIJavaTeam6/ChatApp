@@ -49,7 +49,7 @@ public class ServerController {
             registry = LocateRegistry.createRegistry(5000);
             registry.rebind("chat", server);
             registry.rebind("signIn", signIn);
-            
+
             System.out.println("Waiting for connections");
         } catch (RemoteException e) {
             // TODO Auto-generated catch block

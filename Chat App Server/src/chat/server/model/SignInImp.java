@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chat.server.model;
 
 import chat.database.beans.User;
@@ -12,11 +11,7 @@ import chat.database.services.UserService;
 import chat.server.interfaces.SignInInt;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,32 +19,31 @@ import java.util.logging.Logger;
  *
  * @author ZamZam
  */
-public class SignInImp extends UnicastRemoteObject implements SignInInt{
-    
-    public SignInImp() throws RemoteException{
+public class SignInImp extends UnicastRemoteObject implements SignInInt {
+
+    public SignInImp() throws RemoteException {
         super();
     }
-    
+
     @Override
     public int signIn(String email, String password) {
-        
-        
-        int id=-1;
+
+        int id = -1;
         try {
-            DbService db=new DbService();
-            UserService user=new UserService();
-            User x=user.selectOne(email);
-            if(x!=null){
-                if(x.getPassword().equals(password)){
-                    id=(int) x.getIduser();
+            DbService db = new DbService();
+            UserService user = new UserService();
+            User x = user.selectOne(email);
+            if (x != null) {
+                if (x.getPassword().equals(password)) {
+                    id = (int) x.getIduser();
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(SignInImp.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-      return id;
-       
+
+        return id;
+
     }
-    
+
 }
