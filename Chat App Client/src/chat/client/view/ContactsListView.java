@@ -150,7 +150,6 @@ public class ContactsListView extends JFrame {
 
         jMenuBar1.add(mnuMessanger);
 
-        
         mnuThemes.setText("Themes");
 
         jRadioButtonMenuItem1.setSelected(true);
@@ -325,8 +324,26 @@ public class ContactsListView extends JFrame {
     public void refreshGroups(Vector<Group> groups) {
         contactsView.refreshGroups(groups);
     }
-    
-    private void mnuExitActionPerformed(java.awt.event.ActionEvent evt) {                                           
+
+    private void mnuExitActionPerformed(java.awt.event.ActionEvent evt) {
+        chatController.unregister();
+        boolean exit = true;
+        setIsExit(exit);
+//        chatController.logout();
+        System.exit(0);
+    }
+
+    private void mnuSignOutActionPerformed(java.awt.event.ActionEvent evt) {
+        // unregister user from the server online users Map
+        chatController.unregister();
+        //false >> is Exit
+        boolean exit = false;
+        setIsExit(exit);
+        // dispose this frame 
+        chatController.logout();
+    }
+
+    private void setIsExit(boolean exit) {
         try {
             //        if (edit == null || !edit.isVisible()) {
 //            edit = new EditInformation(controller);
@@ -339,13 +356,18 @@ public class ContactsListView extends JFrame {
             Element root = doc.getDocumentElement();
             NodeList ifExit = root.getElementsByTagName("isExit");
             Element e = (Element) ifExit.item(0);
-            e.setTextContent("true");
+            if (exit) {
+                e.setTextContent("true");
+            } else {
+                e.setTextContent("false");
+            }
 
             StreamResult sr = new StreamResult(new File("ClientConfig.xml"));
             Source src = new DOMSource(doc);
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer t = tf.newTransformer();
             t.transform(src, sr);
+
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(ContactsListView.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
@@ -356,12 +378,5 @@ public class ContactsListView extends JFrame {
             Logger.getLogger(ContactsListView.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-}                                          
-
-    private void mnuSignOutActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // unregister user from the server online users Map
-        chatController.unregister();
-        // dispose this frame 
-        chatController.logout();
     }
 }

@@ -4,5 +4,5 @@
 <password>12345</password>
 <rememberMe>true</rememberMe>
 <rememberPassword>true</rememberPassword>
-<isExit>false</isExit>
+<isExit>true</isExit>
 </root>

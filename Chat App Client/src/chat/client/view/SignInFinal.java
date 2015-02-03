@@ -52,7 +52,6 @@ public class SignInFinal extends javax.swing.JFrame {
         getRootPane().setDefaultButton(jButton1);
         jPanel1.getRootPane().setDefaultButton(jButton1);
         jLabel1.setIcon(new ImageIcon(GUIUtils.logoString));
-        getFrameMemory();
     }
 
     private SignInFinal() {
@@ -501,6 +500,7 @@ public class SignInFinal extends javax.swing.JFrame {
 
             System.out.println("xml file saved..!");
 
+            showErrorMessage("ClientConfig.xml is interrupted .. ", "Invalid Configurations");
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(SignInFinal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerConfigurationException ex) {
@@ -529,7 +529,6 @@ public class SignInFinal extends javax.swing.JFrame {
             System.out.println("User data is valid .. ready to sign in");
             setFrameMemory();
             controller.signIn(jTextField1.getText(), jPasswordField1.getText());
-            this.dispose();
         }
     }
 }

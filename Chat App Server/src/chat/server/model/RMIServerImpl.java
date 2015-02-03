@@ -164,9 +164,20 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     }
 
     @Override
-    public void sendAdd(String email, RMIClientInterface x) throws RemoteException {
-        client = x;
-        client.receiveAdd(email);
+    public void sendAdd(String email, int userId) throws RemoteException {
+        try {
+            System.out.println("");
+            UserService service = new UserService();
+            User user = service.selectOne(email);
+            int client = (int) user.getIduser();
+            if (clients.containsKey(client)) {
+                System.out.println("im map");
+                RMIClientInterface clientObj = clients.get(client);
+                clientObj.receiveAdd(service.selectOne(userId).getEmail());//
+    }
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

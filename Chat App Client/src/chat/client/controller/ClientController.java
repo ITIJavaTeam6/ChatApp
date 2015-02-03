@@ -43,7 +43,21 @@ public class ClientController implements Serializable {
     public static int userId;
 
     String serverIP;
+
     public ClientController() {
+        readServerConfig();
+        modelObj = new ClientModel(this, serverIP);
+        signInView = new SignInFinal(this);
+        signInView.getFrameMemory();
+
+        if (signInView != null) {
+            signInView.setVisible(true);
+            GUIUtils.setCentreScreen(signInView);
+        }
+        
+    }
+
+    private void readServerConfig() {
         //to read the server ip configuration from ServerConfig.xml
         try {
             SAXParserFactory.newInstance().newSAXParser().parse(new File("ServerConfig.xml"), new DefaultHandler() {
@@ -67,11 +81,6 @@ public class ClientController implements Serializable {
                     }
                 }
             });
-
-            signInView = new SignInFinal(this);
-            GUIUtils.setCentreScreen(signInView);
-            signInView.setVisible(true);
-            modelObj = new ClientModel(this, serverIP);
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
@@ -98,6 +107,7 @@ public class ClientController implements Serializable {
                 }
             }
             signInView.dispose();
+            signInView = null;
         }
     }
 
@@ -124,6 +134,7 @@ public class ClientController implements Serializable {
     public void serverStopping() {
         chatController.serverStopping();
         signInView = new SignInFinal(this);
+        signInView.getFrameMemory();
         signInView.setVisible(true);
         modelObj = new ClientModel(this, serverIP);
     }
