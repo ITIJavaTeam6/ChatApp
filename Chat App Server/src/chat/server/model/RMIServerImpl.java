@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInterface {
 
     public static Map<Integer, RMIClientInterface> clients = new HashMap<>();
-    RMIClientInterface client;
+//    RMIClientInterface client;
 
     public RMIServerImpl() throws RemoteException {
 
@@ -283,6 +283,29 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return (int) sender.getIdgroup();
+    }
+
+    @Override
+    public Group createGroup(Vector<Contact> contacts) throws RemoteException {
+        chat.database.beans.ChatGroup member = null;
+        Group group = new Group();
+        try {
+            DbService db = new DbService();
+            GroupService groupservice = new GroupService();
+            int groupId = groupservice.getGroupId();
+            group.setId(groupId);
+            group.setContacts(contacts);
+
+            for (Contact contact : contacts) {
+                member = new chat.database.beans.ChatGroup();
+                member.setUserId(contact.getId());
+                groupservice.insert(member, groupId);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return group;
     }
 
     @Override

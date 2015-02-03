@@ -13,6 +13,7 @@ import chat.database.beans.Contact;
 import java.io.File;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Vector;
 
 /**
  *
@@ -51,6 +52,7 @@ public interface RMIServerInterface extends Remote {
     public void sendFilePermission(File f, Group group, int receiverid, int senderid) throws RemoteException;
     
     public int createGroup(int userId,int contactId)  throws RemoteException;
+    public Group createGroup(Vector<chat.data.model.Contact> contacts) throws RemoteException;
     
     public void removeGroup(int contactId,int userID) throws RemoteException;
     
