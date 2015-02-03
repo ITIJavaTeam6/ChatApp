@@ -47,6 +47,8 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     public void unregister(RMIClientInterface client, Integer userid) throws RemoteException {
         clients.remove(userid, client);
         System.out.println("unregistered client");
+        
+        changeState(Contact.OFFLINE, userid);
     }
 //
 
@@ -129,7 +131,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
         if (clients.containsKey(userId)) {
             try {
                 GroupService user = new GroupService();
-                //        try {
+    //        try {
                 //            System.out.println("here in server");
                 //            DbService db = new DbService();
                 //            UserService users = new UserService();
@@ -145,6 +147,11 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
                 //            ex.printStackTrace();
                 //        }
                 Vector<Group> groups = user.getGroupsDataModelOfUser(userId);
+                System.out.println("updating user contact list");
+                for (Group group : groups) {
+                    System.out.print("this is his groups ");
+                    System.out.println(group.getId());
+                }
                 try {
                     clients.get(userId).refreshGroups(groups);
                 } catch (RemoteException ex) {
@@ -157,20 +164,9 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     }
 
     @Override
-    public void sendAdd(String email, int userId) throws RemoteException {
-        try {
-            System.out.println("");
-            UserService service = new UserService();
-            User user = service.selectOne(email);
-            int client = (int) user.getIduser();
-            if (clients.containsKey(client)) {
-                System.out.println("im map");
-                RMIClientInterface clientObj = clients.get(client);
-                clientObj.receiveAdd(service.selectOne(userId).getEmail());//
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void sendAdd(String email, RMIClientInterface x) throws RemoteException {
+        client = x;
+        client.receiveAdd(email);
     }
 
     @Override
@@ -249,7 +245,8 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     private boolean isNull(User user) {
         return user == null;
     }
-
+    
+    
     @Override
     public int createGroup(int userId, int contactId) throws RemoteException {
         chat.database.beans.ChatGroup sender = null;

@@ -5,6 +5,7 @@
  */
 package chat.client.controller;
 
+import chat.client.gui.util.GUIUtils;
 import chat.client.interfaces.RMIClientInterface;
 import chat.client.model.ClientModel;
 import chat.client.view.SignInFinal;
@@ -12,10 +13,18 @@ import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  *
@@ -33,10 +42,43 @@ public class ClientController implements Serializable {
     ChatController chatController;
     public static int userId;
 
+    String serverIP;
     public ClientController() {
-        signInView = new SignInFinal(this);
-        signInView.setVisible(true);
-        modelObj = new ClientModel(this);
+        //to read the server ip configuration from ServerConfig.xml
+        try {
+            SAXParserFactory.newInstance().newSAXParser().parse(new File("ServerConfig.xml"), new DefaultHandler() {
+
+                boolean startReading;
+
+                @Override
+                public void characters(char[] ch, int start, int length) throws SAXException {
+                    if (startReading) {
+                        serverIP = new String(ch, start, length);
+                        startReading = false;
+                    }
+                }
+
+                @Override
+                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+                    if (qName.equalsIgnoreCase("serverIP")) {
+                        startReading = true;
+                    } else {
+                        startReading = false;
+                    }
+                }
+            });
+
+            signInView = new SignInFinal(this);
+            GUIUtils.setCentreScreen(signInView);
+            signInView.setVisible(true);
+            modelObj = new ClientModel(this, serverIP);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void signIn(String email, String pass) {
@@ -83,7 +125,7 @@ public class ClientController implements Serializable {
         chatController.serverStopping();
         signInView = new SignInFinal(this);
         signInView.setVisible(true);
-        modelObj = new ClientModel(this);
+        modelObj = new ClientModel(this, serverIP);
     }
 
     public void signUp(User u) {

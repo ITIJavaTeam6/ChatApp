@@ -39,9 +39,12 @@ public class ClientModel implements Serializable {
     SignInInt signInObj;
     ClientController controller;
     Registry registry;
+    public final static int PORT_NUMBER = 5000;
+    final String serverIP;
 
-    public ClientModel(ClientController controller) {
+    public ClientModel(ClientController controller, String serverIp) {
         this.controller = controller;
+        this.serverIP = serverIp;
         try {
             client = new RMIClientImpl(this);
         } catch (RemoteException ex) {
@@ -51,7 +54,7 @@ public class ClientModel implements Serializable {
 
     private boolean connectToServer() {
         try {
-            registry = LocateRegistry.getRegistry("127.0.0.1", 5000);
+            registry = LocateRegistry.getRegistry(serverIP, PORT_NUMBER);
             server = (RMIServerInterface) registry.lookup("chat");
             signInObj = (SignInInt) registry.lookup("signIn");
             

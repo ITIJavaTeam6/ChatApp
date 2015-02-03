@@ -292,4 +292,9 @@ public class ChatController {
     void refreshGroups(Vector<Group> groups) {
         contactsListView.refreshGroups(groups);
     }
+
+    public void logout() {
+        clientController.serverStopping();
+    }
+
 }
