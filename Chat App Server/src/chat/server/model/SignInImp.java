@@ -33,10 +33,13 @@ public class SignInImp extends UnicastRemoteObject implements SignInInt {
             DbService db = new DbService();
             UserService user = new UserService();
             User x = user.selectOne(email);
-            if (x != null) {
+            if (x != null&&x.getStatus()==1) {
                 if (x.getPassword().equals(password)) {
                     id = (int) x.getIduser();
                 }
+            }
+            if(x!=null&&x.getStatus()!=1){
+                id=-3;
             }
         } catch (SQLException ex) {
             Logger.getLogger(SignInImp.class.getName()).log(Level.SEVERE, null, ex);

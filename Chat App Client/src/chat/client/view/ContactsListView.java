@@ -69,10 +69,10 @@ public class ContactsListView extends JFrame {
         int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
-        setResizable(false);
-        setBounds(screenWidth - 400, 90, 250, 600);  //change here 300
-        setMinimumSize(new Dimension(300, 600));
-        setMaximumSize(new Dimension(400, 700));
+        setResizable(true);
+        setBounds(screenWidth - 400, 90, 100, 600);  //change here 300
+        setMinimumSize(new Dimension(100, 600)); //300
+        setMaximumSize(new Dimension(200, 700));  //400
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
