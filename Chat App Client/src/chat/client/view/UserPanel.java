@@ -65,12 +65,24 @@ public class UserPanel extends JPanel {
         });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chat/client/view/group_1.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                new StartGroupChat(contactsListView, true).setVisible(true);
+//        jButton2.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                new StartGroupChat(contactsListView, true).setVisible(true);
+//            }
+//        });
+
+        jButton2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+               String[] x = con.getFriendRequest(ClientController.userId);
+            if (x != null) {
+                for (int i = 0; i < x.length; i++) {
+                    con.receiveAdd(x[i]);
+                }
+            }
             }
         });
-
+        
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(

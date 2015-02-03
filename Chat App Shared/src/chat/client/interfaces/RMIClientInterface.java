@@ -32,4 +32,5 @@ public interface RMIClientInterface extends Remote {
     
     
     public void refreshGroups (Vector<Group> groups, Contact contactWhoChangedStatus) throws RemoteException;
+    public void receiveMessage(String s)  throws RemoteException;
 }

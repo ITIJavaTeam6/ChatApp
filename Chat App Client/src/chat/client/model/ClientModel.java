@@ -76,13 +76,16 @@ public class ClientModel implements Serializable {
                 Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            if (id != -1) {
+            if (id != -1&&id!=-3) {
                 try {
                     server.register(client, id);
                     userid = id;
                 } catch (RemoteException ex) {
                     Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+            else{
+                id=-3;
             }
             return id;
         } else {
@@ -256,5 +259,8 @@ public class ClientModel implements Serializable {
 
     public void createGroupChat(Vector<chat.data.model.Contact> groupContacts) {
         // TODO
+    }
+    public void receiveMessage(String s){
+        controller.reciveMessage(s);
     }
 }
