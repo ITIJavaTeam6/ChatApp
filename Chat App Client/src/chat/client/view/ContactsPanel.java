@@ -64,8 +64,6 @@ public class ContactsPanel extends JScrollPane {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (me.getClickCount() == 2) {
-                    System.out.println(list.getSelectedValue().getId());
-                    System.out.println(list.getSelectedValue().getContacts().get(0).getFname());
                     chatController.openChatWindow(list.getSelectedValue());
                     list.setSelectedIndex(-1);
                 }

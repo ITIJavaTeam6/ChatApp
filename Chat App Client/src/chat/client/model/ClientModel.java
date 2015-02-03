@@ -51,7 +51,8 @@ public class ClientModel implements Serializable {
 
     private boolean connectToServer() {
         try {
-            registry = LocateRegistry.getRegistry("127.0.0.1", 5000);
+            registry = LocateRegistry.getRegistry("localhost", 5000);
+            System.out.println("trying to connect");
             server = (RMIServerInterface) registry.lookup("chat");
             signInObj = (SignInInt) registry.lookup("signIn");
             
@@ -251,5 +252,9 @@ public class ClientModel implements Serializable {
         } catch (RemoteException ex) {
             return null;
         }
+    }
+
+    public void createGroupChat(Vector<chat.data.model.Contact> groupContacts) {
+        // TODO
     }
 }

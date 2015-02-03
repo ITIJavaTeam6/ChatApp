@@ -2,6 +2,7 @@ package chat.client.view;
 
 import chat.client.controller.ChatController;
 import chat.client.controller.ClientController;
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -63,7 +64,7 @@ public class ContactsListView extends JFrame {
         UserPanel userPanel = new UserPanel();
         contentPane.add(userPanel, BorderLayout.NORTH);
 
-        ButtonsPanel buttonsPanel = new ButtonsPanel(con);
+        ButtonsPanel buttonsPanel = new ButtonsPanel(con, this);
         contentPane.add(buttonsPanel, BorderLayout.SOUTH);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -277,5 +278,9 @@ public class ContactsListView extends JFrame {
 
     public void refreshGroups(Vector<Group> groups) {
         contactsView.refreshGroups(groups);
+    }
+
+    void createGroupChat(Vector<Contact> groupContacts) {
+        con.createGroupChat(groupContacts);
     }
 }
