@@ -3,6 +3,7 @@ package chat.client.view;
 import chat.client.controller.ChatController;
 import chat.client.controller.ClientController;
 import chat.client.gui.util.GUIUtils;
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -70,10 +71,10 @@ public class ContactsListView extends JFrame {
         int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
-        setResizable(true);
-        setBounds(screenWidth - 400, 90, 100, 600);  //change here 300
-        setMinimumSize(new Dimension(100, 600)); //300
-        setMaximumSize(new Dimension(200, 700));  //400
+        setResizable(false);
+        setBounds(screenWidth - 400, 90, 250, 600);  //change here 300
+        setMinimumSize(new Dimension(300, 600));
+        setMaximumSize(new Dimension(200, 700));
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -83,7 +84,7 @@ public class ContactsListView extends JFrame {
         contactsView = new ContactsPanel(chatController);
         contentPane.add(contactsView, BorderLayout.CENTER);
 
-        UserPanel userPanel = new UserPanel(clientcontroller);
+        UserPanel userPanel = new UserPanel(clientcontroller, this);
         contentPane.add(userPanel, BorderLayout.NORTH);
 
         ButtonsPanel buttonsPanel = new ButtonsPanel(con);
@@ -379,5 +380,7 @@ public class ContactsListView extends JFrame {
             Logger.getLogger(ContactsListView.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    void createGroupChat(Vector<Contact> groupContacts) {
+        con.createGroupChat(groupContacts);
     }
 }

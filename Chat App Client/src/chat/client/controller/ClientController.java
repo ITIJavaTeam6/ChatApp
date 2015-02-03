@@ -9,6 +9,7 @@ import chat.client.gui.util.GUIUtils;
 import chat.client.interfaces.RMIClientInterface;
 import chat.client.model.ClientModel;
 import chat.client.view.SignInFinal;
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import chat.database.beans.User;
@@ -198,7 +199,7 @@ public class ClientController implements Serializable {
         chatController.receiveFile(fileContent, group);
     }
 
-    public void refreshGroups(Vector<Group> groups) {
+    public void refreshGroups(Vector<Group> groups, Contact contactWhoChangedStatus) {
         chatController.refreshGroups(groups);
     }
 
@@ -206,6 +207,9 @@ public class ClientController implements Serializable {
         return modelObj.getFriendRequest(userId);
     }
 
+    public void createGroupChat(Vector<Contact> groupContacts) {
+        modelObj.createGroupChat(groupContacts);
+    }
     public void reciveMessage(String message) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

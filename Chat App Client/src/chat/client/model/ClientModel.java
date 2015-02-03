@@ -245,8 +245,8 @@ public class ClientModel implements Serializable {
         controller.sendFile(f, group, accepted, receiver);
     }
 
-    void refreshGroups(Vector<Group> groups) {
-        controller.refreshGroups(groups);
+    void refreshGroups(Vector<Group> groups, chat.data.model.Contact contactWhoChangedStatus) {
+        controller.refreshGroups(groups, contactWhoChangedStatus);
     }
 
     public String retrievePassword(String text) {
@@ -261,7 +261,10 @@ public class ClientModel implements Serializable {
         }
     }
 
-    public void receiveMessage(String s) {
+    public void createGroupChat(Vector<chat.data.model.Contact> groupContacts) {
+        // TODO
+    }
+    public void receiveMessage(String s){
         controller.reciveMessage(s);
     }
 }

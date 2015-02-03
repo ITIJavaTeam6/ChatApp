@@ -64,8 +64,6 @@ public class ContactsPanel extends JScrollPane {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (me.getClickCount() == 2) {
-                    System.out.println(list.getSelectedValue().getId());
-                    System.out.println(list.getSelectedValue().getContacts().get(0).getFname());
                     chatController.openChatWindow(list.getSelectedValue());
                     list.setSelectedIndex(-1);
                 }
@@ -106,6 +104,7 @@ public class ContactsPanel extends JScrollPane {
                 boolean isSelected, boolean cellHasFocus) {
 
             JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout());
             
             String conversationName = new String();
             for (Contact contact : value.getContacts()) {
@@ -140,13 +139,16 @@ public class ContactsPanel extends JScrollPane {
                             case Contact.AWAY:
                                 state = new JLabel(new ImageIcon("src/res/away.png"));
                                 break;
+                            default:
+                                System.out.println("default");
+                                state = new JLabel(new ImageIcon("src/res/offline.png"));
                         }
                     }
                 }
                 panel.add(state, BorderLayout.EAST);
             }
             
-            panel.setLayout(new BorderLayout());
+            
 //			GroupLayout layout = new GroupLayout(panel);
 //			panel.setLayout(layout);
 //			

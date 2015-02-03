@@ -7,6 +7,7 @@ package chat.server.model;
 
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.*;
+import chat.data.model.conversion.Converter;
 import chat.database.beans.ChatGroup;
 import chat.database.beans.User;
 import chat.database.services.ContactService;
@@ -14,7 +15,6 @@ import chat.database.services.DbService;
 import chat.database.services.GroupService;
 import chat.database.services.UserService;
 import chat.server.interfaces.RMIServerInterface;
-import com.sun.scenario.effect.impl.sw.sse.SSERendererDelegate;
 import java.io.File;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -47,7 +47,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     @Override
     public void unregister(RMIClientInterface client, Integer userid) throws RemoteException {
         clients.remove(userid, client);
-        System.out.println("unregistered client");        
+        System.out.println("unregistered client");
         changeState(Contact.OFFLINE, userid);
     }
 //
@@ -96,7 +96,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             UserService service = new UserService();
             User user = service.selectOne(u.getEmail());
             if(user == null){
-                service.insert(u);
+            service.insert(u);
             }else{
                 return true;
             }
@@ -119,10 +119,10 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
                 System.out.println("state changed :) to" + status);
                 int[] v = service.getContacts(userID);
 
-                updateUserContactList(userID);
+                updateUserContactList(userID, Converter.fromUserToContact(x));
                 for (int i = 0; i < v.length; i++) {
 
-                    updateUserContactList(v[i]);
+                    updateUserContactList(v[i], Converter.fromUserToContact(x));
                 }
 
             } else {
@@ -134,7 +134,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
         }
     }
 
-    public void updateUserContactList(int userId) {
+    public void updateUserContactList(int userId, Contact contactWhoChangedStatus) {
         if (clients.containsKey(userId)) {
             try {
                 GroupService user = new GroupService();
@@ -155,7 +155,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
                 //        }
                 Vector<Group> groups = user.getGroupsDataModelOfUser(userId);
                 try {
-                    clients.get(userId).refreshGroups(groups);
+                    clients.get(userId).refreshGroups(groups, contactWhoChangedStatus);
                 } catch (RemoteException ex) {
                     Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -172,7 +172,9 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             UserService service = new UserService();
             User user = service.selectOne(email);
             int client = (int) user.getIduser();
-            if (clients.containsKey(client)) {
+            ContactService con = new ContactService();
+            chat.database.beans.Contact contact = con.selectOne(client, userId);
+            if (clients.containsKey(client) && contact == null) {
                 System.out.println("im map");
                 clientObj = clients.get(client);
                 clientObj.receiveAdd(service.selectOne(userId).getEmail());//

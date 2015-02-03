@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -51,7 +52,10 @@ public class ChatController {
     ClientController clientController;
     ContactsListView contactsListView;
     File receivedFile;
+    int choice;
+    int fileChoice;
     Map<Integer, ChatWindow> chatWindows = new HashMap<>();
+    public static Vector<Group> groupsList = new Vector<>();
 
     public ChatController(ClientController clientController) {
         this.setLookAndFeel(getLookAndFeel());
@@ -120,19 +124,40 @@ public class ChatController {
     }
 
     boolean displayReceiveFilePermission(String fileNameString, Group group) {
-        openChatWindow(group);
-        ChatWindow chatWindow = chatWindows.get(group.getId());
-        int choice = JOptionPane.showConfirmDialog(chatWindow, "Would you like to receive " + fileNameString + " ?");
-        if (choice == JOptionPane.YES_OPTION) {
-            JFileChooser fileChooser = new JFileChooser(fileNameString);
-            System.out.println("showing file chooser");
-            int fileChoice = fileChooser.showSaveDialog(chatWindow);
-            System.out.println("got choice");
-            if (fileChoice == JFileChooser.APPROVE_OPTION) {
-                System.out.println("got file place");
-                receivedFile = fileChooser.getSelectedFile();
-                return true;
+        try {
+            openChatWindow(group);
+            ChatWindow chatWindow = chatWindows.get(group.getId());
+
+            SwingUtilities.invokeAndWait(new Runnable() {
+
+                @Override
+                public void run() {
+                    choice = JOptionPane.showConfirmDialog(chatWindow, "Would you like to receive " + fileNameString + " ?");
+                }
+            });
+
+            if (choice == JOptionPane.YES_OPTION) {
+                JFileChooser fileChooser = new JFileChooser(fileNameString);
+//            System.out.println("showing file chooser");
+                SwingUtilities.invokeAndWait(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        fileChoice = fileChooser.showSaveDialog(chatWindow);
+                    }
+                });
+
+                if (fileChoice == JFileChooser.APPROVE_OPTION) {
+                    System.out.println("got file place");
+                    receivedFile = fileChooser.getSelectedFile();
+                    return true;
+                }
             }
+            return false;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -290,6 +315,7 @@ public class ChatController {
     }
 
     void refreshGroups(Vector<Group> groups) {
+        groupsList = groups;
         contactsListView.refreshGroups(groups);
     }
 

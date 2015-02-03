@@ -5,6 +5,7 @@
  */
 package chat.client.interfaces;
 
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import java.io.File;
@@ -29,6 +30,7 @@ public interface RMIClientInterface extends Remote {
 
     public String getPassword(String email) throws RemoteException;
     
+    
+    public void refreshGroups (Vector<Group> groups, Contact contactWhoChangedStatus) throws RemoteException;
     public void receiveMessage(String s)  throws RemoteException;
-    public void refreshGroups (Vector<Group> groups) throws RemoteException;
 }

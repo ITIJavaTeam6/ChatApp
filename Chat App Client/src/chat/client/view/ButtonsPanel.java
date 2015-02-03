@@ -8,7 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-
 public class ButtonsPanel extends JPanel {
         ClientController con;
     public ButtonsPanel(ClientController controller) {
