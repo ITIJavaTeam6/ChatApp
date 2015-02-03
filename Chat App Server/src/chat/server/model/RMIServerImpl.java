@@ -7,6 +7,7 @@ package chat.server.model;
 
 import chat.client.interfaces.RMIClientInterface;
 import chat.data.model.*;
+import chat.data.model.conversion.Converter;
 import chat.database.beans.ChatGroup;
 import chat.database.beans.User;
 import chat.database.services.ContactService;
@@ -110,10 +111,10 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
                 System.out.println("state changed :) to" + status);
                 int[] v = service.getContacts(userID);
 
-                updateUserContactList(userID);
+                updateUserContactList(userID, Converter.fromUserToContact(x));
                 for (int i = 0; i < v.length; i++) {
 
-                    updateUserContactList(v[i]);
+                    updateUserContactList(v[i], Converter.fromUserToContact(x));
                 }
 
             } else {
@@ -125,7 +126,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
         }
     }
 
-    public void updateUserContactList(int userId) {
+    public void updateUserContactList(int userId, Contact contactWhoChangedStatus) {
         if (clients.containsKey(userId)) {
             try {
                 GroupService user = new GroupService();
@@ -146,7 +147,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
                 //        }
                 Vector<Group> groups = user.getGroupsDataModelOfUser(userId);
                 try {
-                    clients.get(userId).refreshGroups(groups);
+                    clients.get(userId).refreshGroups(groups, contactWhoChangedStatus);
                 } catch (RemoteException ex) {
                     Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }

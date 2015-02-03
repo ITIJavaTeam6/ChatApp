@@ -7,6 +7,7 @@
 package chat.client.model;
 
 import chat.client.interfaces.RMIClientInterface;
+import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import java.io.File;
@@ -74,7 +75,7 @@ public class RMIClientImpl extends UnicastRemoteObject implements RMIClientInter
     }
 
     @Override
-    public void refreshGroups(Vector<Group> groups) throws RemoteException {
-        model.refreshGroups(groups);
+    public void refreshGroups(Vector<Group> groups, Contact contactWhoChangedStatus) throws RemoteException {
+        model.refreshGroups(groups, contactWhoChangedStatus);
     }
 }

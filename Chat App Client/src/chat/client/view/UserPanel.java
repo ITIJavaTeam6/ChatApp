@@ -17,8 +17,9 @@ public class UserPanel extends JPanel {
     
     ClientController con;
     JComboBox stateComboBox ;
-    public UserPanel(ClientController c) {
-
+    ContactsListView contactsListView;
+    public UserPanel(ClientController c, ContactsListView contactsListView) {
+        this.contactsListView = contactsListView;
         con = c;
          JPanel   jPanel1 = new javax.swing.JPanel();
          JPanel jPanel2 = new javax.swing.JPanel();
@@ -64,6 +65,11 @@ public class UserPanel extends JPanel {
         });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/chat/client/view/group_1.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new StartGroupChat(contactsListView, true).setVisible(true);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

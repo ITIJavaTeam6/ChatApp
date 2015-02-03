@@ -104,6 +104,7 @@ public class ContactsPanel extends JScrollPane {
                 boolean isSelected, boolean cellHasFocus) {
 
             JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout());
             
             String conversationName = new String();
             for (Contact contact : value.getContacts()) {
@@ -138,13 +139,16 @@ public class ContactsPanel extends JScrollPane {
                             case Contact.AWAY:
                                 state = new JLabel(new ImageIcon("src/res/away.png"));
                                 break;
+                            default:
+                                System.out.println("default");
+                                state = new JLabel(new ImageIcon("src/res/offline.png"));
                         }
                     }
                 }
                 panel.add(state, BorderLayout.EAST);
             }
             
-            panel.setLayout(new BorderLayout());
+            
 //			GroupLayout layout = new GroupLayout(panel);
 //			panel.setLayout(layout);
 //			

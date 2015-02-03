@@ -51,7 +51,7 @@ public class ContactsListView extends JFrame {
         setResizable(false);
         setBounds(screenWidth - 400, 90, 250, 600);  //change here 300
         setMinimumSize(new Dimension(300, 600));
-        setMaximumSize(new Dimension(400, 700));
+        setMaximumSize(new Dimension(200, 700));
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -61,10 +61,10 @@ public class ContactsListView extends JFrame {
         contactsView = new ContactsPanel(chatController);
         contentPane.add(contactsView, BorderLayout.CENTER);
 
-        UserPanel userPanel = new UserPanel(clientcontroller);
+        UserPanel userPanel = new UserPanel(clientcontroller, this);
         contentPane.add(userPanel, BorderLayout.NORTH);
 
-        ButtonsPanel buttonsPanel = new ButtonsPanel(con, this);
+        ButtonsPanel buttonsPanel = new ButtonsPanel(con);
         contentPane.add(buttonsPanel, BorderLayout.SOUTH);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);

@@ -149,7 +149,7 @@ public class ClientController implements Serializable {
         chatController.receiveFile(fileContent, group);
     }
 
-    public void refreshGroups(Vector<Group> groups) {
+    public void refreshGroups(Vector<Group> groups, Contact contactWhoChangedStatus) {
         chatController.refreshGroups(groups);
     }
 
