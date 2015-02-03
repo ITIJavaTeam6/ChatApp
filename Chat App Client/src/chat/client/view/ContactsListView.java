@@ -379,7 +379,8 @@ public class ContactsListView extends JFrame {
         } catch (TransformerException ex) {
             Logger.getLogger(ContactsListView.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+    }
+    
     void createGroupChat(Vector<Contact> groupContacts) {
         con.createGroupChat(groupContacts);
     }
