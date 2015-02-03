@@ -117,6 +117,7 @@ public class ClientModel implements Serializable {
     public void unregister() {
         try {
             server.unregister(client, userid);
+            server.changeState(1, userid);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -250,7 +251,14 @@ public class ClientModel implements Serializable {
     }
 
     public String retrievePassword(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String pass = "NoSuchEmail";
+        try {
+            connectToServer();
+            pass = server.getPasswordFromServer(text);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pass;
     }
 
     public String[] getFriendRequest(int userId) {

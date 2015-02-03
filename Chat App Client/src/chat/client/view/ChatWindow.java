@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chat.client.view;
 
 import chat.client.controller.ChatController;
@@ -13,33 +12,55 @@ import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.text.Style;
 
 /**
  *
  * @author ZamZam
  */
 public class ChatWindow extends javax.swing.JFrame {
+
     Group group;
     ChatController chatController;
     /**
      * Creates new form ChatWindow
      */
     Color currentColor;
+    Font currentFont;
+    Font[] fonts;
+    String[] fontNames;
+
     public ChatWindow(Group group, ChatController controller) {
         initComponents();
         this.setLocation(300, 300);
         this.group = group;
-        
+
         this.chatController = controller;
-        
+
+        fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+        fontNames = new String[fonts.length];
+        for (int i = 0; i < fonts.length; i++) {
+            fontNames[i] = fonts[i].getFontName();
+        }
+        fontChooser.setModel(new DefaultComboBoxModel(fontNames));
+//        fontChooser.addItemListener(new ItemListener() {
+//
+//            @Override
+//            public void itemStateChanged(ItemEvent e) {
+//                jTextArea1.setFont(fonts[fontChooser.getSelectedIndex()].deriveFont(24));
+//            }
+//        });
     }
 
     /**
@@ -64,6 +85,7 @@ public class ChatWindow extends javax.swing.JFrame {
         colorChooser = new javax.swing.JButton();
 
         setTitle("Contact_Name");
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -103,6 +125,11 @@ public class ChatWindow extends javax.swing.JFrame {
         });
 
         fontChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        fontChooser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fontChooserActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Font");
 
@@ -183,7 +210,14 @@ public class ChatWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
-        Message message = new Message(null, group, jTextArea1.getText());
+        Message message = new Message(new Contact(ClientController.userId), group, jTextArea1.getText());
+        if (currentFont != null) {
+            message.setMessageFont(currentFont);
+        }
+        if (currentColor != null) {
+            message.setTextClor(currentColor);
+        }
+        
         jTextArea1.setText("");
         chatController.sendMessage(message, group);
     }//GEN-LAST:event_sendButtonActionPerformed
@@ -193,7 +227,7 @@ public class ChatWindow extends javax.swing.JFrame {
             jEditorPane1.setText(jEditorPane1.getText() + "\nCannot send files to group chat");
         } else {
             JFileChooser fileChooser = new JFileChooser();
-            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 File f = fileChooser.getSelectedFile();
 
                 int receiverid = -1;
@@ -214,10 +248,14 @@ public class ChatWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextArea1KeyPressed
 
     private void colorChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorChooserActionPerformed
-        JColorChooser jColorChooser = new JColorChooser();
-        jColorChooser.setVisible(true);
-        currentColor = jColorChooser.getColor();
+        currentColor = JColorChooser.showDialog(this, "choose a color", Color.BLACK);
+        jTextArea1.setForeground(currentColor);
     }//GEN-LAST:event_colorChooserActionPerformed
+
+    private void fontChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontChooserActionPerformed
+        currentFont = fonts[fontChooser.getSelectedIndex()].deriveFont(24f);
+        jTextArea1.setFont(currentFont);
+    }//GEN-LAST:event_fontChooserActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton colorChooser;
@@ -234,9 +272,11 @@ public class ChatWindow extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void displayMessage(Message message) {
+        
         jEditorPane1.setText(jEditorPane1.getText() + "\n" + message.getText());
         AudioPlayer player = new AudioPlayer("chimes.wav");
     }
+
     public void displayMessage(String message) {
         jEditorPane1.setText(jEditorPane1.getText() + "\n" + message);
     }

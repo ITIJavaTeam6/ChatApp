@@ -9,6 +9,7 @@ import chat.client.gui.util.GUIUtils;
 import chat.client.interfaces.RMIClientInterface;
 import chat.client.model.ClientModel;
 import chat.client.view.SignInFinal;
+import chat.client.view.StatusNotifierFrame;
 import chat.data.model.Contact;
 import chat.data.model.Group;
 import chat.data.model.Message;
@@ -201,6 +202,13 @@ public class ClientController implements Serializable {
 
     public void refreshGroups(Vector<Group> groups, Contact contactWhoChangedStatus) {
         chatController.refreshGroups(groups);
+        if (contactWhoChangedStatus.getId() != ClientController.userId) {
+            if (contactWhoChangedStatus.getStatus() == Contact.OFFLINE) {
+                new Thread(new StatusNotifierFrame(contactWhoChangedStatus.getFname() + " " + contactWhoChangedStatus.getLname() + " signed out")).start();
+            } else if (contactWhoChangedStatus.getStatus() == Contact.ONLINE) {
+                new Thread(new StatusNotifierFrame(contactWhoChangedStatus.getFname() + " " + contactWhoChangedStatus.getLname() + " signed in ")).start();
+            }
+        }
     }
 
     public String[] getFriendRequest(int userId) {
@@ -210,6 +218,7 @@ public class ClientController implements Serializable {
     public void createGroupChat(Vector<Contact> groupContacts) {
         modelObj.createGroupChat(groupContacts);
     }
+
     public void reciveMessage(String message) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

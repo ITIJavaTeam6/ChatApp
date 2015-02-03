@@ -90,12 +90,14 @@ public class ContactsListView extends JFrame {
         ButtonsPanel buttonsPanel = new ButtonsPanel(con, this);
         contentPane.add(buttonsPanel, BorderLayout.SOUTH);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 chatController.unregister();
+                boolean exit = true;
+                setIsExit(exit);
             }
         });
 
@@ -327,7 +329,7 @@ public class ContactsListView extends JFrame {
         contactsView.refreshGroups(groups);
     }
 
-    private void mnuExitActionPerformed(java.awt.event.ActionEvent evt) {
+    public void mnuExitActionPerformed(java.awt.event.ActionEvent evt) {
         chatController.unregister();
         boolean exit = true;
         setIsExit(exit);
@@ -380,7 +382,7 @@ public class ContactsListView extends JFrame {
             Logger.getLogger(ContactsListView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     void createGroupChat(Vector<Contact> groupContacts) {
         con.createGroupChat(groupContacts);
     }
