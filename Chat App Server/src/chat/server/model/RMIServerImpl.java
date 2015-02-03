@@ -158,15 +158,20 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
 
     @Override
     public void sendAdd(String email, int userId) throws RemoteException {
+        RMIClientInterface clientObj = null;
         try {
-            System.out.println("");
             UserService service = new UserService();
             User user = service.selectOne(email);
             int client = (int) user.getIduser();
-            if (clients.containsKey(client)) {
+            ContactService con = new ContactService();
+            chat.database.beans.Contact contact = con.selectOne(client, userId);
+            if (clients.containsKey(client) && contact == null) {
                 System.out.println("im map");
-                RMIClientInterface clientObj = clients.get(client);
+                clientObj = clients.get(client);
                 clientObj.receiveAdd(service.selectOne(userId).getEmail());//
+            } else {
+                clientObj = clients.get(userId);
+                clientObj.receiveMessage("you already have this friend");
             }
         } catch (SQLException ex) {
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -208,11 +213,17 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
 
     @Override
     public void insertAdd(chat.database.beans.Contact cont) throws RemoteException {
+        RMIClientInterface clientObj = null;
         try {
             System.out.println("here in server");
             DbService db = new DbService();
             ContactService contact = new ContactService();
-            contact.insert(cont);
+            if (contact.selectOne(cont.getContactId(), cont.getUserId()) == null) {
+                contact.insert(cont);
+            } else {
+                clientObj = clients.get(cont.getUserId());
+                clientObj.receiveMessage("you already have this friend");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

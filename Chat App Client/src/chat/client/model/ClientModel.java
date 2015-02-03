@@ -75,13 +75,16 @@ public class ClientModel implements Serializable {
                 Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            if (id != -1) {
+            if (id != -1&&id!=-3) {
                 try {
                     server.register(client, id);
                     userid = id;
                 } catch (RemoteException ex) {
                     Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+            else{
+                id=-3;
             }
             return id;
         } else {
@@ -251,5 +254,9 @@ public class ClientModel implements Serializable {
         } catch (RemoteException ex) {
             return null;
         }
+    }
+    
+    public void receiveMessage(String s){
+        controller.reciveMessage(s);
     }
 }

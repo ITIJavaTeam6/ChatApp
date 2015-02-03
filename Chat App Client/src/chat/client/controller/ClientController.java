@@ -45,16 +45,13 @@ public class ClientController implements Serializable {
             signInView.showErrorMessage("Server is down, please come back again after several minutes ..!", "Server Maintaince");
         } else if (id == ClientModel.USER_NOT_FOUND) {
             signInView.showErrorMessage("Invalid ID or password", "User Not Found");
-        } else {
+        } else if(id==-3){
+            this.reciveMessage("you already sign in !");
+        }
+        else {
             chatController = new ChatController(this);
             modelObj.changeState(0, id);
             userId = id;
-            String[] x = modelObj.getFriendRequest(id);
-            if (x != null) {
-                for (int i = 0; i < x.length; i++) {
-                    this.receiveAdd(x[i]);
-                }
-            }
             signInView.dispose();
         }
     }
@@ -122,7 +119,7 @@ public class ClientController implements Serializable {
 
     public void sendAdd(String mail) {
         int state = modelObj.checkUserExist(mail);
-        if (state == 3) {
+        if (state == 0) {
             modelObj.sendAdd(mail, userId);
             System.out.println("online");
         } else {
@@ -154,5 +151,14 @@ public class ClientController implements Serializable {
 
     public String[] getFriendRequest(int userId) {
         return modelObj.getFriendRequest(userId);
+    }
+
+    public void reciveMessage(String message) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JOptionPane.showMessageDialog(null, message);
+            }
+        });
     }
 }

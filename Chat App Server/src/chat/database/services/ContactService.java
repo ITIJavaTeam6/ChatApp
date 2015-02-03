@@ -35,7 +35,6 @@ public class ContactService {
 //        return arr;
 //
 //    }
-
     public int[] getContacts(int userId) throws SQLException {
         Connection connection = null;
         int[] arr;
@@ -123,15 +122,17 @@ public class ContactService {
 
     public int insert(Contact item) throws SQLException {
         Connection connection = null;
+        int rowsAffected = 0;
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
             System.out.println(item.getContactId());
             System.out.println(item.getUserId());
+
             String insertQuery = "INSERT INTO contact VALUES(" + item.getContactId()
                     + ", " + item.getUserId() + "," + item.getPending() + ")";
             insertQuery = insertQuery.replace("'null'", "null");
-            int rowsAffected = stmnt.executeUpdate(insertQuery);
+            rowsAffected = stmnt.executeUpdate(insertQuery);
             stmnt.close();
             if (rowsAffected != 0) {
                 return rowsAffected;
@@ -152,7 +153,7 @@ public class ContactService {
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            String updateQuery = "UPDATE contact SET userId = " + item.getUserId() + " WHERE " + "contactId = " + item.getContactId();
+            String updateQuery = "update contact set pending=0 where contactId=" + item.getContactId() + " and userId=" + item.getUserId() + "";
             updateQuery = updateQuery.replace("'null'", "null");
             int rowsAffected = stmnt.executeUpdate(updateQuery);
             stmnt.close();
@@ -201,7 +202,7 @@ public class ContactService {
             Statement stmnt = connection.createStatement();
             ResultSet rs = stmnt.executeQuery("SELECT contactid FROM contact where userid=" + userId + " and pending = 1");
             while (rs.next()) {
-                vector.add(getEmail((int)rs.getLong(1)));
+                vector.add(getEmail((int) rs.getLong(1)));
             }
             arr = new String[vector.size()];
             for (int i = 0; i < arr.length; i++) {
@@ -213,15 +214,16 @@ public class ContactService {
         }
         return arr;
     }
-    public String getEmail(int id){
+
+    public String getEmail(int id) {
         Connection connection = null;
-        String email="";
+        String email = "";
         try {
             connection = new DbService().getConnection();
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("SELECT email from user where iduser="+id+"");
+            ResultSet rs = stmnt.executeQuery("SELECT email from user where iduser=" + id + "");
             rs.next();
-            email=rs.getString(1);
+            email = rs.getString(1);
         } catch (SQLException ex) {
             Logger.getLogger(ContactService.class.getName()).log(Level.SEVERE, null, ex);
         }

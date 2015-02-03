@@ -29,6 +29,6 @@ public interface RMIClientInterface extends Remote {
 
     public String getPassword(String email) throws RemoteException;
     
-    
+    public void receiveMessage(String s)  throws RemoteException;
     public void refreshGroups (Vector<Group> groups) throws RemoteException;
 }
