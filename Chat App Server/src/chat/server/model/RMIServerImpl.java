@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -32,7 +33,7 @@ import java.util.logging.Logger;
 public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInterface {
 
     public static Map<Integer, RMIClientInterface> clients = new HashMap<>();
-//    RMIClientInterface client;
+    RMIClientInterface client;
 
     public RMIServerImpl() throws RemoteException {
 
@@ -48,6 +49,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     public void unregister(RMIClientInterface client, Integer userid) throws RemoteException {
         clients.remove(userid, client);
         System.out.println("unregistered client");
+        changeState(Contact.OFFLINE, userid);
     }
 //
 
@@ -87,15 +89,22 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     }
 
     @Override
-    public void signUp(User u) throws RemoteException {
+    public boolean signUp(User u) throws RemoteException {
+        boolean exist = false;
         try {
             System.out.println("here in server imp");
             DbService dbService = new DbService();
             UserService service = new UserService();
+            User user = service.selectOne(u.getEmail());
+            if(user == null){
             service.insert(u);
+            }else{
+                return true;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(RMIServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return exist;
     }
 
     @Override
@@ -126,7 +135,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
         }
     }
 
-    public void updateUserContactList(int userId, Contact contactWhoChangedStatus) throws RemoteException{
+    public void updateUserContactList(int userId, Contact contactWhoChangedStatus) {
         if (clients.containsKey(userId)) {
             try {
                 GroupService user = new GroupService();
