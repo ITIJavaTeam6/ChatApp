@@ -80,7 +80,6 @@ public class ContactsPanel extends JScrollPane {
         list.setCellRenderer(new MyRenderer());
 
         setViewportView(list);
-
     }
 
     void refreshGroups(Vector<Group> groups) {
@@ -94,6 +93,10 @@ public class ContactsPanel extends JScrollPane {
                 list.setListData(groups);
             }
         });
+    }
+
+    void refresh() {
+        
     }
 
     class MyRenderer implements ListCellRenderer<Group> {

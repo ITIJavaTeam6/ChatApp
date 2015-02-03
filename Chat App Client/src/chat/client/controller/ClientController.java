@@ -167,7 +167,7 @@ public class ClientController implements Serializable {
     }
 
     public void startGroupChat(Group newGroup) {
-        ChatController.groupsList.add(newGroup);
+//        ChatController.groupsList.add(newGroup);
         chatController.openChatWindow(newGroup);
     }
 }

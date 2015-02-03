@@ -259,7 +259,8 @@ public class ClientModel implements Serializable {
 
     public void createGroupChat(Vector<chat.data.model.Contact> groupContacts) {
         try {
-            Group newGroup = server.createGroup(groupContacts);
+            Group newGroup = server.createGroup(groupContacts, ClientController.userId);
+            server.updateUserContactList(ClientController.userId, new  chat.data.model.Contact(ClientController.userId));
             controller.startGroupChat(newGroup);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);

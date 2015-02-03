@@ -64,10 +64,10 @@ public class ContactsListView extends JFrame {
         UserPanel userPanel = new UserPanel(clientcontroller, this);
         contentPane.add(userPanel, BorderLayout.NORTH);
 
-        ButtonsPanel buttonsPanel = new ButtonsPanel(con);
+        ButtonsPanel buttonsPanel = new ButtonsPanel(con, this);
         contentPane.add(buttonsPanel, BorderLayout.SOUTH);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -282,5 +282,9 @@ public class ContactsListView extends JFrame {
 
     void createGroupChat(Vector<Contact> groupContacts) {
         con.createGroupChat(groupContacts);
+    }
+
+    public void refresh() {
+        contactsView.refresh();
     }
 }

@@ -144,6 +144,7 @@ public class StartGroupChat extends javax.swing.JDialog {
         }
         
         contactsListView.createGroupChat(groupContacts);
+        this.dispose();
     }//GEN-LAST:event_createGroupChatButtonActionPerformed
 
     /**

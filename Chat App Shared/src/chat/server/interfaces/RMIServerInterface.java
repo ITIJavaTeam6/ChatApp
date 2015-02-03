@@ -52,12 +52,14 @@ public interface RMIServerInterface extends Remote {
     public void sendFilePermission(File f, Group group, int receiverid, int senderid) throws RemoteException;
     
     public int createGroup(int userId,int contactId)  throws RemoteException;
-    public Group createGroup(Vector<chat.data.model.Contact> contacts) throws RemoteException;
+    public Group createGroup(Vector<chat.data.model.Contact> contacts, int groupCreator) throws RemoteException;
     
     public void removeGroup(int contactId,int userID) throws RemoteException;
     
     public String[] friendRequest(int userId)throws RemoteException;
     
     public String getPasswordFromServer(String email) throws RemoteException;
+    
+    public void updateUserContactList(int userId, chat.data.model.Contact contactWhoChangedStatus) throws RemoteException;
 
 }

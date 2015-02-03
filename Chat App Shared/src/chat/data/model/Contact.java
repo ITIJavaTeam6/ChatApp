@@ -30,6 +30,24 @@ public class Contact implements Serializable{
     private int status;
     private int gender;
 
+    public Contact() {
+    }
+
+    public Contact(String email, int id, String fname, String lname, String pass, Date birthdate, int status, int gender) {
+        this.email = email;
+        this.id = id;
+        this.fname = fname;
+        this.lname = lname;
+        this.pass = pass;
+        this.birthdate = birthdate;
+        this.status = status;
+        this.gender = gender;
+    }
+    
+    public Contact(int id) {
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }

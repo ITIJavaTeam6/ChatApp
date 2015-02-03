@@ -126,7 +126,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
         }
     }
 
-    public void updateUserContactList(int userId, Contact contactWhoChangedStatus) {
+    public void updateUserContactList(int userId, Contact contactWhoChangedStatus) throws RemoteException{
         if (clients.containsKey(userId)) {
             try {
                 GroupService user = new GroupService();
@@ -286,7 +286,7 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
     }
 
     @Override
-    public Group createGroup(Vector<Contact> contacts) throws RemoteException {
+    public Group createGroup(Vector<Contact> contacts, int groupCreator) throws RemoteException {
         chat.database.beans.ChatGroup member = null;
         Group group = new Group();
         try {
@@ -294,6 +294,11 @@ public class RMIServerImpl extends UnicastRemoteObject implements RMIServerInter
             GroupService groupservice = new GroupService();
             int groupId = groupservice.getGroupId();
             group.setId(groupId);
+            
+            UserService userService = new UserService();
+            Contact groupCreatorContact = Converter.fromUserToContact(userService.selectOne(groupCreator));
+            contacts.add(groupCreatorContact);
+            
             group.setContacts(contacts);
 
             for (Contact contact : contacts) {

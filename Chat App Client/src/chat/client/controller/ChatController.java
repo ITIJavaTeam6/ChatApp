@@ -92,6 +92,7 @@ public class ChatController {
             ChatWindow chatWindow = new ChatWindow(group, this);
             chatWindows.put(groupid, chatWindow);
             chatWindow.setVisible(true);
+            chatWindow.requestFocus();
         } else {
             chatWindows.get(groupid).requestFocus();
         }
