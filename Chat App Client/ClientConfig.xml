@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><root>
 <theme>9</theme>
-<userID>b@b.com</userID>
-<password>b</password>
+<userID>a@a.com</userID>
+<password>a</password>
 <rememberMe>true</rememberMe>
 <rememberPassword>true</rememberPassword>
-<isExit>true</isExit>
+<isExit>false</isExit>
 </root>

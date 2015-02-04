@@ -14,6 +14,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -21,6 +22,9 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -32,21 +36,30 @@ public class ViewController extends Application {
     ServerController serverController;
     private boolean isRunning = true;
     private Button btn;
+    private Button announceButton;
 
     @Override
     public void start(Stage stage) {
         try {
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+                @Override
+                public void handle(WindowEvent event) {
+                    System.exit(0);
+                }
+            });
+
             Scene scene = new Scene(new Group());
             stage.setTitle("Statistics");
             stage.setWidth(500);
             stage.setHeight(500);
-            
+
             stage.setResizable(false);
 
             btn = new Button();
             btn.setLayoutX(210);
             btn.setLayoutY(415);
-            btn.setText("StopServer");
+            btn.setText("Stop");
 
             btn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -55,6 +68,28 @@ public class ViewController extends Application {
                     switchService();
                 }
             });
+
+            announceButton = new Button("Announce");
+            announceButton.setLayoutX(10);
+            announceButton.setLayoutY(415);
+            announceButton.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent event) {
+                    SwingUtilities.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            String message = JOptionPane.showInputDialog("Enter the announcement message:");
+                            if (!message.equals("")) {
+                                serverController.serverAnnounce(message);
+                            }
+
+                        }
+                    });
+                }
+            });
+            ((Group) scene.getRoot()).getChildren().add(announceButton);
 
             ObservableList<PieChart.Data> pieChartData
                     = FXCollections.observableArrayList(
@@ -69,8 +104,6 @@ public class ViewController extends Application {
 //                            new PieChart.Data("Females", userService.getFemales()));
 //            final PieChart chartgender = new PieChart(pieChartgender);
 //            ((Group) scene.getRoot()).getChildren().add(chartgender);
-
-            
             final PieChart chart = new PieChart(pieChartData);
             chart.setTitle("Server");
             ((Group) scene.getRoot()).getChildren().add(btn);

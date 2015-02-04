@@ -121,7 +121,7 @@ public class ChatController {
     }
 
     void serverAnnounce(String message) {
-        JOptionPane.showMessageDialog(contactsListView, message);
+        JOptionPane.showMessageDialog(contactsListView, message, "Server Announcement", JOptionPane.INFORMATION_MESSAGE);
     }
 
     boolean displayReceiveFilePermission(String fileNameString, Group group) {

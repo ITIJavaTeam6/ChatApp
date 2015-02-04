@@ -6,6 +6,7 @@
 package chat.server.controller;
 
 import chat.client.interfaces.RMIClientInterface;
+import chat.data.model.Contact;
 import chat.server.interfaces.RMIServerInterface;
 import chat.server.model.RMIServerImpl;
 import chat.server.model.SignInImp;
@@ -61,6 +62,7 @@ public class ServerController {
         for (Map.Entry<Integer, RMIClientInterface> entry : RMIServerImpl.clients.entrySet()) {
             try {
                 entry.getValue().serverStopping();
+//                server.changeState(Contact.OFFLINE, entry.getKey());
             } catch (RemoteException ex) {
                 Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -96,4 +98,14 @@ public class ServerController {
         }
     }
 
+    public void serverAnnounce(String message) {
+        for (Map.Entry<Integer, RMIClientInterface> entry : RMIServerImpl.clients.entrySet()) {
+            try {
+                entry.getValue().serverAnnounce(message);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
 }
